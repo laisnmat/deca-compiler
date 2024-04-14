@@ -6,7 +6,7 @@ import fr.ensimag.ima.pseudocode.UnaryInstructionImmInt;
 /**
  *
  * @author Ensimag
- * @date @DATE@
+ * @date 14/04/2024
  */
 public class SUBSP extends UnaryInstructionImmInt {
 

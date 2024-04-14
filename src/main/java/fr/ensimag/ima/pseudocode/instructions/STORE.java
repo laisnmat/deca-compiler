@@ -6,7 +6,7 @@ import fr.ensimag.ima.pseudocode.Register;
 
 /**
  * @author Ensimag
- * @date @DATE@
+ * @date 14/04/2024
  */
 public class STORE extends BinaryInstruction {
     public STORE(Register op1, DAddr op2) {

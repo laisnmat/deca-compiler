@@ -6,7 +6,7 @@ import java.io.PrintStream;
  * IMA instruction.
  *
  * @author Ensimag
- * @date @DATE@
+ * @date 14/04/2024
  */
 public abstract class Instruction {
     String getName() {

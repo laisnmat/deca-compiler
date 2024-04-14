@@ -7,7 +7,7 @@ import org.apache.commons.lang.Validate;
  * declaration (e.g. foo: instruction) or use (e.g. BRA foo).
  *
  * @author Ensimag
- * @date @DATE@
+ * @date 14/04/2024
  */
 public class Label extends Operand {
 

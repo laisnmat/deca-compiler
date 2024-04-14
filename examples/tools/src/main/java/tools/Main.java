@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
  * A FAIRE : Alice et Bob rajoutent leurs noms sur la ligne suivante
  *
  * @author ... and ...
- * @date @DATE@
+ * @date 14/04/2024
  */
 public class Main {
 

@@ -9,8 +9,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 /**
  * Variable declaration
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl03
+ * @date 14/04/2024
  */
 public abstract class AbstractDeclVar extends Tree {
     

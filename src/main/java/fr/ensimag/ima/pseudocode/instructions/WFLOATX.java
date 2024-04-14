@@ -4,7 +4,7 @@ import fr.ensimag.ima.pseudocode.NullaryInstruction;
 
 /**
  * @author Ensimag
- * @date @DATE@
+ * @date 14/04/2024
  */
 public class WFLOATX extends NullaryInstruction {
 

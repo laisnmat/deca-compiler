@@ -10,7 +10,7 @@ import fr.ensimag.deca.DecacCompiler;
 /**
  *
  * @author Ensimag
- * @date @DATE@
+ * @date 14/04/2024
  */
 public class ManualTestInitialGencode {
     

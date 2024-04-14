@@ -11,8 +11,8 @@ import fr.ensimag.ima.pseudocode.Label;
 /**
  * Instruction
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl03
+ * @date 14/04/2024
  */
 public abstract class AbstractInst extends Tree {
     

@@ -8,8 +8,8 @@ import java.io.PrintStream;
 /**
  * Empty main Deca program
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl03
+ * @date 14/04/2024
  */
 public class EmptyMain extends AbstractMain {
     @Override

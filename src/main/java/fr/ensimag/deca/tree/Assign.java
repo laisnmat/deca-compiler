@@ -10,8 +10,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 /**
  * Assignment, i.e. lvalue = expr.
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl03
+ * @date 14/04/2024
  */
 public class Assign extends AbstractBinaryExpr {
 

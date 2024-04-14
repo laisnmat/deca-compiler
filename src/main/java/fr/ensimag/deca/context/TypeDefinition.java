@@ -5,8 +5,8 @@ import fr.ensimag.deca.tree.Location;
 /**
  * Definition of a Deca type (builtin or class).
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl03
+ * @date 14/04/2024
  */
 public class TypeDefinition extends Definition {
 

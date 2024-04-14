@@ -15,8 +15,8 @@ import org.apache.commons.lang.Validate;
 /**
  * Print statement (print, println, ...).
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl03
+ * @date 14/04/2024
  */
 public abstract class AbstractPrint extends AbstractInst {
 

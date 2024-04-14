@@ -1,7 +1,7 @@
 /**
  * Utilities used in various stages of the Deca compiler.
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl03
+ * @date 14/04/2024
  */
 package fr.ensimag.deca.tools;

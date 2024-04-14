@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * of tests.
  *
  * @author Ensimag
- * @date @DATE@
+ * @date 14/04/2024
  */
 public class TestPlusWithoutMock {
     static final Type INT = new IntType(null);

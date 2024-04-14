@@ -12,8 +12,8 @@ import java.io.PrintStream;
  * Absence of initialization (e.g. "int x;" as opposed to "int x =
  * 42;").
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl03
+ * @date 14/04/2024
  */
 public class NoInitialization extends AbstractInitialization {
 

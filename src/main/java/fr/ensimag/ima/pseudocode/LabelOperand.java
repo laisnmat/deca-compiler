@@ -6,7 +6,7 @@ import org.apache.commons.lang.Validate;
  * Label used as operand
  *
  * @author Ensimag
- * @date @DATE@
+ * @date 14/04/2024
  */
 public class LabelOperand extends DVal {
     public Label getLabel() {
