@@ -35,6 +35,11 @@ options {
     }
 }
 
+// inst: ident '=' expr ';' | 'print' '(' list_expr ')' ';' | 'println ' '( ' list_expr ') ' '; ' ;
+// expr: INT| FLOAT | STRING ;
+// list_expr:  (expr ( ',' expr)* )? ;
+// ident: IDENT;
+
 prog returns[AbstractProgram tree]
     : list_classes main EOF {
             assert($list_classes.tree != null);
