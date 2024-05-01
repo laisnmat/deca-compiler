@@ -12,28 +12,40 @@ options {
 }
 
 // Deca lexer rules.
-// A FAIRE : Il faut la supprimer et la remplacer par les vraies règles.
 
 
-LETTER: [a-zA-Z];
-DIGIT:[0-9];  
-IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
+//not in the grammar but seems to be needed in the parser
+OBRACE:'{';
+CBRACE:'}';
+EOL: '\n' {skip();} ; 
+SPACE: ' '{skip();} ; 
+PRINTLN:'println';
+SEMI:';';
 
-INT: '0' | POSITIVE_DIGIT DIGIT* ;
-POSITIVE_DIGIT: [1-9] ;
 
-FLOAT: FLOATDEC | FLOATHEX ;
-FLOATDEC:(DEC | DEC EXP) ('F' | 'f' | );
-EXP: ('E' | 'e') SIGN NUM;
-SIGN : '+' | '-' | ;
-DEC: NUM '.' NUM;
-NUM: DIGIT+;
 
-FLOATHEX:('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' | );
-NUMHEX:DIGITHEX+;
-DIGITHEX: [a-fA-F0-9]+;
 
-STRING: '"' (STRING_CAR | '\\"' | '\\\\')* '"';
-STRING_CAR: (~('\r' | '\n' | '"'))+ ;
+//implemntation of the grammar
 
-EOL: '\r' | '\n' ;   // not sure about it
+// LETTER: [a-zA-Z];
+// DIGIT:[0-9];  
+// IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
+
+// INT: '0' | POSITIVE_DIGIT DIGIT* ;
+// POSITIVE_DIGIT: [1-9] ;
+
+// FLOAT: FLOATDEC | FLOATHEX ;
+// FLOATDEC:(DEC | DEC EXP) ('F' | 'f' | );
+// EXP: ('E' | 'e') SIGN NUM;
+// SIGN : '+' | '-' | ;
+// DEC: NUM '.' NUM;
+// NUM: DIGIT+;
+
+// FLOATHEX:('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' | );
+// NUMHEX:DIGITHEX+;
+// DIGITHEX: [a-fA-F0-9]+;
+
+// STRING: '"' (STRING_CAR | '\\"' | '\\\\')* '"';
+// MULTI_LINE_STRING: '"' (STRING_CAR | EOL | '\\"' + '\\\\')* '"';
+// STRING_CAR: ~('\n' | '"' | '\\')+ ;
+  

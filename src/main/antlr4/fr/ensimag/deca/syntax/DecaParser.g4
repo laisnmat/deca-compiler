@@ -35,10 +35,6 @@ options {
     }
 }
 
-// inst: ident '=' expr ';' | 'print' '(' list_expr ')' ';' | 'println ' '( ' list_expr ') ' '; ' ;
-// expr: INT| FLOAT | STRING ;
-// list_expr:  (expr ( ',' expr)* )? ;
-// ident: IDENT;
 
 prog returns[AbstractProgram tree]
     : list_classes main EOF {
@@ -102,8 +98,10 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 
 list_inst returns[ListInst tree]
 @init {
+    $tree = new ListInst();    
 }
     : (inst {
+        $tree.add($inst.tree);
         }
       )*
     ;
@@ -113,6 +111,7 @@ inst returns[AbstractInst tree]
             assert($e1.tree != null);
         }
     | SEMI {
+        $tree = new NoOperation();
         }
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -365,6 +364,9 @@ ident returns[AbstractIdentifier tree]
 /****     Class related rules     ****/
 
 list_classes returns[ListDeclClass tree]
+@init {
+    $tree = new ListDeclClass();
+}
     :
       (c1=class_decl {
         }
