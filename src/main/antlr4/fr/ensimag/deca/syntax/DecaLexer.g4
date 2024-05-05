@@ -14,38 +14,49 @@ options {
 // Deca lexer rules.
 
 
-//not in the grammar but seems to be needed in the parser
 OBRACE:'{';
 CBRACE:'}';
+OPARENT:'(';
+CPARENT:')';
 EOL: '\n' {skip();} ; 
-SPACE: ' '{skip();} ; 
-PRINTLN:'println';
+SPACE: ' ' {skip();}; 
 SEMI:';';
+PRINTLN:'println';
+PRINT:'print';
+COMMA:',';
+EQUALS:'=';
 
 
+
+IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
+LETTER: [a-zA-Z];
+
+
+/INT: '0' | POSITIVE_DIGIT DIGIT* ;
+DIGIT:[0-9]; 
+POSITIVE_DIGIT: [1-9] ;
+NUM: DIGIT+;
+SIGN : '+' | '-' | ;
+EXP: ('E' | 'e') SIGN NUM;
+DEC: NUM '.' NUM;
+FLOATDEC:(DEC | DEC EXP) ('F' | 'f' | );
+DIGITHEX: [a-fA-F0-9]+;
+NUMHEX:DIGITHEX+;
+FLOATHEX:('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' | );
+FLOAT: FLOATDEC | FLOATHEX ;
+
+//STRING_CAR: ~('\n' | '"' | '\\')+ ;
+STRING: '"' ( ~('\n' | '"' | '\\')+ | '\\"' | '\\\\')* '"';
+MULTI_LINE_STRING: '"' ( ~('\n' | '"' | '\\')+ | EOL | '\\"' + '\\\\')* '"';
 
 
 //implemntation of the grammar
 
-// LETTER: [a-zA-Z];
-// DIGIT:[0-9];  
-// IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
 
-// INT: '0' | POSITIVE_DIGIT DIGIT* ;
-// POSITIVE_DIGIT: [1-9] ;
+//  
 
-// FLOAT: FLOATDEC | FLOATHEX ;
-// FLOATDEC:(DEC | DEC EXP) ('F' | 'f' | );
-// EXP: ('E' | 'e') SIGN NUM;
-// SIGN : '+' | '-' | ;
-// DEC: NUM '.' NUM;
-// NUM: DIGIT+;
 
-// FLOATHEX:('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' | );
-// NUMHEX:DIGITHEX+;
-// DIGITHEX: [a-fA-F0-9]+;
 
-// STRING: '"' (STRING_CAR | '\\"' | '\\\\')* '"';
-// MULTI_LINE_STRING: '"' (STRING_CAR | EOL | '\\"' + '\\\\')* '"';
-// STRING_CAR: ~('\n' | '"' | '\\')+ ;
+
+
   

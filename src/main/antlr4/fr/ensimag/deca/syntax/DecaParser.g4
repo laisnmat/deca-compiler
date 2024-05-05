@@ -53,6 +53,7 @@ main returns[AbstractMain tree]
             assert($block.decls != null);
             assert($block.insts != null);
             $tree = new Main($block.decls, $block.insts);
+
             setLocation($tree, $block.start);
         }
     ;
@@ -109,15 +110,21 @@ list_inst returns[ListInst tree]
 inst returns[AbstractInst tree]
     : e1=expr SEMI {
             assert($e1.tree != null);
+            $tree = $e1.tree;
         }
     | SEMI {
         $tree = new NoOperation();
         }
+    | ident EQUALS expr SEMI{
+        $tree =$ident.tree;
+    }
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            $tree = new Print(false, $list_expr.tree);
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            $tree = new Println(false, $list_expr.tree);
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -152,18 +159,29 @@ if_then_else returns[IfThenElse tree]
 
 list_expr returns[ListExpr tree]
 @init   {
+    $tree = new ListExpr();
         }
-    : (e1=expr {
-        }
-       (COMMA e2=expr {
-        }
-       )* )?
+    : (e1=expr {$tree.add($e1.tree);}
+       (COMMA e2=expr {$tree.add($e2.tree);})* )?
     ;
 
 expr returns[AbstractExpr tree]
-    : assign_expr {
-            assert($assign_expr.tree != null);
-        }
+@init {$tree = null;}
+    : INT {
+        $tree = new IntLiteral(Integer.parseInt($INT.getText()));
+    }
+    | FLOAT {
+        $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
+    }
+    | STRING {
+        $tree = new StringLiteral($STRING.text);
+    }
+    | ident {
+        $tree =$ident.tree;
+    }
+    // | assign_expr {
+    //         assert($assign_expr.tree != null);
+    //     }
     ;
 
 assign_expr returns[AbstractExpr tree]
@@ -335,6 +353,7 @@ primary_expr returns[AbstractExpr tree]
 
 type returns[AbstractIdentifier tree]
     : ident {
+            $tree = $ident.tree;
             assert($ident.tree != null);
         }
     ;
@@ -357,7 +376,8 @@ literal returns[AbstractExpr tree]
     ;
 
 ident returns[AbstractIdentifier tree]
-    : IDENT {
+
+    : id=IDENT {
         }
     ;
 

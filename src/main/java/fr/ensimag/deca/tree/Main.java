@@ -30,8 +30,11 @@ public class Main extends AbstractMain {
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
+        EnvironmentExp env = new EnvironmentExp(null); 
+        declVariables.verifyListDeclVariable(compiler,env,null); 
+        insts.verifyListInst(compiler, env, null,compiler.environmentType.VOID);
         LOG.debug("verify Main: end");
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
