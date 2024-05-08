@@ -82,11 +82,10 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-                if (expectedType.sameType(this.type) || (expectedType.isFloat() && this.type.isInt()) )
-                    return;
-                else 
-                    throw new ContextualError();
-                
+            Type t = verifyExpr(compiler, localEnv, currentClass);
+                if (!(expectedType.sameType(this.type) || (expectedType.isFloat() && this.type.isInt()) ))
+                    throw new ContextualError("Type incorrect", getLocation());
+            return null;        
     }
     
     

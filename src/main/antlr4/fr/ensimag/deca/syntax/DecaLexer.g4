@@ -32,11 +32,11 @@ IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
 LETTER: [a-zA-Z];
 
 
-/INT: '0' | POSITIVE_DIGIT DIGIT* ;
+INT: '0' | POSITIVE_DIGIT DIGIT* ;
 DIGIT:[0-9]; 
 POSITIVE_DIGIT: [1-9] ;
 NUM: DIGIT+;
-SIGN : '+' | '-' | ;
+SIGN : '+' | '-' | '';
 EXP: ('E' | 'e') SIGN NUM;
 DEC: NUM '.' NUM;
 FLOATDEC:(DEC | DEC EXP) ('F' | 'f' | );

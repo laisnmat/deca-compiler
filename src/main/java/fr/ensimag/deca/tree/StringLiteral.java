@@ -10,6 +10,7 @@ import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import fr.ensimag.deca.context.StringType;
 
 /**
  * String literal
@@ -34,7 +35,9 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-                return new StringType(compiler.create("String"));
+                Type t = compiler.environmentType.STRING;
+                setType(t);
+                return t;
     }
 
     @Override

@@ -2,6 +2,7 @@
 
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
+    import fr.ensimag.deca.DecacCompiler; 
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -433,6 +434,7 @@ public class DecaParser extends AbstractDecaParser {
 				setState(104);
 				((List_decl_varContext)_localctx).dv2 = decl_var(_localctx.t);
 
+				            _localctx.l.add(((List_decl_varContext)_localctx).dv2.tree);
 				        
 				}
 				}
@@ -478,6 +480,7 @@ public class DecaParser extends AbstractDecaParser {
 		Decl_varContext _localctx = new Decl_varContext(_ctx, getState(), t);
 		enterRule(_localctx, 12, RULE_decl_var);
 
+		    AbstractInitialization init=null;
 		        
 		int _la;
 		try {
@@ -486,6 +489,7 @@ public class DecaParser extends AbstractDecaParser {
 			setState(112);
 			((Decl_varContext)_localctx).i = ident();
 
+			        
 			        
 			setState(118);
 			_errHandler.sync(this);
@@ -497,11 +501,13 @@ public class DecaParser extends AbstractDecaParser {
 				setState(115);
 				((Decl_varContext)_localctx).e = expr();
 
+				            init = new Initialization(((Decl_varContext)_localctx).e.tree);
 				        
 				}
 			}
 
 
+			            ((Decl_varContext)_localctx).tree =  new DeclVar(_localctx.t, ((Decl_varContext)_localctx).i.tree, init );
 			        
 			}
 		}
@@ -577,7 +583,9 @@ public class DecaParser extends AbstractDecaParser {
 		public AbstractInst tree;
 		public ExprContext e1;
 		public IdentContext ident;
+		public Token PRINT;
 		public List_exprContext list_expr;
+		public Token PRINTLN;
 		public If_then_elseContext if_then_else;
 		public ExprContext condition;
 		public List_instContext body;
@@ -632,6 +640,7 @@ public class DecaParser extends AbstractDecaParser {
 
 				            assert(((InstContext)_localctx).e1.tree != null);
 				            ((InstContext)_localctx).tree =  ((InstContext)_localctx).e1.tree;
+				            setLocation(_localctx.tree, (((InstContext)_localctx).e1!=null?(((InstContext)_localctx).e1.start):null));
 				        
 				}
 				break;
@@ -665,7 +674,7 @@ public class DecaParser extends AbstractDecaParser {
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(142);
-				match(PRINT);
+				((InstContext)_localctx).PRINT = match(PRINT);
 				setState(143);
 				match(OPARENT);
 				setState(144);
@@ -677,6 +686,7 @@ public class DecaParser extends AbstractDecaParser {
 
 				            assert(((InstContext)_localctx).list_expr.tree != null);
 				            ((InstContext)_localctx).tree =  new Print(false, ((InstContext)_localctx).list_expr.tree);
+				            setLocation(_localctx.tree, ((InstContext)_localctx).PRINT);
 				        
 				}
 				break;
@@ -684,7 +694,7 @@ public class DecaParser extends AbstractDecaParser {
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(149);
-				match(PRINTLN);
+				((InstContext)_localctx).PRINTLN = match(PRINTLN);
 				setState(150);
 				match(OPARENT);
 				setState(151);
@@ -696,6 +706,7 @@ public class DecaParser extends AbstractDecaParser {
 
 				            assert(((InstContext)_localctx).list_expr.tree != null);
 				            ((InstContext)_localctx).tree =  new Println(false, ((InstContext)_localctx).list_expr.tree);
+				            setLocation(_localctx.tree, ((InstContext)_localctx).PRINTLN);
 				        
 				}
 				break;
@@ -1042,6 +1053,7 @@ public class DecaParser extends AbstractDecaParser {
 				((ExprContext)_localctx).INT = match(INT);
 
 				        ((ExprContext)_localctx).tree =  new IntLiteral(Integer.parseInt(((ExprContext)_localctx).INT.getText()));
+				        setLocation(_localctx.tree,((ExprContext)_localctx).INT);
 				    
 				}
 				break;
@@ -1052,6 +1064,7 @@ public class DecaParser extends AbstractDecaParser {
 				((ExprContext)_localctx).FLOAT = match(FLOAT);
 
 				        ((ExprContext)_localctx).tree =  new FloatLiteral(Float.parseFloat((((ExprContext)_localctx).FLOAT!=null?((ExprContext)_localctx).FLOAT.getText():null)));
+				        setLocation(_localctx.tree,((ExprContext)_localctx).FLOAT);
 				    
 				}
 				break;
@@ -1061,7 +1074,8 @@ public class DecaParser extends AbstractDecaParser {
 				setState(237);
 				((ExprContext)_localctx).STRING = match(STRING);
 
-				        ((ExprContext)_localctx).tree =  new StringLiteral((((ExprContext)_localctx).STRING!=null?((ExprContext)_localctx).STRING.getText():null));
+				        ((ExprContext)_localctx).tree =  new StringLiteral((((ExprContext)_localctx).STRING!=null?((ExprContext)_localctx).STRING.getText():null)); 
+				        setLocation(_localctx.tree,((ExprContext)_localctx).STRING);
 				    
 				}
 				break;
@@ -1072,6 +1086,7 @@ public class DecaParser extends AbstractDecaParser {
 				((ExprContext)_localctx).ident = ident();
 
 				        ((ExprContext)_localctx).tree = ((ExprContext)_localctx).ident.tree;
+				        setLocation(_localctx.tree, (((ExprContext)_localctx).ident!=null?(((ExprContext)_localctx).ident.start):null));
 				    
 				}
 				break;
@@ -2375,6 +2390,8 @@ public class DecaParser extends AbstractDecaParser {
 			setState(471);
 			((IdentContext)_localctx).id = match(IDENT);
 
+			        DecacCompiler compiler = getDecacCompiler();
+			        ((IdentContext)_localctx).tree =  new Identifier(compiler.createSymbol(((IdentContext)_localctx).id.getText()));
 			        
 			}
 		}

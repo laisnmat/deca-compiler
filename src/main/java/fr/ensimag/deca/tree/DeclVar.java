@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -33,10 +34,18 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-                //type.verifyType(compiler);
-                if (type.isVoid())
-                    throw new ContextualError();
-                initialization.verifyInitialization(compiler, type, localEnv, currentClass);
+
+                Type t = type.verifyType(compiler);
+                if (t.isVoid())
+                    throw new ContextualError("type cannot be void", getLocation());
+                try {
+                        localEnv.declare(varName.getName(), new VariableDefinition(t, getLocation()));
+                }
+                catch (EnvironmentExp.DoubleDefException e){
+                    throw new ContextualError("identifier is already defined", getLocation());
+                    }
+                
+                initialization.verifyInitialization(compiler, t, localEnv, currentClass);
     }
 
     

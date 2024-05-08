@@ -11,7 +11,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
-
+import java.util.Iterator;
 /**
  * Print statement (print, println, ...).
  *
@@ -39,12 +39,13 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-                Iterator<AbstractExpr> iterator = arguments.getListIterator();
+                Iterator<AbstractExpr> iterator = arguments.iterator();
 
                 while (iterator.hasNext()) {
                     AbstractExpr expr = iterator.next();
-                    if (!(expr.getType.isInt() || expr.getType.isFloat() || expr.getType.isString()))
-                        throw new ContextualError();
+                    Type t = expr.verifyExpr(compiler, localEnv, currentClass);
+                    if (!(t.isInt() || t.isFloat() || t.isString()))
+                         throw new ContextualError("verify inst", getLocation());
                 }
     }
 

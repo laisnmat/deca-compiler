@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import java.util.Iterator;
 
 /**
  * 
@@ -27,7 +28,8 @@ public class ListInst extends TreeList<AbstractInst> {
     public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-                for (Iterator<AbstractInst> it = iterator; it.hasNext(); ) {
+
+                for (Iterator<AbstractInst> it = iterator(); it.hasNext(); ) {
                     AbstractInst Inst = it.next();
                     Inst.verifyInst(compiler, localEnv, currentClass,returnType );
                 }

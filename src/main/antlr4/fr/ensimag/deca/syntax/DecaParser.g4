@@ -26,6 +26,7 @@ options {
 @header {
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
+    import fr.ensimag.deca.DecacCompiler; 
 }
 
 @members {
@@ -71,7 +72,7 @@ list_decl returns[ListDeclVar tree]
 @init   {
             $tree = new ListDeclVar();
         }
-    : decl_var_set[$tree]*
+    : decl_var_set[$tree]* 
     ;
 
 decl_var_set[ListDeclVar l]
@@ -82,18 +83,23 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
+            $l.add($dv2.tree);
         }
       )*
     ;
 
 decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
+    AbstractInitialization init=null;
         }
     : i=ident {
+        
         }
       (EQUALS e=expr {
+            init = new Initialization($e.tree);
         }
       )? {
+            $tree = new DeclVar($t, $i.tree, init );
         }
     ;
 
@@ -111,6 +117,7 @@ inst returns[AbstractInst tree]
     : e1=expr SEMI {
             assert($e1.tree != null);
             $tree = $e1.tree;
+            setLocation($tree, $e1.start);
         }
     | SEMI {
         $tree = new NoOperation();
@@ -121,10 +128,12 @@ inst returns[AbstractInst tree]
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Print(false, $list_expr.tree);
+            setLocation($tree, $PRINT);
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Println(false, $list_expr.tree);
+            setLocation($tree, $PRINTLN);
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -169,15 +178,19 @@ expr returns[AbstractExpr tree]
 @init {$tree = null;}
     : INT {
         $tree = new IntLiteral(Integer.parseInt($INT.getText()));
+        setLocation($tree,$INT);
     }
     | FLOAT {
         $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
+        setLocation($tree,$FLOAT);
     }
     | STRING {
-        $tree = new StringLiteral($STRING.text);
+        $tree = new StringLiteral($STRING.text); 
+        setLocation($tree,$STRING);
     }
     | ident {
         $tree =$ident.tree;
+        setLocation($tree, $ident.start);
     }
     // | assign_expr {
     //         assert($assign_expr.tree != null);
@@ -378,6 +391,8 @@ literal returns[AbstractExpr tree]
 ident returns[AbstractIdentifier tree]
 
     : id=IDENT {
+        DecacCompiler compiler = getDecacCompiler();
+        $tree = new Identifier(compiler.createSymbol($id.getText()));
         }
     ;
 

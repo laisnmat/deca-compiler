@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
  * @date 14/04/2024
  */
 public class Identifier extends AbstractIdentifier {
-    
+        
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -167,7 +167,10 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+                ExpDefinition def = localEnv.get(this.name);
+                if (def == null)
+                    throw new ContextualError("Identifier not declared", getLocation());
+                return def.getType();
     }
 
     /**
@@ -176,7 +179,10 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (compiler.environmentType.defOfType(name) == null)
+            throw new ContextualError("unknow type ", getLocation());
+        return compiler.environmentType.defOfType(name).getType();
+        
     }
     
     
