@@ -90,7 +90,7 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
 
 decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
-    AbstractInitialization init=null;
+    AbstractInitialization init= new NoInitialization();
         }
     : i=ident {
         
@@ -121,9 +121,13 @@ inst returns[AbstractInst tree]
         }
     | SEMI {
         $tree = new NoOperation();
+        setLocation($tree,$SEMI);
         }
     | ident EQUALS expr SEMI{
-        $tree =$ident.tree;
+        //$tree =$ident.tree;
+        
+        $tree = new Assign($ident.tree, $expr.tree);
+        setLocation($tree,$ident.start);
     }
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -185,7 +189,7 @@ expr returns[AbstractExpr tree]
         setLocation($tree,$FLOAT);
     }
     | STRING {
-        $tree = new StringLiteral($STRING.text); 
+        $tree = new StringLiteral($STRING.text.replace("\"", "")); 
         setLocation($tree,$STRING);
     }
     | ident {

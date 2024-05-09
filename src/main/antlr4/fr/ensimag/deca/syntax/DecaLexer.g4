@@ -19,7 +19,7 @@ CBRACE:'}';
 OPARENT:'(';
 CPARENT:')';
 EOL: '\n' {skip();} ; 
-SPACE: ' ' {skip();}; 
+SPACE: (' ' | '\t') {skip();}; 
 SEMI:';';
 PRINTLN:'println';
 PRINT:'print';
@@ -36,7 +36,7 @@ INT: '0' | POSITIVE_DIGIT DIGIT* ;
 DIGIT:[0-9]; 
 POSITIVE_DIGIT: [1-9] ;
 NUM: DIGIT+;
-SIGN : '+' | '-' | '';
+fragment SIGN : '+' | '-' | ;
 EXP: ('E' | 'e') SIGN NUM;
 DEC: NUM '.' NUM;
 FLOATDEC:(DEC | DEC EXP) ('F' | 'f' | );
@@ -49,11 +49,6 @@ FLOAT: FLOATDEC | FLOATHEX ;
 STRING: '"' ( ~('\n' | '"' | '\\')+ | '\\"' | '\\\\')* '"';
 MULTI_LINE_STRING: '"' ( ~('\n' | '"' | '\\')+ | EOL | '\\"' + '\\\\')* '"';
 
-
-//implemntation of the grammar
-
-
-//  
 
 
 
