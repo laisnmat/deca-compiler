@@ -66,14 +66,17 @@ public class CompilerOptions {
         } else {
             logger.info("Java assertions disabled");
         }
-        File destFile = new File(args[0]);
-        sourceFiles.add(destFile);
-
-        //throw new UnsupportedOperationException("not yet implemented");
+        File sFile = new File(args[0]);
+        sourceFiles.add(sFile);
     }
 
     protected void displayUsage() {
-        System.out.println("blabla options decac");
-        //throw new UnsupportedOperationException("not yet implemented");
+        System.out.println("-b          (banner)        : prints a banner with the team name");
+        System.out.println("-p          (parse)         : stops decac after the construction of the syntax tree");
+        System.out.println("-v          (verification)  : stops decac after the verification of the syntax tree");
+        System.out.println("-n          (no check)      : removes the tests at execution specified by points 11.1 and 11.3 of Deca semantics");
+        System.out.println("-r X        (registers)     : limits the available registers to R0 ... R{X-1}, with 4 <= X <= 16");
+        System.out.println("-d          (debug)         : activates debug trace - repeat the option multiple times for more info");
+        System.out.println("-P          (parallel)      : if there are multiple source files, parallelize their compilation (to accelerate compilation)");
     }
 }

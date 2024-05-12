@@ -158,31 +158,14 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-        // String sourceFileName = source.getName();
-        // String sourceDirectory = source.getParent();
 
-        // // on vérifie que ce soit un fichier deca
-        // if (!sourceFileName.endsWith(".deca")) {
-        //     LOG.error(" le fichier doit terminer par .deca");
-        //     return true;
-        // }
-        // // on définit ici le chemin dans lequel on veut écrire nos fichiers.ass,c'est le même que le .deca
-        // String destName = sourceFileName.replace(".deca", ".ass");
-        // File destFile = new File(sourceDirectory, destName);
-        // String destFileName = destFile.getAbsolutePath();
-        //sourceFiles.add(destFile);
-
-        // String sourceFile = source.getAbsolutePath();
-        // String sourceName = source.getName();
-        // String sourceDir = source.getParent();
-
-        // String destName = sourceName.replace(".deca", ".ass");
-        // String destFile = new File(sourceDir, destName).getAbsolutePath();
-        // System.out.println(destName);
+        // verify the source file is a deca file
+        if (!source.getName().endsWith(".deca")) {
+            LOG.error("The file must end with .deca");
+            return true;
+        }
 
         String destFile = sourceFile.substring(0, sourceFile.lastIndexOf(".deca")) + ".ass";
-        // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .deca.
 
         PrintStream err = System.err;
         PrintStream out = System.out;

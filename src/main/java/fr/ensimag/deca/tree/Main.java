@@ -29,23 +29,18 @@ public class Main extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
-        // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
-        // Vous avez le droit de changer le profil fourni pour ces méthodes
-        // (mais ce n'est à priori pas nécessaire).
         EnvironmentExp env = new EnvironmentExp(null); 
         declVariables.verifyListDeclVariable(compiler,env,null); 
         insts.verifyListInst(compiler, env, null,compiler.environmentType.VOID);
         LOG.debug("verify Main: end");
-        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // A FAIRE: traiter les déclarations de variables.
-        compiler.addComment("Beginning of main instructions:");
+        compiler.addComment("Beginning of main instructions");
         declVariables.codeGenListDeclVar(compiler);
         insts.codeGenListInst(compiler);
-        compiler.addComment("End of main instructions:");
+        compiler.addComment("End of main instructions");
     }
     
     @Override
