@@ -97,6 +97,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         }
       (EQUALS e=expr {
             init = new Initialization($e.tree);
+            setLocation(init, $e.start);
         }
       )? {
             $tree = new DeclVar($t, $i.tree, init );
@@ -398,6 +399,7 @@ ident returns[AbstractIdentifier tree]
     : id=IDENT {
         DecacCompiler compiler = getDecacCompiler();
         $tree = new Identifier(compiler.createSymbol($id.getText()));
+        setLocation($tree, $id);
         }
     ;
 

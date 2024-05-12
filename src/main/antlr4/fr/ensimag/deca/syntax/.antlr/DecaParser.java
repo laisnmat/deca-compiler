@@ -502,13 +502,14 @@ public class DecaParser extends AbstractDecaParser {
 				((Decl_varContext)_localctx).e = expr();
 
 				            init = new Initialization(((Decl_varContext)_localctx).e.tree);
+				            setLocation(init, (((Decl_varContext)_localctx).e!=null?(((Decl_varContext)_localctx).e.start):null));
 				        
 				}
 			}
 
 
 			            ((Decl_varContext)_localctx).tree =  new DeclVar(_localctx.t, ((Decl_varContext)_localctx).i.tree, init );
-									setLocation(_localctx.tree, (((Decl_varContext)_localctx).i!=null? (((Decl_var_setContext)_localctx).i.start):null));
+			            setLocation(_localctx.tree, (((Decl_varContext)_localctx).i!=null?(((Decl_varContext)_localctx).i.start):null));
 			        
 			}
 		}
@@ -2398,6 +2399,7 @@ public class DecaParser extends AbstractDecaParser {
 
 			        DecacCompiler compiler = getDecacCompiler();
 			        ((IdentContext)_localctx).tree =  new Identifier(compiler.createSymbol(((IdentContext)_localctx).id.getText()));
+			        setLocation(_localctx.tree, ((IdentContext)_localctx).id);
 			        
 			}
 		}

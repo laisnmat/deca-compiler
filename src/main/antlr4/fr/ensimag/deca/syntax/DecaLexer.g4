@@ -33,6 +33,7 @@ LETTER: [a-zA-Z];
 
 
 INT: '0' | POSITIVE_DIGIT DIGIT* ;
+FLOAT: FLOATDEC | FLOATHEX ;
 DIGIT:[0-9]; 
 POSITIVE_DIGIT: [1-9] ;
 NUM: DIGIT+;
@@ -43,7 +44,7 @@ FLOATDEC:(DEC | DEC EXP) ('F' | 'f' | );
 DIGITHEX: [a-fA-F0-9]+;
 NUMHEX:DIGITHEX+;
 FLOATHEX:('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' | );
-FLOAT: FLOATDEC | FLOATHEX ;
+
 
 //STRING_CAR: ~('\n' | '"' | '\\')+ ;
 STRING: '"' ( ~('\n' | '"' | '\\')+ | '\\"' | '\\\\')* '"';

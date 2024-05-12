@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -40,6 +41,8 @@ public class DeclVar extends AbstractDeclVar {
             throws ContextualError {
 
                 Type t = type.verifyType(compiler);
+                TypeDefinition typeDef = compiler.environmentType.defOfType(t.getName());
+                type.setDefinition(typeDef);
                 if (t.isVoid())
                     throw new ContextualError("type cannot be void", getLocation());
                 try {

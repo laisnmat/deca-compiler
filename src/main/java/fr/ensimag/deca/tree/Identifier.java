@@ -168,11 +168,10 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
                 ExpDefinition def = localEnv.get(this.name);
-                
                 if (def == null)
                     throw new ContextualError("Identifier not declared", getLocation());
-
                 setType(def.getType());
+                setDefinition(def);
                 return def.getType();
     }
 
