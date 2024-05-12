@@ -50,8 +50,9 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        //load into R[1] first cos WFLOAT doesn't take args
-        compiler.addInstruction(new WFLOAT(new ImmediateFloat(value)));
+        //load into R[1] first cos WFLOAT doesn't take 
+        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()), GPRegister.R1));
+        compiler.addInstruction(new WFLOAT());
     }
 
     @Override
