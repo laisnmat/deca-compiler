@@ -38,6 +38,8 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    private int offset;
     
     /**
      * Portable newline character.
@@ -48,6 +50,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        this.offset = 1;
     }
 
     /**
@@ -104,6 +107,23 @@ public class DecacCompiler {
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction)
+     */
+    public void addFirst(Instruction instruction) {
+        program.addFirst(instruction);
+    }
+
+    /**
+     * @see
+     * fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction,
+     * java.lang.String)
+     */
+    public void addFirst(Instruction instruction, String comment) {
+        program.addFirst(instruction, comment);
+    }
     
     /**
      * @see 
@@ -138,9 +158,32 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-        String destFile = null;
+        // String sourceFileName = source.getName();
+        // String sourceDirectory = source.getParent();
+
+        // // on vérifie que ce soit un fichier deca
+        // if (!sourceFileName.endsWith(".deca")) {
+        //     LOG.error(" le fichier doit terminer par .deca");
+        //     return true;
+        // }
+        // // on définit ici le chemin dans lequel on veut écrire nos fichiers.ass,c'est le même que le .deca
+        // String destName = sourceFileName.replace(".deca", ".ass");
+        // File destFile = new File(sourceDirectory, destName);
+        // String destFileName = destFile.getAbsolutePath();
+        //sourceFiles.add(destFile);
+
+        // String sourceFile = source.getAbsolutePath();
+        // String sourceName = source.getName();
+        // String sourceDir = source.getParent();
+
+        // String destName = sourceName.replace(".deca", ".ass");
+        // String destFile = new File(sourceDir, destName).getAbsolutePath();
+        // System.out.println(destName);
+
+        String destFile = sourceFile.substring(0, sourceFile.lastIndexOf(".deca")) + ".ass";
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
         // A FAIRE: fichier .deca.
+
         PrintStream err = System.err;
         PrintStream out = System.out;
         LOG.debug("Compiling file " + sourceFile + " to assembly file " + destFile);
@@ -241,6 +284,14 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+
+    public void increaseOffset() {
+        offset++;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 
 }

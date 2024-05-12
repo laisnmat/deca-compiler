@@ -122,8 +122,11 @@ public abstract class AbstractExpr extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        codeGenInit(compiler);
+        //throw new UnsupportedOperationException("not yet implemented");
     }
+
+    protected abstract int codeGenInit(DecacCompiler compiler); // returns register number in which expr was evaluated
     
 
     @Override

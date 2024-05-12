@@ -5,7 +5,12 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 import java.io.PrintStream;
 
 /**
@@ -31,6 +36,17 @@ public class IntLiteral extends AbstractExpr {
                 Type t = compiler.environmentType.INT;
                 setType(t);
                 return t;
+    }
+
+    @Override
+    protected int codeGenInit(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()), GPRegister.getR(2)));
+        return 2; // return number of register used to store the int
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        compiler.addInstruction(new WINT(new ImmediateInteger(value)));
     }
 
 

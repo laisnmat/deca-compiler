@@ -5,7 +5,12 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -37,6 +42,17 @@ public class FloatLiteral extends AbstractExpr {
         throw new UnsupportedOperationException("not yet implemented");        
     }
 
+    @Override
+    protected int codeGenInit(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()), GPRegister.getR(2)));
+        return 2; // return number of register used to store the float
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        //load into R[1] first cos WFLOAT doesn't take args
+        compiler.addInstruction(new WFLOAT(new ImmediateFloat(value)));
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

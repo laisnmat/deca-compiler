@@ -176,6 +176,11 @@ public class Identifier extends AbstractIdentifier {
                 return def.getType();
     }
 
+    @Override
+    protected int codeGenInit(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
      * @param compiler contains "env_types" attribute

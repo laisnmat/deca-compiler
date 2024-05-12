@@ -66,11 +66,14 @@ public class CompilerOptions {
         } else {
             logger.info("Java assertions disabled");
         }
+        File destFile = new File(args[0]);
+        sourceFiles.add(destFile);
 
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     protected void displayUsage() {
-        throw new UnsupportedOperationException("not yet implemented");
+        System.out.println("blabla options decac");
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 }

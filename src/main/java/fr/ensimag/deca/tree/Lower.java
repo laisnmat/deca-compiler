@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+
 
 /**
  *
@@ -16,6 +18,11 @@ public class Lower extends AbstractOpIneq {
     @Override
     protected String getOperatorName() {
         return "<";
+    }
+
+    @Override
+    protected int codeGenInit(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
 }

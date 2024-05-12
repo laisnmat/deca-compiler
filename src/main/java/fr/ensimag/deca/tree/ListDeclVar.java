@@ -4,6 +4,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.*;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.util.Iterator;
 
@@ -40,6 +44,17 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
                     DeclV.verifyDeclVar(compiler, localEnv, currentClass);
                 }
     }
+
+    public void codeGenListDeclVar(DecacCompiler compiler) {
+        int n = 0; // turn into size of list of classes ? -> so 0 for non object oriented
+        for (AbstractDeclVar declV : getList()) {
+            // first set operand as d(GB) with d increasing with each global var
+                // then later on, get operand to use in expressions like this :
+                    // DeclV.getExpDefinition().getOperand(); // get address (memory location)
+            declV.codeGenDeclVar(compiler);
+        }
+    }
+
 
 
 }

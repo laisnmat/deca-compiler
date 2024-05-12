@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -42,7 +43,9 @@ public class Main extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
         compiler.addComment("Beginning of main instructions:");
+        declVariables.codeGenListDeclVar(compiler);
         insts.codeGenListInst(compiler);
+        compiler.addComment("End of main instructions:");
     }
     
     @Override
