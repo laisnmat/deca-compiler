@@ -1,9 +1,16 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.HALT;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.*;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -44,7 +51,15 @@ public class Program extends AbstractProgram {
         // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
+        compiler.addFirst(new ADDSP(compiler.getOffset() - 1));
+        compiler.addFirst(new BOV(new Label("stack_overflow")));
+        compiler.addFirst(new TSTO(compiler.getOffset() - 1));
         compiler.addInstruction(new HALT());
+        compiler.addComment("Error messages");
+        compiler.addLabel(new Label("stack_overflow"));
+        compiler.addInstruction(new WSTR(getLocation().toString() + " Stack overflow"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
     }
 
     @Override

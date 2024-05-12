@@ -508,6 +508,7 @@ public class DecaParser extends AbstractDecaParser {
 
 
 			            ((Decl_varContext)_localctx).tree =  new DeclVar(_localctx.t, ((Decl_varContext)_localctx).i.tree, init );
+									setLocation(_localctx.tree, (((Decl_varContext)_localctx).i!=null? (((Decl_var_setContext)_localctx).i.start):null));
 			        
 			}
 		}

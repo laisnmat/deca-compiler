@@ -2,10 +2,9 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.*;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.Register;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -33,6 +32,19 @@ public class Assign extends AbstractBinaryExpr {
                 Type t = getLeftOperand().getType();
                 getRightOperand().verifyRValue(compiler, localEnv, currentClass,t );
                 return t;
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // type ident = value; -> LOAD(value, ident.addr)
+        int expressionResultRegister = getRightOperand().codeGenInit(compiler); // register number where rhs of initialization expr is stored
+        Identifier ident = (Identifier)getLeftOperand(); // get the identifier of the assignment
+        compiler.addInstruction(new STORE(Register.getR(expressionResultRegister), ident.getExpDefinition().getOperand()));
+    }
+
+    @Override
+    protected int codeGenInit(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
 

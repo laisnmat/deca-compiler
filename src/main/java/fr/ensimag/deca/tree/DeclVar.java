@@ -6,7 +6,11 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.VariableDefinition;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -39,13 +43,33 @@ public class DeclVar extends AbstractDeclVar {
                 if (t.isVoid())
                     throw new ContextualError("type cannot be void", getLocation());
                 try {
-                        localEnv.declare(varName.getName(), new VariableDefinition(t, getLocation()));
+                    ExpDefinition def = new VariableDefinition(t, getLocation());
+                    localEnv.declare(varName.getName(), def);
+                    varName.setDefinition(def);
                 }
                 catch (EnvironmentExp.DoubleDefException e){
                     throw new ContextualError("identifier is already defined", getLocation());
                     }
                 
                 initialization.verifyInitialization(compiler, t, localEnv, currentClass);
+    }
+
+    @Override
+    protected void codeGenDeclVar(DecacCompiler compiler) {
+
+        RegisterOffset offset = new RegisterOffset(compiler.getOffset(), Register.GB);
+        VariableDefinition varDef = new VariableDefinition(varName.getType(), varName.getLocation());
+        varDef.setOperand(offset); // assign offset(GB) to variable
+        compiler.increaseOffset(); // increase offset for next variable
+
+        if(initialization instanceof Initialization) {
+            Initialization i = (Initialization)initialization;
+            int expressionResultRegister = i.getExpression().codeGenInit(compiler); // register number where rhs of initialization expr is stored
+            compiler.addInstruction(new STORE(Register.getR(expressionResultRegister), varName.getExpDefinition().getOperand()));
+        }
+        else if (initialization instanceof NoInitialization) {
+            // do nothing ?
+        }
     }
 
     

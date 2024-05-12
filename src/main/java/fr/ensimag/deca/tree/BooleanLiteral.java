@@ -31,6 +31,10 @@ public class BooleanLiteral extends AbstractExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    @Override
+    protected int codeGenInit(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
