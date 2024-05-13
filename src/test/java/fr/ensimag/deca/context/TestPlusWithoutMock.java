@@ -44,6 +44,11 @@ public class TestPlusWithoutMock {
         }
 
         @Override
+        public void codeGenInit(DecacCompiler compiler) {
+            throw new UnsupportedOperationException("Should not be called.");
+        }
+
+        @Override
         protected void prettyPrintChildren(PrintStream s, String prefix) {
             throw new UnsupportedOperationException("Should not be called.");
         }

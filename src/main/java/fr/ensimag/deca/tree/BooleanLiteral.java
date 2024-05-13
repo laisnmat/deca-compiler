@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import java.io.PrintStream;
 
 /**
@@ -23,6 +24,11 @@ public class BooleanLiteral extends AbstractExpr {
 
     public boolean getValue() {
         return value;
+    }
+
+    @Override
+    protected DVal getDVal() {
+        return new ImmediateInteger(getValue() ? 1 : 0);
     }
 
     @Override

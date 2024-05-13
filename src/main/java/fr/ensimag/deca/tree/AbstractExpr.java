@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.DVal;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -86,7 +87,12 @@ public abstract class AbstractExpr extends AbstractInst {
             if (!(expectedType.sameType(this.type) || (expectedType.isFloat() && this.type.isInt()) ))
                 throw new ContextualError("Type incorrect", getLocation());
             //ConvFloat
-            return this;        
+            if (expectedType.isFloat() && this.type.isInt()) {
+                ConvFloat cv = new ConvFloat(this);
+                cv.setType(expectedType);
+                return cv;
+            }
+            return this;
     }
     
     
@@ -119,6 +125,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    protected DVal getDVal() {
+        return null;
     }
 
     @Override

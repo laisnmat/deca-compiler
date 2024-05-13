@@ -14,6 +14,10 @@ import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -177,7 +181,18 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected int codeGenInit(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.getR(2)));
+        return 2; // return number of register used to store the int
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.R1));
+        if(this.getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        } else if(this.getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        }
     }
 
     /**
@@ -187,9 +202,14 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         if (compiler.environmentType.defOfType(name) == null)
-            throw new ContextualError("unknow type ", getLocation());
+            throw new ContextualError("unknown type ", getLocation());
         return compiler.environmentType.defOfType(name).getType();
         
+    }
+
+    @Override
+    protected DVal getDVal() {
+        return this.getExpDefinition().getOperand();
     }
     
     

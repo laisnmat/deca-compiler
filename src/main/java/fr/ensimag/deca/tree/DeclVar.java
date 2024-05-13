@@ -61,7 +61,7 @@ public class DeclVar extends AbstractDeclVar {
     protected void codeGenDeclVar(DecacCompiler compiler) {
 
         RegisterOffset offset = new RegisterOffset(compiler.getOffset(), Register.GB);
-        VariableDefinition varDef = new VariableDefinition(varName.getType(), varName.getLocation());
+        VariableDefinition varDef = varName.getVariableDefinition();
         varDef.setOperand(offset); // assign offset(GB) to variable
         compiler.increaseOffset(); // increase offset for next variable
 

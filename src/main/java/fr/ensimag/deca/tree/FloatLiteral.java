@@ -37,6 +37,11 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
+    protected DVal getDVal() {
+        return new ImmediateFloat(getValue());
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
                 Type t = compiler.environmentType.FLOAT;
