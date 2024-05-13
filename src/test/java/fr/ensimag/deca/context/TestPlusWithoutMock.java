@@ -44,7 +44,7 @@ public class TestPlusWithoutMock {
         }
 
         @Override
-        public void codeGenInit(DecacCompiler compiler) {
+        public int codeGenInit(DecacCompiler compiler) {
             throw new UnsupportedOperationException("Should not be called.");
         }
 
