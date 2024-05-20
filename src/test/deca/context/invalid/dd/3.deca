@@ -1,0 +1,7 @@
+{
+    int x;
+    if (x && readInt()){
+        println("en vrai je serais pas contre un peu de gateau de début d'année (le vert)");
+    }
+    
+}

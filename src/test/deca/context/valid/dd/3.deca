@@ -1,0 +1,11 @@
+{
+    int x = readInt();
+    (x);
+    if ((x == 1) && ((!(x <= 2)) || (x <= 3))){
+        println("j'ai faim ");
+    }
+
+    else {
+        println("tu me fais des cookies ?");
+    }
+}

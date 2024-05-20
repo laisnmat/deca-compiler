@@ -25,8 +25,16 @@ PRINTLN:'println';
 PRINT:'print';
 COMMA:',';
 EQUALS:'=';
-
-
+WHILE:'while';
+IF:'if';
+ELSE:'else';
+OR:'||';
+AND:'&&';
+NOT: '!';
+EQEQ:'==';
+LT:'<';
+LEQ:'<=';
+READINT:'readInt';
 
 IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
 LETTER: [a-zA-Z];

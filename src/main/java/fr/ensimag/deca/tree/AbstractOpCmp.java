@@ -20,7 +20,17 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+                getLeftOperand().verifyExpr(compiler, localEnv,currentClass);
+                if (!(getLeftOperand().getType() == compiler.environmentType.INT || getLeftOperand().getType() == compiler.environmentType.FLOAT)){
+                    throw new ContextualError("L'opérande gauche n'est ni un int ni un float", getLocation());
+                }
+                getRightOperand().verifyExpr(compiler, localEnv,currentClass);
+                if (!(getRightOperand().getType() == compiler.environmentType.INT || getRightOperand().getType() == compiler.environmentType.FLOAT)){
+                    throw new ContextualError("L'opérande droite n'est ni un int ni un float", getLocation());
+                }
+
+                setType(compiler.environmentType.BOOLEAN);
+                return compiler.environmentType.BOOLEAN;                
     }
 
 

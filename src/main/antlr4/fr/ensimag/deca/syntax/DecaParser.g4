@@ -149,10 +149,14 @@ inst returns[AbstractInst tree]
         }
     | if_then_else {
             assert($if_then_else.tree != null);
+            $tree = $if_then_else.tree;
+
         }
     | WHILE OPARENT condition=expr CPARENT OBRACE body=list_inst CBRACE {
             assert($condition.tree != null);
             assert($body.tree != null);
+            $tree = new While($condition.tree, $body.tree);
+            setLocation($tree, $WHILE);
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
@@ -161,15 +165,23 @@ inst returns[AbstractInst tree]
 
 if_then_else returns[IfThenElse tree]
 @init {
+    ListInst elseBody = new ListInst();
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
+            assert($condition.tree != null);
+            
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
+            elseBody= $li_else.tree; 
         }
       )?
+      { 
+        $tree = new IfThenElse($condition.tree, $li_if.tree, elseBody);
+        setLocation($tree, $if1);
+      }
     ;
 
 list_expr returns[ListExpr tree]
@@ -182,22 +194,37 @@ list_expr returns[ListExpr tree]
 
 expr returns[AbstractExpr tree]
 @init {$tree = null;}
-    : INT {
-        $tree = new IntLiteral(Integer.parseInt($INT.getText()));
-        setLocation($tree,$INT);
+
+    : primary_expr {
+        $tree = $primary_expr.tree;
+        setLocation($tree,$primary_expr.start);
     }
-    | FLOAT {
-        $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
-        setLocation($tree,$FLOAT);
+    | exp1=expr OR exp2=expr{
+        $tree = new Or($exp1.tree, $exp2.tree);
+        setLocation($tree,$exp1.start);
     }
-    | STRING {
-        $tree = new StringLiteral($STRING.text.replace("\"", "")); 
-        setLocation($tree,$STRING);
+
+    | exp1=expr AND exp2=expr{
+        $tree = new And($exp1.tree, $exp2.tree);
+        setLocation($tree,$exp1.start);
     }
-    | ident {
-        $tree =$ident.tree;
-        setLocation($tree, $ident.start);
+    | NOT e1=expr{
+        $tree = new Not($e1.tree);
+        setLocation($tree,$e1.start);
     }
+    | p1=primary_expr EQEQ  p2=primary_expr{
+        $tree = new Equals($p1.tree, $p2.tree);
+        setLocation($tree,$p1.start);        
+    }
+    | p1=primary_expr LT p2=primary_expr{
+        $tree = new Lower($p1.tree, $p2.tree);
+        setLocation($tree,$p1.start);    
+    }
+    | p1=primary_expr LEQ p2=primary_expr{
+        $tree = new LowerOrEqual($p1.tree, $p2.tree);
+        setLocation($tree,$p1.start);    
+    }
+
     // | assign_expr {
     //         assert($assign_expr.tree != null);
     //     }
@@ -344,30 +371,48 @@ select_expr returns[AbstractExpr tree]
     ;
 
 primary_expr returns[AbstractExpr tree]
-    : ident {
-            assert($ident.tree != null);
-        }
-    | m=ident OPARENT args=list_expr CPARENT {
-            assert($args.tree != null);
-            assert($m.tree != null);
-        }
-    | OPARENT expr CPARENT {
+
+    // | m=ident OPARENT args=list_expr CPARENT {
+    //         assert($args.tree != null);
+    //         assert($m.tree != null);
+    //     }
+    : OPARENT expr CPARENT {
             assert($expr.tree != null);
+            $tree = $expr.tree;
+            setLocation($tree,$OPARENT);
         }
     | READINT OPARENT CPARENT {
+        $tree = new ReadInt();
+        setLocation($tree,$READINT);
         }
-    | READFLOAT OPARENT CPARENT {
-        }
-    | NEW ident OPARENT CPARENT {
-            assert($ident.tree != null);
-        }
-    | cast=OPARENT type CPARENT OPARENT expr CPARENT {
-            assert($type.tree != null);
-            assert($expr.tree != null);
-        }
-    | literal {
-            assert($literal.tree != null);
-        }
+    | INT {
+        $tree = new IntLiteral(Integer.parseInt($INT.getText()));
+        setLocation($tree,$INT);
+    }
+    | FLOAT {
+        $tree = new FloatLiteral(Float.parseFloat($FLOAT.text));
+        setLocation($tree,$FLOAT);
+    }
+    | STRING {
+        $tree = new StringLiteral($STRING.text.replace("\"", "")); 
+        setLocation($tree,$STRING);
+    }
+    | ident {
+        $tree =$ident.tree;
+        setLocation($tree, $ident.start);
+    }
+    // | READFLOAT OPARENT CPARENT {
+    //     }
+    // | NEW ident OPARENT CPARENT {
+    //         assert($ident.tree != null);
+    //     }
+    // | cast=OPARENT type CPARENT OPARENT expr CPARENT {
+    //         assert($type.tree != null);
+    //         assert($expr.tree != null);
+    //     }
+    // | literal {
+    //         assert($literal.tree != null);
+    //     }
     ;
 
 type returns[AbstractIdentifier tree]
