@@ -8,8 +8,9 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import java.io.PrintStream;
@@ -51,9 +52,8 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    protected int codeGenInit(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()), GPRegister.getR(2)));
-        return 2; // return number of register used to store the float
+    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()), Register.getR(registerName)));
     }
 
     @Override

@@ -39,16 +39,11 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         // type ident = value; -> LOAD(value, ident.addr)
-        int expressionResultRegister = getRightOperand().codeGenInit(compiler); // register number where rhs of initialization expr is stored
+        int storageRegister = 2;
+        getRightOperand().codeGenExp(compiler, storageRegister); // register number where rhs of initialization expr is stored
         Identifier ident = (Identifier)getLeftOperand(); // get the identifier of the assignment
-        compiler.addInstruction(new STORE(Register.getR(expressionResultRegister), ident.getExpDefinition().getOperand()));
+        compiler.addInstruction(new STORE(Register.getR(storageRegister), ident.getExpDefinition().getOperand()));
     }
-
-    @Override
-    protected int codeGenInit(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
 
     @Override
     protected String getOperatorName() {

@@ -7,8 +7,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -124,7 +126,15 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        DVal d = this.codeGenExp(compiler);
+        compiler.addInstruction(new LOAD(d, Register.R1));
+        if (this.getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        } else (this.getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        } else {
+            throw new DecacInternalError("Unexpected case in AbstractExpr.codeGenPrint: please report this bug.")
+        }
     }
 
     protected DVal getDVal() {
@@ -133,11 +143,15 @@ public abstract class AbstractExpr extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        codeGenInit(compiler);
+        this.codeGenExp(compiler, 2);
     }
-
-    protected abstract int codeGenInit(DecacCompiler compiler); // returns register number in which expr was evaluated
     
+    protected abstract void codeGenExp(DecacCompiler compiler, int registerName);
+
+    DVal codeGenExp(DecacCompiler compiler) {
+        this.codeGenExp(compiler, 2);
+        return Register.getR(2);
+    }
 
     @Override
     protected void decompileInst(IndentPrintStream s) {

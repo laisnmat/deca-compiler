@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -29,9 +30,8 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
-    protected int codeGenInit(DecacCompiler compiler) {
-        compiler.addInstruction(new FLOAT(this.getOperand().getDVal(), GPRegister.getR(2)));
-        return 2;
+    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+        compiler.addInstruction(new FLOAT(this.getOperand().getDVal(), Register.getR(registerName)));
     }
 
     @Override

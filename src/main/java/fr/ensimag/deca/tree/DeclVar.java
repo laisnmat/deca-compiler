@@ -59,7 +59,6 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
-
         RegisterOffset offset = new RegisterOffset(compiler.getOffset(), Register.GB);
         VariableDefinition varDef = varName.getVariableDefinition();
         varDef.setOperand(offset); // assign offset(GB) to variable
@@ -67,8 +66,9 @@ public class DeclVar extends AbstractDeclVar {
 
         if(initialization instanceof Initialization) {
             Initialization i = (Initialization)initialization;
-            int expressionResultRegister = i.getExpression().codeGenInit(compiler); // register number where rhs of initialization expr is stored
-            compiler.addInstruction(new STORE(Register.getR(expressionResultRegister), varName.getExpDefinition().getOperand()));
+            int storageRegister = 2; // register number where rhs of initialization expr is stored
+            i.getExpression().codeGenExp(compiler, storageRegister);
+            compiler.addInstruction(new STORE(Register.getR(storageRegister), varName.getExpDefinition().getOperand()));
         }
         else if (initialization instanceof NoInitialization) {
             // do nothing ?

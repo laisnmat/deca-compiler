@@ -24,12 +24,6 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    protected int codeGenInit(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-
-    @Override
     protected String getOperatorName() {
         return "%";
     }

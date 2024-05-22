@@ -16,6 +16,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
@@ -181,9 +182,8 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    protected int codeGenInit(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.getR(2)));
-        return 2; // return number of register used to store the int
+    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+        compiler.addInstruction(new LOAD(this.getVariableDefinition().getOperand(), Register.getR(registerName)));
     }
 
     @Override
