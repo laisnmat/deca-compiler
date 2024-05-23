@@ -30,7 +30,7 @@ IF:'if';
 ELSE:'else';
 OR:'||';
 AND:'&&';
-NOT: '!';
+EXCLAM: '!';
 EQEQ:'==';
 LT:'<';
 LEQ:'<=';
