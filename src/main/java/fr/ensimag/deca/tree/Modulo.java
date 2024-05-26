@@ -28,4 +28,8 @@ public class Modulo extends AbstractOpArith {
         return "%";
     }
 
+    @Override
+    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

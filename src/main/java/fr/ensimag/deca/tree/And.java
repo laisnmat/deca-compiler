@@ -18,4 +18,9 @@ public class And extends AbstractOpBool {
     protected String getOperatorName() {
         return "&&";
     }
+
+    @Override
+    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 }

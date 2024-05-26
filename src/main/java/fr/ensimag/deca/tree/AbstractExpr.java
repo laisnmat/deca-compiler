@@ -11,6 +11,8 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -130,10 +132,10 @@ public abstract class AbstractExpr extends AbstractInst {
         compiler.addInstruction(new LOAD(d, Register.R1));
         if (this.getType().isFloat()) {
             compiler.addInstruction(new WFLOAT());
-        } else (this.getType().isInt()) {
+        } else if (this.getType().isInt()) {
             compiler.addInstruction(new WINT());
         } else {
-            throw new DecacInternalError("Unexpected case in AbstractExpr.codeGenPrint: please report this bug.")
+            throw new DecacInternalError("Unexpected case in AbstractExpr.codeGenPrint: please report this bug.");
         }
     }
 

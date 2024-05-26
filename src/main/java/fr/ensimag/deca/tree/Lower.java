@@ -14,9 +14,13 @@ public class Lower extends AbstractOpIneq {
         super(leftOperand, rightOperand);
     }
 
-
     @Override
     protected String getOperatorName() {
         return "<";
+    }
+
+    @Override
+    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 }

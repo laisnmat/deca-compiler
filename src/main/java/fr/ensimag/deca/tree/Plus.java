@@ -12,10 +12,14 @@ public class Plus extends AbstractOpArith {
     public Plus(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
- 
 
     @Override
     protected String getOperatorName() {
         return "+";
+    }
+
+    @Override
+    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 }

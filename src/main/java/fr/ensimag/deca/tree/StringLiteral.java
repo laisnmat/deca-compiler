@@ -46,6 +46,11 @@ public class StringLiteral extends AbstractStringLiteral {
     }
 
     @Override
+    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");
     }
