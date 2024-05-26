@@ -22,12 +22,6 @@ public class ReadFloat extends AbstractReadExpr {
     }
 
     @Override
-    protected int codeGenInit(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-
-    @Override
     public void decompile(IndentPrintStream s) {
         s.print("readFloat()");
     }
