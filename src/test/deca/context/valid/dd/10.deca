@@ -1,0 +1,18 @@
+{
+    int x =7;
+    float y = 67.45;
+    float z = 67.35;
+    while(x < y){
+        if (y <= x){
+            println("Francisco Lachowski ");
+        }
+
+        if (!(y == z)){
+            println("Jordan Berett");
+        }
+
+        else{
+            println("shrek");
+        }
+    }
+}

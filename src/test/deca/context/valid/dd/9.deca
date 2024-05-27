@@ -1,0 +1,12 @@
+{
+    float x=15.0;
+    float y=16.0;
+
+    if(x < y){
+        println("it's cookie time");
+    }
+
+    else{
+        println("it's fasting time");
+    }
+}

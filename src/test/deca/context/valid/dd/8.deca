@@ -1,0 +1,36 @@
+{
+    int x=20;
+    if (x < 30 ){
+        println("j'ai gagné 1 cookie");
+    }
+
+    else {
+        println("0 cookie du coup");
+    }
+
+    if (x <= 30 ){
+        println("allez hop deuxième cookie");
+    }
+
+    else {
+        println("encore perdu");
+    }
+
+    if (x == 20 ){
+        println("ça va faire cher en farine");
+    }
+
+    else {
+        println("encore perdu");
+    }  
+
+
+    if (!(x == 30 )){
+        println("cookies go brrrrr");
+    }
+
+    else {
+        println("encore perdu");
+    }        
+
+}

@@ -27,9 +27,21 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                 if (!(getLeftOperand().getType() == compiler.environmentType.INT || getLeftOperand().getType() == compiler.environmentType.FLOAT)){
                     throw new ContextualError("L'opérande gauche n'est ni un int ni un float", getLocation());
                 }
+
                 getRightOperand().verifyExpr(compiler, localEnv,currentClass);
                 if (!(getRightOperand().getType() == compiler.environmentType.INT || getRightOperand().getType() == compiler.environmentType.FLOAT)){
                     throw new ContextualError("L'opérande droite n'est ni un int ni un float", getLocation());
+                }
+
+                if (getLeftOperand().getType() == compiler.environmentType.INT && getRightOperand().getType() == compiler.environmentType.FLOAT){
+                    ConvFloat cv = new ConvFloat(getLeftOperand());
+                    cv.setType(compiler.environmentType.FLOAT);   
+                    setLeftOperand(cv);         
+                }
+                else if (getRightOperand().getType() == compiler.environmentType.INT && getLeftOperand().getType() == compiler.environmentType.FLOAT){
+                    ConvFloat cv = new ConvFloat(getRightOperand());
+                    cv.setType(compiler.environmentType.FLOAT);        
+                    setRightOperand(cv);     
                 }
 
                 setType(compiler.environmentType.BOOLEAN);
