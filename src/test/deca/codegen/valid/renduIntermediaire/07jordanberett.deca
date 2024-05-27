@@ -14,5 +14,6 @@
         else{
             println("shrek");
         }
+        x = 68;
     }
 }

@@ -50,7 +50,9 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        compiler.addInstruction(new LOAD(this.getLeftOperand().getDVal(), Register.getR(registerName)));
-        compiler.addInstruction(new CMP(this.getRightOperand().getDVal(), Register.getR(registerName)));
+        this.getLeftOperand().codeGenExp(compiler, registerName);
+        compiler.addInstruction(new LOAD(Register.getR(registerName), Register.getR(registerName+1)));
+        this.getRightOperand().codeGenExp(compiler, registerName);
+        compiler.addInstruction(new CMP(Register.getR(registerName), Register.getR(registerName+1)));
     }
 }

@@ -2,5 +2,6 @@
     int x = 17;
     while (x < 20){
         print(x);
+        x = 20;
     }
 }
