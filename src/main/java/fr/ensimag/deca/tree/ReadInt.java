@@ -32,8 +32,8 @@ public class ReadInt extends AbstractReadExpr {
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
         compiler.addInstruction(new RINT());
-        //compiler.addInstruction(new BOV(new Label("io_error")));
-        compiler.addInstruction(new LOAD(Register.R1, Register.getR(2)));
+        compiler.addInstruction(new BOV(new Label("io_error")));
+        compiler.addInstruction(new LOAD(Register.R1, Register.getR(registerName)));
     }
 
     @Override
