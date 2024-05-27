@@ -34,6 +34,11 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
+    public void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
+        this.getOperand().codeGenExpBool(compiler, !branchIf, labelName);
+    }
+
+    @Override
     protected String getOperatorName() {
         return "!";
     }

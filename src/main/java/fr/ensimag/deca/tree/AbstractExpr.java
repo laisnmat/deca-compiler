@@ -155,6 +155,10 @@ public abstract class AbstractExpr extends AbstractInst {
         return Register.getR(2);
     }
 
+    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
+        throw new DecacInternalError("This version should not be called.");
+    }
+
     @Override
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);

@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.LabelManager;
+import fr.ensimag.ima.pseudocode.Label;
 
 
 /**
@@ -22,5 +24,19 @@ public class And extends AbstractOpBool {
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
+        if (branchIf) {
+            String endLabel = compiler.labelManager.getLabel("end");
+            this.getLeftOperand().codeGenExpBool(compiler, false, endLabel);
+            this.getRightOperand().codeGenExpBool(compiler, true, labelName);
+            compiler.addLabel(new Label(endLabel));
+        }
+        else {
+            this.getLeftOperand().codeGenExpBool(compiler, false, labelName);
+            this.getRightOperand().codeGenExpBool(compiler, false, labelName);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.LabelManager;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -38,6 +39,7 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+    public LabelManager labelManager = new LabelManager();
 
     private int offset;
     
