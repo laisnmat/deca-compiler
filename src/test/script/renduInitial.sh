@@ -59,3 +59,9 @@ done
 
 
 echo "### SCORE: ${nbpassed} PASSED / ${nbtests} TESTS ###"
+
+if [ "$nbpassed" -lt "$nbtests" ]; then
+    exit 1
+else
+    exit 0
+fi
