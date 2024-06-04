@@ -8,6 +8,10 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 
 /**
@@ -38,31 +42,34 @@ public class BooleanLiteral extends AbstractExpr {
         setType(compiler.environmentType.BOOLEAN);
         return getType();
     }
-    /** 
+
+    /**
      * For tests in conditions
+     * 
      * @param compiler
      * @param jumpIfTrue
      * @param label
      */
     @Override
-    public void codeGenCond(DecacCompiler compiler, boolean jumpIfTrue, Label label) {
+    protected void codeGenExpBool(DecacCompiler compiler, boolean jumpIfTrue, String labelName) {
         if (value == jumpIfTrue) {
-            compiler.addInstruction(new BEQ(label));
+            compiler.addInstruction(new BEQ(new Label(labelName)));
         }
     }
+
     /**
      *
      * To assign a boolean in a variable
+     * 
      * @param compiler
      * @param register
      */
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        compiler.addInstruction(new LOAD(value ? 1 : 0, register));
-
+        compiler.addInstruction(new LOAD(value ? 1 : 0, GPRegister.getR(registerName)));
     }
 
-    pblic void decompile(IndentPrintStream s) {
+    public void decompile(IndentPrintStream s) {
         s.print(Boolean.toString(value));
     }
 

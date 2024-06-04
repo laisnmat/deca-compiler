@@ -17,9 +17,8 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -195,6 +194,17 @@ public class Identifier extends AbstractIdentifier {
         } else if (this.getType().isFloat()) {
             compiler.addInstruction(new WFLOAT());
         }
+    }
+
+    @Override
+    protected void codeGenExpBool(DecacCompiler compiler, boolean jumpIfTrue, String label) {
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), Register.R1));
+        if (jumpIfTrue) {
+            compiler.addInstruction(new CMP(1, Register.R1));
+        } else {
+            compiler.addInstruction(new CMP(0, Register.R1));
+        }
+        compiler.addInstruction(new BEQ(new Label(label)));
     }
 
     /**
