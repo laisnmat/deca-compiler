@@ -35,16 +35,34 @@ public class BooleanLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        setType(compiler.environmentType.BOOLEAN);
+        return getType();
     }
-
+    /** 
+     * For tests in conditions
+     * @param compiler
+     * @param jumpIfTrue
+     * @param label
+     */
+    @Override
+    public void codeGenCond(DecacCompiler compiler, boolean jumpIfTrue, Label label) {
+        if (value == jumpIfTrue) {
+            compiler.addInstruction(new BEQ(label));
+        }
+    }
+    /**
+     *
+     * To assign a boolean in a variable
+     * @param compiler
+     * @param register
+     */
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addInstruction(new LOAD(value ? 1 : 0, register));
+
     }
 
-    @Override
-    public void decompile(IndentPrintStream s) {
+    pblic void decompile(IndentPrintStream s) {
         s.print(Boolean.toString(value));
     }
 
