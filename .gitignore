@@ -14,3 +14,6 @@
 src/test/**/*.ass
 src/test/**/*.res
 
+src/main/antlr4/fr/ensimag/deca/syntax/.antlr/*
+*.interp
+*.token
