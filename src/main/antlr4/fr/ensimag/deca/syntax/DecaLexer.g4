@@ -11,56 +11,85 @@ options {
 @members {
 }
 
-// Deca lexer rules.
+// reserved words
+ASM: 'asm';
+CLASS: 'class';
+EXTENDS: 'extends';
+ELSE: 'else';
+FALSE: 'false';
+IF: 'if';
+INSTANCEOF: 'instanceof';
+NEW: 'new';
+NULL: 'null';
+READINT: 'readInt';
+READFLOAT: 'readFloat';
+PRINT: 'print';
+PRINTLN: 'println';
+PRINTX: 'printx';
+PRINTLNX: 'printlnx';
+PROTECTED: 'protected';
+RETURN: 'return';
+THIS: 'this';
+TRUE: 'true';
+WHILE: 'while';
 
-
-OBRACE:'{';
-CBRACE:'}';
-OPARENT:'(';
-CPARENT:')';
-EOL: '\n' {skip();} ; 
-SPACE: (' ' | '\t') {skip();}; 
-SEMI:';';
-PRINTLN:'println';
-PRINT:'print';
-COMMA:',';
-EQUALS:'=';
-WHILE:'while';
-IF:'if';
-ELSE:'else';
-OR:'||';
-AND:'&&';
+// special characters
+LT: '<';
+GT: '>';
+EQUALS: '=';
+PLUS: '+';
+MINUS: '-';
+TIMES: '*';
+SLASH: '/';
+PERCENT: '%';
+DOT: '.';
+COMMA: ',';
+OPARENT: '(';
+CPARENT: ')';
+OBRACE: '{';
+CBRACE: '}';
 EXCLAM: '!';
-EQEQ:'==';
-LT:'<';
-LEQ:'<=';
-READINT:'readInt';
+SEMI: ';';
+EQEQ: '==';
+NEQ: '!=';
+GEQ: '>=';
+LEQ: '<=';
+AND: '&&';
+OR: '||';
 
+// spaces
+SPACES: (' ' | '\t' | '\r' | '\n') { skip(); };
+
+// Integer literals
+INT: '0' | POSITIVE_DIGIT DIGIT*;
+POSITIVE_DIGIT: [1-9];
+
+// Identifiers
 IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')*;
 LETTER: [a-zA-Z];
+DIGIT: [0-9];
 
-
-INT: '0' | POSITIVE_DIGIT DIGIT* ;
-FLOAT: FLOATDEC | FLOATHEX ;
-DIGIT:[0-9]; 
-POSITIVE_DIGIT: [1-9] ;
-NUM: DIGIT+;
-fragment SIGN : '+' | '-' | ;
-EXP: ('E' | 'e') SIGN NUM;
+// Floating point literals
+FLOAT: (FLOATDEC | FLOATHEX);
+FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('p' | 'P') SIGN? NUM ('F' | 'f')?;
+NUMHEX: DIGITHEX+;
+DIGITHEX: [0-9A-Fa-f];
+FLOATDEC: (DEC | DEC EXP)('F' | 'f')?;
 DEC: NUM '.' NUM;
-FLOATDEC:(DEC | DEC EXP) ('F' | 'f' | );
-DIGITHEX: [a-fA-F0-9]+;
-NUMHEX:DIGITHEX+;
-FLOATHEX:('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f' | );
+EXP: ('e' | 'E') SIGN? NUM;
+SIGN: ('+' | '-');
+NUM: DIGIT+;
 
+// Strings
+EOL: '\n' | '\r' | '\r\n';
+STRING_CAR: ~["\n\r];
+STRING: '"' (STRING_CAR | '\\' | '\\\\')* '"';
+MULTI_LINE_STRING: '"' (STRING_CAR | EOL | '\\' | '\\\\')* '"';
 
-//STRING_CAR: ~('\n' | '"' | '\\')+ ;
-STRING: '"' ( ~('\n' | '"' | '\\')+ | '\\"' | '\\\\')* '"';
-MULTI_LINE_STRING: '"' ( ~('\n' | '"' | '\\')+ | EOL | '\\"' + '\\\\')* '"';
+// Comments
+COMMENT: '//' ~[\r\n]* { skip(); };
+MULTI_LINE_COMMENT: '/*' .*? '*/' { skip(); };
 
-
-
-
-
-
-  
+// File inclusion
+FILENAME: (LETTER | DIGIT | DOT | MINUS | '_')+;
+INCLUDE: '#include' (' ')* '"' FILENAME '"';
