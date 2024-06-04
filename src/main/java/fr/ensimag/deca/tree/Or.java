@@ -3,7 +3,6 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 
-
 /**
  *
  * @author gl03
@@ -23,8 +22,7 @@ public class Or extends AbstractOpBool {
             this.getLeftOperand().codeGenExpBool(compiler, true, endLabel);
             this.getRightOperand().codeGenExpBool(compiler, false, labelName);
             compiler.addLabel(new Label(endLabel));
-        }
-        else {
+        } else {
             this.getLeftOperand().codeGenExpBool(compiler, true, labelName);
             this.getRightOperand().codeGenExpBool(compiler, true, labelName);
         }

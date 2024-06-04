@@ -25,14 +25,15 @@ import org.apache.commons.lang.Validate;
 public abstract class AbstractExpr extends AbstractInst {
     /**
      * @return true if the expression does not correspond to any concrete token
-     * in the source code (and should be decompiled to the empty string).
+     *         in the source code (and should be decompiled to the empty string).
      */
     boolean isImplicit() {
         return false;
     }
 
     /**
-     * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
+     * Get the type decoration associated to this expression (i.e. the type computed
+     * by contextual verification).
      */
     public Type getType() {
         return type;
@@ -42,6 +43,7 @@ public abstract class AbstractExpr extends AbstractInst {
         Validate.notNull(type);
         this.type = type;
     }
+
     private Type type;
 
     @Override
@@ -53,58 +55,57 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Verify the expression for contextual error.
-     * 
-     * implements non-terminals "expr" and "lvalue" 
-     *    of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler  (contains the "env_types" attribute)
+     * implements non-terminals "expr" and "lvalue"
+     * of [SyntaxeContextuelle] in pass 3
+     *
+     * @param compiler     (contains the "env_types" attribute)
      * @param localEnv
-     *            Environment in which the expression should be checked
-     *            (corresponds to the "env_exp" attribute)
+     *                     Environment in which the expression should be checked
+     *                     (corresponds to the "env_exp" attribute)
      * @param currentClass
-     *            Definition of the class containing the expression
-     *            (corresponds to the "class" attribute)
-     *             is null in the main bloc.
+     *                     Definition of the class containing the expression
+     *                     (corresponds to the "class" attribute)
+     *                     is null in the main bloc.
      * @return the Type of the expression
-     *            (corresponds to the "type" attribute)
+     *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyExpr(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
     /**
-     * Verify the expression in right hand-side of (implicit) assignments 
-     * 
+     * Verify the expression in right hand-side of (implicit) assignments
+     *
      * implements non-terminal "rvalue" of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler  contains the "env_types" attribute
-     * @param localEnv corresponds to the "env_exp" attribute
+     * @param compiler     contains the "env_types" attribute
+     * @param localEnv     corresponds to the "env_exp" attribute
      * @param currentClass corresponds to the "class" attribute
-     * @param expectedType corresponds to the "type1" attribute            
+     * @param expectedType corresponds to the "type1" attribute
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass, 
+            EnvironmentExp localEnv, ClassDefinition currentClass,
             Type expectedType)
             throws ContextualError {
-            Type t = verifyExpr(compiler, localEnv, currentClass);
-            if (!(expectedType.sameType(this.type) || (expectedType.isFloat() && this.type.isInt()) ))
-                throw new ContextualError("Type incorrect", getLocation());
-            //ConvFloat
-            if (expectedType.isFloat() && this.type.isInt()) {
-                ConvFloat cv = new ConvFloat(this);
-                cv.setType(expectedType);
-                return cv;
-            }
-            return this;
+        Type t = verifyExpr(compiler, localEnv, currentClass);
+        if (!(expectedType.sameType(this.type) || (expectedType.isFloat() && this.type.isInt())))
+            throw new ContextualError("Type incorrect", getLocation());
+        // ConvFloat
+        if (expectedType.isFloat() && this.type.isInt()) {
+            ConvFloat cv = new ConvFloat(this);
+            cv.setType(expectedType);
+            return cv;
+        }
+        return this;
     }
-    
-    
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-                verifyExpr(compiler, localEnv,currentClass);
+        verifyExpr(compiler, localEnv, currentClass);
     }
 
     /**
@@ -112,10 +113,11 @@ public abstract class AbstractExpr extends AbstractInst {
      * boolean.
      *
      * @param localEnv
-     *            Environment in which the condition should be checked.
+     *                     Environment in which the condition should be checked.
      * @param currentClass
-     *            Definition of the class containing the expression, or null in
-     *            the main program.
+     *                     Definition of the class containing the expression, or
+     *                     null in
+     *                     the main program.
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -147,7 +149,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         this.codeGenExp(compiler, 2);
     }
-    
+
     protected abstract void codeGenExp(DecacCompiler compiler, int registerName);
 
     DVal codeGenExp(DecacCompiler compiler) {

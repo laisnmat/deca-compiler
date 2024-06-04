@@ -21,7 +21,6 @@ import org.apache.commons.lang.Validate;
  */
 public class DeclVar extends AbstractDeclVar {
 
-    
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
@@ -40,21 +39,20 @@ public class DeclVar extends AbstractDeclVar {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
 
-                Type t = type.verifyType(compiler);
-                TypeDefinition typeDef = compiler.environmentType.defOfType(t.getName());
-                type.setDefinition(typeDef);
-                if (t.isVoid())
-                    throw new ContextualError("type cannot be void", getLocation());
-                try {
-                    ExpDefinition def = new VariableDefinition(t, getLocation());
-                    localEnv.declare(varName.getName(), def);
-                    varName.setDefinition(def);
-                }
-                catch (EnvironmentExp.DoubleDefException e){
-                    throw new ContextualError("identifier is already defined", getLocation());
-                    }
-                
-                initialization.verifyInitialization(compiler, t, localEnv, currentClass);
+        Type t = type.verifyType(compiler);
+        TypeDefinition typeDef = compiler.environmentType.defOfType(t.getName());
+        type.setDefinition(typeDef);
+        if (t.isVoid())
+            throw new ContextualError("type cannot be void", getLocation());
+        try {
+            ExpDefinition def = new VariableDefinition(t, getLocation());
+            localEnv.declare(varName.getName(), def);
+            varName.setDefinition(def);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("identifier is already defined", getLocation());
+        }
+
+        initialization.verifyInitialization(compiler, t, localEnv, currentClass);
     }
 
     @Override
@@ -64,31 +62,28 @@ public class DeclVar extends AbstractDeclVar {
         varDef.setOperand(offset); // assign offset(GB) to variable
         compiler.increaseOffset(); // increase offset for next variable
 
-        if(initialization instanceof Initialization) {
-            Initialization i = (Initialization)initialization;
+        if (initialization instanceof Initialization) {
+            Initialization i = (Initialization) initialization;
             int storageRegister = 2; // register number where rhs of initialization expr is stored
             i.getExpression().codeGenExp(compiler, storageRegister);
             compiler.addInstruction(new STORE(Register.getR(storageRegister), varName.getExpDefinition().getOperand()));
-        }
-        else if (initialization instanceof NoInitialization) {
+        } else if (initialization instanceof NoInitialization) {
             // do nothing ?
         }
     }
 
-    
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         type.iter(f);
         varName.iter(f);
         initialization.iter(f);
     }
-    
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s, prefix, false);

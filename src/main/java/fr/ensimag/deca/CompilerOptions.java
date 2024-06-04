@@ -17,9 +17,10 @@ import org.apache.log4j.Logger;
  */
 public class CompilerOptions {
     public static final int QUIET = 0;
-    public static final int INFO  = 1;
+    public static final int INFO = 1;
     public static final int DEBUG = 2;
     public static final int TRACE = 3;
+
     public int getDebug() {
         return debug;
     }
@@ -31,7 +32,7 @@ public class CompilerOptions {
     public boolean getPrintBanner() {
         return printBanner;
     }
-    
+
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }
@@ -41,21 +42,25 @@ public class CompilerOptions {
     private boolean printBanner = false;
     private List<File> sourceFiles = new ArrayList<File>();
 
-    
     public void parseArgs(String[] args) throws CLIException {
         // A FAIRE : parcourir args pour positionner les options correctement.
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
-        case QUIET: break; // keep default
-        case INFO:
-            logger.setLevel(Level.INFO); break;
-        case DEBUG:
-            logger.setLevel(Level.DEBUG); break;
-        case TRACE:
-            logger.setLevel(Level.TRACE); break;
-        default:
-            logger.setLevel(Level.ALL); break;
+            case QUIET:
+                break; // keep default
+            case INFO:
+                logger.setLevel(Level.INFO);
+                break;
+            case DEBUG:
+                logger.setLevel(Level.DEBUG);
+                break;
+            case TRACE:
+                logger.setLevel(Level.TRACE);
+                break;
+            default:
+                logger.setLevel(Level.ALL);
+                break;
         }
         logger.info("Application-wide trace level set to " + logger.getLevel());
 
@@ -74,9 +79,13 @@ public class CompilerOptions {
         System.out.println("-b          (banner)        : prints a banner with the team name");
         System.out.println("-p          (parse)         : stops decac after the construction of the syntax tree");
         System.out.println("-v          (verification)  : stops decac after the verification of the syntax tree");
-        System.out.println("-n          (no check)      : removes the tests at execution specified by points 11.1 and 11.3 of Deca semantics");
-        System.out.println("-r X        (registers)     : limits the available registers to R0 ... R{X-1}, with 4 <= X <= 16");
-        System.out.println("-d          (debug)         : activates debug trace - repeat the option multiple times for more info");
-        System.out.println("-P          (parallel)      : if there are multiple source files, parallelize their compilation (to accelerate compilation)");
+        System.out.println(
+                "-n          (no check)      : removes the tests at execution specified by points 11.1 and 11.3 of Deca semantics");
+        System.out.println(
+                "-r X        (registers)     : limits the available registers to R0 ... R{X-1}, with 4 <= X <= 16");
+        System.out.println(
+                "-d          (debug)         : activates debug trace - repeat the option multiple times for more info");
+        System.out.println(
+                "-P          (parallel)      : if there are multiple source files, parallelize their compilation (to accelerate compilation)");
     }
 }

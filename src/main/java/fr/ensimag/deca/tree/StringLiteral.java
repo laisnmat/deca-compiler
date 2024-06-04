@@ -35,9 +35,9 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-                Type t = compiler.environmentType.STRING;
-                setType(t);
-                return t;
+        Type t = compiler.environmentType.STRING;
+        setType(t);
+        return t;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class StringLiteral extends AbstractStringLiteral {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
     }
-    
+
     @Override
     String prettyPrintNode() {
         return "StringLiteral (" + value + ")";

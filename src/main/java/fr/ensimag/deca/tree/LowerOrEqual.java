@@ -5,7 +5,6 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BLE;
 import fr.ensimag.ima.pseudocode.instructions.BGT;
 
-
 /**
  *
  * @author gl03
@@ -29,12 +28,9 @@ public class LowerOrEqual extends AbstractOpIneq {
     @Override
     protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
         super.codeGenExp(compiler, 2);
-        if (branchIf)
-        {
+        if (branchIf) {
             compiler.addInstruction(new BLE(new Label(labelName)));
-        }
-        else
-        {
+        } else {
             compiler.addInstruction(new BGT(new Label(labelName)));
         }
     }

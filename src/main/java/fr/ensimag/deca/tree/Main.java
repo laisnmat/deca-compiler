@@ -15,9 +15,10 @@ import fr.ensimag.deca.context.EnvironmentExp;
  */
 public class Main extends AbstractMain {
     private static final Logger LOG = Logger.getLogger(Main.class);
-    
+
     private ListDeclVar declVariables;
     private ListInst insts;
+
     public Main(ListDeclVar declVariables,
             ListInst insts) {
         Validate.notNull(declVariables);
@@ -29,9 +30,9 @@ public class Main extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
-        EnvironmentExp env = new EnvironmentExp(null); 
-        declVariables.verifyListDeclVariable(compiler,env,null); 
-        insts.verifyListInst(compiler, env, null,compiler.environmentType.VOID);
+        EnvironmentExp env = new EnvironmentExp(null);
+        declVariables.verifyListDeclVariable(compiler, env, null);
+        insts.verifyListInst(compiler, env, null, compiler.environmentType.VOID);
         LOG.debug("verify Main: end");
     }
 
@@ -42,7 +43,7 @@ public class Main extends AbstractMain {
         insts.codeGenListInst(compiler);
         compiler.addComment("End of main instructions");
     }
-    
+
     @Override
     public void decompile(IndentPrintStream s) {
         s.println("{");
@@ -58,7 +59,7 @@ public class Main extends AbstractMain {
         declVariables.iter(f);
         insts.iter(f);
     }
- 
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         declVariables.prettyPrint(s, prefix, false);

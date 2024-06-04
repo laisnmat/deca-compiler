@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * @date 14/04/2024
  */
 public class Identifier extends AbstractIdentifier {
-        
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -52,7 +52,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a class definition.
+     *                            if the definition is not a class definition.
      */
     @Override
     public ClassDefinition getClassDefinition() {
@@ -74,7 +74,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a method definition.
+     *                            if the definition is not a method definition.
      */
     @Override
     public MethodDefinition getMethodDefinition() {
@@ -96,7 +96,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public FieldDefinition getFieldDefinition() {
@@ -118,7 +118,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public VariableDefinition getVariableDefinition() {
@@ -133,13 +133,14 @@ public class Identifier extends AbstractIdentifier {
     }
 
     /**
-     * Like {@link #getDefinition()}, but works only if the definition is a ExpDefinition.
+     * Like {@link #getDefinition()}, but works only if the definition is a
+     * ExpDefinition.
      * 
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public ExpDefinition getExpDefinition() {
@@ -173,12 +174,12 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-                ExpDefinition def = localEnv.get(this.name);
-                if (def == null)
-                    throw new ContextualError("Identifier not declared", getLocation());
-                setType(def.getType());
-                setDefinition(def);
-                return def.getType();
+        ExpDefinition def = localEnv.get(this.name);
+        if (def == null)
+            throw new ContextualError("Identifier not declared", getLocation());
+        setType(def.getType());
+        setDefinition(def);
+        return def.getType();
     }
 
     @Override
@@ -189,15 +190,16 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.R1));
-        if(this.getType().isInt()) {
+        if (this.getType().isInt()) {
             compiler.addInstruction(new WINT());
-        } else if(this.getType().isFloat()) {
+        } else if (this.getType().isFloat()) {
             compiler.addInstruction(new WFLOAT());
         }
     }
 
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
+     * 
      * @param compiler contains "env_types" attribute
      */
     @Override
@@ -205,17 +207,15 @@ public class Identifier extends AbstractIdentifier {
         if (compiler.environmentType.defOfType(name) == null)
             throw new ContextualError("unknown type ", getLocation());
         return compiler.environmentType.defOfType(name).getType();
-        
+
     }
 
     @Override
     protected DVal getDVal() {
         return this.getExpDefinition().getOperand();
     }
-    
-    
-    private Definition definition;
 
+    private Definition definition;
 
     @Override
     protected void iterChildren(TreeFunction f) {

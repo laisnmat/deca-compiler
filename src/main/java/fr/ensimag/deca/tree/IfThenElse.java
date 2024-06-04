@@ -19,8 +19,8 @@ import org.apache.commons.lang.Validate;
  * @date 14/04/2024
  */
 public class IfThenElse extends AbstractInst {
-    
-    private final AbstractExpr condition; 
+
+    private final AbstractExpr condition;
     private final ListInst thenBranch;
     private ListInst elseBranch;
 
@@ -32,17 +32,17 @@ public class IfThenElse extends AbstractInst {
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;
     }
-    
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-                condition.verifyExpr(compiler, localEnv,currentClass);
-                if (condition.getType() != compiler.environmentType.BOOLEAN){
-                    throw new ContextualError("La condition n'est pas une expression booléenne", getLocation());
-                }
-                thenBranch.verifyListInst(compiler, localEnv,currentClass, returnType);
-                elseBranch.verifyListInst(compiler, localEnv,currentClass, returnType);
+        condition.verifyExpr(compiler, localEnv, currentClass);
+        if (condition.getType() != compiler.environmentType.BOOLEAN) {
+            throw new ContextualError("La condition n'est pas une expression booléenne", getLocation());
+        }
+        thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+        elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
 
     }
 
@@ -67,8 +67,7 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         condition.iter(f);
         thenBranch.iter(f);
         elseBranch.iter(f);

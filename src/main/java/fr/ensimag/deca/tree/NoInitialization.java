@@ -21,9 +21,8 @@ public class NoInitialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-                return; // enough ? nils
+        return; // enough ? nils
     }
-
 
     /**
      * Node contains no real information, nothing to check.
