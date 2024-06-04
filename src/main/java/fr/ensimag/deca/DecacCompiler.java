@@ -152,6 +152,11 @@ public class DecacCompiler {
         return symbolTable.create(name);
     }
 
+    /**
+     * This method is used to decompile a deca program and show the decompiled code
+     * in the standard output (terminal).
+     * Called when the [-p] option is used.
+     **/
     public boolean decompile() {
         String sourceFile = source.getAbsolutePath();
 
@@ -189,6 +194,20 @@ public class DecacCompiler {
         }
     }
 
+    /**
+     * Internal function that does the job of decompiling (i.e. calling lexer,
+     * verification and decompile each instruction and declaration of the syntax
+     * tree.
+     *
+     * @param sourceFile
+     *            name of the source (deca) file
+     * @param err
+     *            stream to use to display compilation errors
+     * @param out
+     *            stream to use for standard output (output of decac -p)
+     *
+     * @return true on error
+     */
     private boolean doDecompile(String sourceFile, PrintStream err, PrintStream out)
             throws DecacFatalError, ContextualError {
 
