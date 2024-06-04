@@ -11,9 +11,10 @@
 .vscode
 .idea
 
-src/test/**/*.ass
-src/test/**/*.res
+src/main/antlr4/fr/ensimag/deca/syntax/.antlr
 
-src/main/antlr4/fr/ensimag/deca/syntax/.antlr/*
+*.ass
+*.res
 *.interp
 *.token
+
