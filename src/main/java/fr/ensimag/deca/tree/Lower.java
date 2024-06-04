@@ -5,7 +5,6 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.BLT;
 
-
 /**
  *
  * @author gl03
@@ -26,15 +25,12 @@ public class Lower extends AbstractOpIneq {
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
+
     protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
         super.codeGenExp(compiler, 2);
-        if (branchIf)
-        {
+        if (branchIf) {
             compiler.addInstruction(new BLT(new Label(labelName)));
-        }
-        else
-        {
+        } else {
             compiler.addInstruction(new BGE(new Label(labelName)));
         }
     }

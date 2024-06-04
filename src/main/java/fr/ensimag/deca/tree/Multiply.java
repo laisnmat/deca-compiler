@@ -2,8 +2,6 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 
-
-
 /**
  * @author gl03
  * @date 14/04/2024

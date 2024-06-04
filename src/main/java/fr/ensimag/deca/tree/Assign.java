@@ -18,7 +18,7 @@ public class Assign extends AbstractBinaryExpr {
     public AbstractLValue getLeftOperand() {
         // The cast succeeds by construction, as the leftOperand has been set
         // as an AbstractLValue by the constructor.
-        return (AbstractLValue)super.getLeftOperand();
+        return (AbstractLValue) super.getLeftOperand();
     }
 
     public Assign(AbstractLValue leftOperand, AbstractExpr rightOperand) {
@@ -28,20 +28,21 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-                getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-                Type t = getLeftOperand().getType();
-                setRightOperand(getRightOperand().verifyRValue(compiler, localEnv, currentClass, t));
-                setType(t);
-                // which type should I pass ?
-                return t;
+        getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type t = getLeftOperand().getType();
+        setRightOperand(getRightOperand().verifyRValue(compiler, localEnv, currentClass, t));
+        setType(t);
+        // which type should I pass ?
+        return t;
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         // type ident = value; -> LOAD(value, ident.addr)
         int storageRegister = 2;
-        getRightOperand().codeGenExp(compiler, storageRegister); // register number where rhs of initialization expr is stored
-        Identifier ident = (Identifier)getLeftOperand(); // get the identifier of the assignment
+        getRightOperand().codeGenExp(compiler, storageRegister); // register number where rhs of initialization expr is
+                                                                 // stored
+        Identifier ident = (Identifier) getLeftOperand(); // get the identifier of the assignment
         compiler.addInstruction(new STORE(Register.getR(storageRegister), ident.getExpDefinition().getOperand()));
     }
 

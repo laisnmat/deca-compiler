@@ -40,22 +40,21 @@ public class IntLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-                Type t = compiler.environmentType.INT;
-                setType(t);
-                return t;
+        Type t = compiler.environmentType.INT;
+        setType(t);
+        return t;
     }
 
     @Override
     protected void codeGenExp(DecacCompiler compiler, int register_name) {
         compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()), Register.getR(register_name)));
-     }
+    }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()), GPRegister.R1));
         compiler.addInstruction(new WINT());
     }
-
 
     @Override
     String prettyPrintNode() {

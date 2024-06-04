@@ -5,7 +5,6 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 
-
 /**
  *
  * @author gl03
@@ -26,16 +25,13 @@ public class Equals extends AbstractOpExactCmp {
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
+
     @Override
     protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
         super.codeGenExp(compiler, 2);
-        if (branchIf)
-        {
+        if (branchIf) {
             compiler.addInstruction(new BEQ(new Label(labelName)));
-        }
-        else
-        {
+        } else {
             compiler.addInstruction(new BNE(new Label(labelName)));
         }
     }

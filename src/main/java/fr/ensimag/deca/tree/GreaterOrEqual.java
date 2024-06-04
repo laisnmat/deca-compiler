@@ -2,7 +2,6 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 
-
 /**
  * Operator "x >= y"
  * 
