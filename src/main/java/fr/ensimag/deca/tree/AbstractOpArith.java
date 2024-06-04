@@ -18,9 +18,37 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         super(leftOperand, rightOperand);
     }
 
+    /**
+     * Verify the type of the operands and the type of the expression and casts the
+     * operands if necessary or throws an error if the types are not compatible
+     * 
+     * @param compiler     (type- DecacCompiler) the compiler
+     * @param localEnv     (type- EnvironmentExp) the environment in which the
+     *                     expression is checked
+     * @param currentClass (type- ClassDefinition) the current class
+     * @return (type- Type) the type of the expression (int or float)
+     * @throws ContextualError if the types are not compatible
+     */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type type1 = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type type2 = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        this.setType(type1);
+        if (!type1.sameType(type2)) {
+            if (type1.isInt() && type2.isFloat()) {
+                ConvFloat conv = new ConvFloat(this.getLeftOperand());
+                this.setLeftOperand(conv);
+                this.setType(type2);
+            } else if (type1.isFloat() && type2.isInt()) {
+                ConvFloat conv = new ConvFloat(this.getRightOperand());
+                this.setRightOperand(conv);
+            } else {
+                throw new ContextualError(
+                        "Incompatible types \'" + type2.getName() + "\' with \'" + type1.getName() + "\'",
+                        getLocation());
+            }
+        }
+        return type1;
     }
 }
