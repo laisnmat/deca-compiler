@@ -33,9 +33,28 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
                 ConvFloat conv = new ConvFloat(this.getRightOperand());
                 this.setRightOperand(conv);
             } else {
-                throw new ContextualError("Incompatible types", getLocation());
+                throw new ContextualError(
+                        "Incompatible types \'" + type2.getName() + "\' with \'" + type1.getName() + "\'",
+                        getLocation());
             }
         }
         return type1;
     }
 }
+
+/*
+ * if (!(type1.isFloat() || type1.isInt()) || !(type2.isFloat() ||
+ * type2.isInt())) {
+ * if (type1.sameType(type2)) {
+ * throw new ContextualError(
+ * "Illegal operand \'" + this.getOperatorName() + "\' between " +
+ * type1.getName(),
+ * getLocation());
+ * }
+ * throw new ContextualError(
+ * "Illegal operand \'" + this.getOperatorName() + "\' between " +
+ * type1.getName() + " and "
+ * + type2.getName(),
+ * getLocation());
+ * }
+ */
