@@ -18,6 +18,17 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         super(leftOperand, rightOperand);
     }
 
+    /**
+     * Verify the type of the operands and the type of the expression and casts the
+     * operands if necessary or throws an error if the types are not compatible
+     * 
+     * @param compiler     (type- DecacCompiler) the compiler
+     * @param localEnv     (type- EnvironmentExp) the environment in which the
+     *                     expression is checked
+     * @param currentClass (type- ClassDefinition) the current class
+     * @return (type- Type) the type of the expression (int or float)
+     * @throws ContextualError if the types are not compatible
+     */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -41,20 +52,3 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         return type1;
     }
 }
-
-/*
- * if (!(type1.isFloat() || type1.isInt()) || !(type2.isFloat() ||
- * type2.isInt())) {
- * if (type1.sameType(type2)) {
- * throw new ContextualError(
- * "Illegal operand \'" + this.getOperatorName() + "\' between " +
- * type1.getName(),
- * getLocation());
- * }
- * throw new ContextualError(
- * "Illegal operand \'" + this.getOperatorName() + "\' between " +
- * type1.getName() + " and "
- * + type2.getName(),
- * getLocation());
- * }
- */
