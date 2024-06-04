@@ -46,7 +46,10 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     public void decompile(IndentPrintStream s) {
         s.print("(");
         getLeftOperand().decompile(s);
+        s.print(")");
+
         s.print(" " + getOperatorName() + " ");
+        s.print("(");
         getRightOperand().decompile(s);
         s.print(")");
     }

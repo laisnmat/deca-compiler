@@ -33,6 +33,10 @@ public class CompilerOptions {
         return printBanner;
     }
 
+    public boolean getParseDecompile() {
+        return parseDecompile;
+    }
+
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }
@@ -40,10 +44,27 @@ public class CompilerOptions {
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
+
+    private boolean parseDecompile = false;
     private List<File> sourceFiles = new ArrayList<File>();
 
     public void parseArgs(String[] args) throws CLIException {
+        List<String> argsList = new ArrayList<String>();
         // A FAIRE : parcourir args pour positionner les options correctement.
+        int fileIndex = 0;
+
+        for (fileIndex = 0; fileIndex < args.length; fileIndex++) {
+            if (args[fileIndex].charAt(0) == '-') {
+                if (args[fileIndex].equals("-b")) {
+                    if (argsList.contains("-v")) {
+                        throw new CLIException("Cannot use argument -v and -p at the same time");
+                    }
+                    argsList.add("-b");
+                    parseDecompile = true;
+                }
+            }
+        }
+
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
@@ -71,7 +92,7 @@ public class CompilerOptions {
         } else {
             logger.info("Java assertions disabled");
         }
-        File sFile = new File(args[0]);
+        File sFile = new File(args[fileIndex - 1]);
         sourceFiles.add(sFile);
     }
 
@@ -88,4 +109,5 @@ public class CompilerOptions {
         System.out.println(
                 "-P          (parallel)      : if there are multiple source files, parallelize their compilation (to accelerate compilation)");
     }
+
 }
