@@ -8,6 +8,9 @@
 .project
 .metadata
 .settings
+.vscode
+.idea
 
 src/test/**/*.ass
 src/test/**/*.res
+
