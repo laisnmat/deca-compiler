@@ -55,7 +55,7 @@ public class CompilerOptions {
     private List<File> sourceFiles = new ArrayList<File>();
 
     public void parseArgs(String[] args) throws CLIException {
-        boolean parsingR = false;
+        boolean parsingR = false; // if -r option is detected, next arg must be an int value
         List<String> argsList = new ArrayList<String>();
         for (String arg : args) {
             // parse options
@@ -86,7 +86,7 @@ public class CompilerOptions {
                             throw new CLIException("Cannot use the same option twice");
                         }
                         argsList.add("-r");
-                        parsingR = true;
+                        parsingR = true; // Meaning next arg must be an int
                         break;
                     default:
                         throw new CLIException("Option not recognized: " + arg);
