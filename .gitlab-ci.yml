@@ -9,7 +9,7 @@ cache:
     - .m2/repository/
     - target/
 before_script:
-  - export PATH="$CI_PROJECT_DIR/global_bin:$CI_PROJECT_DIR/src/main/bin:$CI_PROJECT_DIR/src/test/script:$PATH"
+  - export PATH="$CI_PROJECT_DIR/global_bin:$CI_PROJECT_DIR/src/main/bin:$CI_PROJECT_DIR/src/test/script:$CI_PROJECT_DIR/src/test/script/launchers:$PATH"
 build:
   stage: build
   script:
