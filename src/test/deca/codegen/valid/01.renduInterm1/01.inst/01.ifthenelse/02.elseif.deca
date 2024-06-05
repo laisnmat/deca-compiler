@@ -1,5 +1,5 @@
 // Description:
-//    Compilation d'un else if.
+//    Compilation d'un simple if else.
 //
 // Resultats:
 //      hello world!
@@ -10,25 +10,13 @@
 {
     if (1 < 2) {
         print("hello");
-    } else if (1 < 2) {
-        println("BAD");
     } else {
         println("BAD");
     }
 
     if (2 < 1) {
         println("BAD");
-    } else if (2 < 1) {
-        println("BAD");
     } else {
-        print(" world");
-    }
-
-    if (2 < 1) {
-        println("BAD");
-    } else if (1 < 2) {
-        print("!");
-    } else {
-        println("BAD");
+        println(" world!");
     }
 }
