@@ -1,6 +1,10 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -54,6 +58,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         s.print(")");
     }
 
+    @Override
+    public String decompile() {
+        return getLeftOperand().decompile() + " " + getOperatorName()+ " " + getRightOperand().decompile();
+    }
+
     abstract protected String getOperatorName();
 
     @Override
@@ -68,4 +77,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         rightOperand.prettyPrint(s, prefix, true);
     }
 
+    protected void addComment(DecacCompiler compiler, boolean jumpOnTrue, Label label){
+        compiler.addComment("Code(" + getLeftOperand().decompile() + " " + getOperatorName() + " " + getRightOperand().decompile() + ", "+ jumpOnTrue + ", "+ label + ")");   
+    }
+
+    @Override
+    protected void addComment(DecacCompiler compiler, GPRegister register) {
+        compiler.addComment("codeExp(" + getLeftOperand().decompile() + " " + getOperatorName() + " " + getRightOperand().decompile() +  ", " + register + ")");
+    }
 }

@@ -28,6 +28,7 @@ public class ReadInt extends AbstractReadExpr {
 
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        super.addComment(compiler, register);
         compiler.addInstruction(new RINT());
         super.codeGenExp(compiler, register);
     }

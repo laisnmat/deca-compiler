@@ -33,6 +33,11 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
+    public String decompile() {
+        return "(float) " + getOperand().decompile();
+    }
+
+    @Override
     protected String getOperatorName() {
         return "/* conv float */";
     }

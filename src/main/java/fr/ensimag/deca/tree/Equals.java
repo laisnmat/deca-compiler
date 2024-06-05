@@ -19,6 +19,7 @@ public class Equals extends AbstractOpExactCmp {
     @Override
     public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
         // generate comparison before branching
+        super.addComment(compiler, jumpOnTrue, label);
         super.codeGenCondition(compiler, jumpOnTrue, label);
         compiler.addInstruction(jumpOnTrue ? new BEQ(label) : new BNE(label));
     }
@@ -27,5 +28,4 @@ public class Equals extends AbstractOpExactCmp {
     protected String getOperatorName() {
         return "==";
     }
-
 }
