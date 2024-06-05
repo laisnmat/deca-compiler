@@ -79,7 +79,6 @@ public class CompilerOptions {
                     "Argument not recognized: the provided file does not have the extension \".deca\": " + arg);
         }
 
-
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
@@ -107,8 +106,6 @@ public class CompilerOptions {
         } else {
             logger.info("Java assertions disabled");
         }
-        File sFile = new File(args[fileIndex - 1]);
-        sourceFiles.add(sFile);
     }
 
     protected void displayUsage() {
