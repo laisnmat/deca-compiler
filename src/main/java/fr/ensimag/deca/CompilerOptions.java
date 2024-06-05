@@ -51,19 +51,34 @@ public class CompilerOptions {
     public void parseArgs(String[] args) throws CLIException {
         List<String> argsList = new ArrayList<String>();
         // A FAIRE : parcourir args pour positionner les options correctement.
-        int fileIndex = 0;
-
-        for (fileIndex = 0; fileIndex < args.length; fileIndex++) {
-            if (args[fileIndex].charAt(0) == '-') {
-                if (args[fileIndex].equals("-b")) {
-                    if (argsList.contains("-v")) {
-                        throw new CLIException("Cannot use argument -v and -p at the same time");
-                    }
-                    argsList.add("-b");
-                    parseDecompile = true;
+        for (String arg : args) {
+            // parse options
+            if (arg.startsWith("-")) {
+                switch (arg) {
+                    case "-p":
+                        if (argsList.contains("-v")) {
+                            throw new CLIException("Cannot use argument -v and -p at the same time");
+                        }
+                        argsList.add("-p");
+                        parseDecompile = true;
+                        break;
+                    default:
+                        throw new CLIException("Option not recognized: " + arg);
                 }
+                continue;
             }
+
+            // parse filename
+            if (arg.endsWith(".deca")) {
+                this.sourceFiles.add(new File(arg));
+                continue;
+            }
+
+            // else the provided file does not have the right ".deca" extension
+            throw new CLIException(
+                    "Argument not recognized: the provided file does not have the extension \".deca\": " + arg);
         }
+
 
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
