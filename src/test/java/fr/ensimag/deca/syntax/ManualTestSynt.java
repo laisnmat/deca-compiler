@@ -1,5 +1,6 @@
 package fr.ensimag.deca.syntax;
 
+import fr.ensimag.deca.CLIException;
 import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractProgram;
@@ -25,7 +26,18 @@ public class ManualTestSynt {
         if (lex.getSourceName() != null) {
             file = new File(lex.getSourceName());
         }
-        final DecacCompiler decacCompiler = new DecacCompiler(new CompilerOptions(), file);
+
+        String[] custom_args = {"-d", "-d"};
+        final CompilerOptions options = new CompilerOptions();
+        try {
+            options.parseArgs(custom_args);
+        } catch (CLIException e) {
+            System.err.println("Error during option parsing:\n"
+                    + e.getMessage());
+            System.exit(1);
+        }
+
+        final DecacCompiler decacCompiler = new DecacCompiler(options, file);
         parser.setDecacCompiler(decacCompiler);
         AbstractProgram prog = parser.parseProgramAndManageErrors(System.err);
         if (prog == null) {

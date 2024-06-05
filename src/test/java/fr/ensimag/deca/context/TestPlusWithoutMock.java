@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * write using a mock-up framework like Mockito.
  *
  * @see TestPlusPlain to see how the Mockito library can help writing this kind
- * of tests.
+ *      of tests.
  *
  * @author Ensimag
  * @date 14/04/2024
@@ -39,11 +39,6 @@ public class TestPlusWithoutMock {
         }
 
         @Override
-        protected void codeGenExp(DecacCompiler compiler, int registerName) {
-            throw new UnsupportedOperationException("Should not be called.");
-        }
-
-        @Override
         public void decompile(IndentPrintStream s) {
             throw new UnsupportedOperationException("Should not be called.");
         }
@@ -64,9 +59,15 @@ public class TestPlusWithoutMock {
         public void checkProperUse() {
             assertTrue(hasBeenVerified, "verifyExpr has not been called");
         }
+
+        @Override
+        protected void codeGenExp(DecacCompiler compiler, int registerName) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'codeGenExp'");
+        }
     }
 
-//    @Test    //FIXME: uncomment this line
+    // @Test //FIXME: uncomment this line
     public void testType() throws ContextualError {
         DecacCompiler compiler = new DecacCompiler(null, null);
         DummyIntExpression left = new DummyIntExpression();

@@ -1,5 +1,6 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.CLIException;
 import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.syntax.AbstractDecaLexer;
@@ -24,7 +25,18 @@ public class ManualTestContext {
         DecaLexer lex = AbstractDecaLexer.createLexerFromArgs(args);
         CommonTokenStream tokens = new CommonTokenStream(lex);
         DecaParser parser = new DecaParser(tokens);
-        DecacCompiler compiler = new DecacCompiler(new CompilerOptions(), null);
+
+        String[] custom_args = {"-d", "-d"};
+        final CompilerOptions options = new CompilerOptions();
+        try {
+            options.parseArgs(custom_args);
+        } catch (CLIException e) {
+            System.err.println("Error during option parsing:\n"
+                    + e.getMessage());
+            System.exit(1);
+        }
+
+        DecacCompiler compiler = new DecacCompiler(options, null);
         parser.setDecacCompiler(compiler);
         AbstractProgram prog = parser.parseProgramAndManageErrors(System.err);
         if (prog == null) {
