@@ -1,0 +1,12 @@
+{
+  boolean x, y;
+  x = true;
+  y = true;
+
+  if (x != y) {
+    println("x and y are different");
+  }
+  else {
+    println("x and y are identical");
+  }
+}
