@@ -50,7 +50,6 @@ public class CompilerOptions {
 
     public void parseArgs(String[] args) throws CLIException {
         List<String> argsList = new ArrayList<String>();
-        // A FAIRE : parcourir args pour positionner les options correctement.
         for (String arg : args) {
             // parse options
             if (arg.startsWith("-")) {
@@ -61,6 +60,11 @@ public class CompilerOptions {
                         }
                         argsList.add("-p");
                         parseDecompile = true;
+                        break;
+                    case "-d":
+                        if (debug < TRACE) {
+                            debug++;
+                        }
                         break;
                     default:
                         throw new CLIException("Option not recognized: " + arg);
