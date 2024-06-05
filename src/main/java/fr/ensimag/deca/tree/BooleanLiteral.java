@@ -10,7 +10,7 @@ import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.PrintStream;
@@ -53,8 +53,14 @@ public class BooleanLiteral extends AbstractExpr {
      */
     @Override
     protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
-        if (value == branchIf) {
-            compiler.addInstruction(new BEQ(new Label(labelName)));
+        if (value) {
+            if (branchIf) {
+                compiler.addInstruction(new BRA(new Label(labelName)));
+            }
+        } else {
+            if (!branchIf) {
+                compiler.addInstruction(new BRA(new Label(labelName)));
+            }
         }
     }
 
