@@ -23,7 +23,7 @@ public class Equals extends AbstractOpExactCmp {
 
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
+        // avoids generation of useless code when given "x == y;" for example
     }
 
     @Override
