@@ -21,9 +21,17 @@ codegen_total=0
 echo -e "\e[34m### INFO: recompiling java files for $decac ###\e[0m" 
 maven_recompile.sh || exit 1
 
-syntax=$( test_syntax_repo.sh 01.renduInterm1 | tee /dev/tty)
-context=$( test_context_repo.sh 01.renduInterm1 | tee /dev/tty)
-codegen=$( test_codegen_repo.sh 01.renduInterm1 | tee /dev/tty)
+syntax_file=$(mktemp)
+context_file=$(mktemp)
+codegen_file=$(mktemp)
+
+test_syntax_repo.sh 01.renduInterm1 | tee "$syntax_file"
+test_context_repo.sh 01.renduInterm1 | tee "$context_file"
+test_codegen_repo.sh 01.renduInterm1 | tee "$codegen_file"
+
+syntax=$(cat "$syntax_file")
+context=$(cat "$context_file")
+codegen=$(cat "$codegen_file")
 
 syntax_passed=$(echo "$syntax" | grep -oP '\d+(?= PASSED)' | awk '{s+=$1} END {print s}')
 syntax_total=$(echo "$syntax" | grep -oP '\d+(?= TESTS)' | awk '{s+=$1} END {print s}')
@@ -33,6 +41,7 @@ context_total=$(echo "$context" | grep -oP '\d+(?= TESTS)' | awk '{s+=$1} END {p
 
 codegen_passed=$(echo "$codegen" | grep -oP '\d+(?= PASSED)' | awk '{s+=$1} END {print s}')
 codegen_total=$(echo "$codegen" | grep -oP '\d+(?= TESTS)' | awk '{s+=$1} END {print s}')
+
 
 echo -e "############### SUMMARY ###############"
 echo -e "\t\tPASSED\tFAILED"
@@ -50,3 +59,5 @@ if [ "$nbpassed" -lt "$nbtests" ]; then
 else
     exit 0
 fi
+
+rm "$syntax_file" "$context_file" "$codegen_file"
