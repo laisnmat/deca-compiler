@@ -1,0 +1,6 @@
+{
+    int x ; 
+    if(readFloat() >= readFloat()){
+        x = 2;
+    }
+}
