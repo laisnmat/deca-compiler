@@ -1,7 +1,0 @@
-{
-    boolean x = 0; 
-    boolean y = 1;
-    if(0 >= (x*y) || 5>= (x+y)){
-        x = 2;
-    }
-}
