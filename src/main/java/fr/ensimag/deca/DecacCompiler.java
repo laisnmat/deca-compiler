@@ -1,6 +1,7 @@
 package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.LabelManager;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -152,6 +153,79 @@ public class DecacCompiler {
     }
 
     /**
+     * This method is used to decompile a deca program and show the decompiled code
+     * in the standard output (terminal).
+     * Called when the [-p] option is used.
+     **/
+    public boolean decompile() {
+        String sourceFile = source.getAbsolutePath();
+
+        // verify the source file is a deca file
+        if (!source.getName().endsWith(".deca")) {
+            LOG.error("The file must end with .deca");
+            return true;
+        }
+
+        PrintStream err = System.err;
+
+        LOG.debug("Decompiling file " + sourceFile);
+        try {
+            return doDecompile(sourceFile, err, System.out);
+        } catch (LocationException e) {
+            e.display(err);
+            return true;
+        } catch (DecacFatalError e) {
+            err.println(e.getMessage());
+            return true;
+        } catch (StackOverflowError e) {
+            LOG.debug("stack overflow", e);
+            err.println("Stack overflow while compiling file " + sourceFile + ".");
+            return true;
+        } catch (Exception e) {
+            LOG.fatal("Exception raised while compiling file " + sourceFile
+                    + ":", e);
+            err.println("Internal compiler error while compiling file " + sourceFile + ", sorry.");
+            return true;
+        } catch (AssertionError e) {
+            LOG.fatal("Assertion failed while compiling file " + sourceFile
+                    + ":", e);
+            err.println("Internal compiler error while compiling file " + sourceFile + ", sorry.");
+            return true;
+        }
+    }
+
+    /**
+     * Internal function that does the job of decompiling (i.e. calling lexer,
+     * verification and decompile each instruction and declaration of the syntax
+     * tree.
+     *
+     * @param sourceFile
+     *            name of the source (deca) file
+     * @param err
+     *            stream to use to display compilation errors
+     * @param out
+     *            stream to use for standard output (output of decac -p)
+     *
+     * @return true on error
+     */
+    private boolean doDecompile(String sourceFile, PrintStream err, PrintStream out)
+            throws DecacFatalError, ContextualError {
+
+        AbstractProgram prog = doLexingAndParsing(sourceFile, err);
+
+        if (prog == null) {
+            LOG.info("Parsing failed");
+            return true;
+        }
+        assert (prog.checkAllLocations());
+
+        prog.verifyProgram(this);
+        assert (prog.checkAllDecorations());
+        prog.decompile(out);
+        return false;
+    }
+
+    /**
      * Run the compiler (parse source file, generate code)
      *
      * @return true on error
@@ -199,10 +273,14 @@ public class DecacCompiler {
      * Internal function that does the job of compiling (i.e. calling lexer,
      * verification and code generation).
      *
-     * @param sourceName name of the source (deca) file
-     * @param destName   name of the destination (assembly) file
-     * @param out        stream to use for standard output (output of decac -p)
-     * @param err        stream to use to display compilation errors
+     * @param sourceName
+     *            name of the source (deca) file
+     * @param destName
+     *            name of the destination (assembly) file
+     * @param out
+     *            stream to use for standard output (output of decac -p)
+     * @param err
+     *            stream to use to display compilation errors
      *
      * @return true on error
      */
@@ -244,14 +322,19 @@ public class DecacCompiler {
      * Build and call the lexer and parser to build the primitive abstract
      * syntax tree.
      *
-     * @param sourceName Name of the file to parse
-     * @param err        Stream to send error messages to
+     * @param sourceName
+     *            Name of the file to parse
+     * @param err
+     *            Stream to send error messages to
      * @return the abstract syntax tree
-     * @throws DecacFatalError    When an error prevented opening the source file
-     * @throws DecacInternalError When an inconsistency was detected in the
-     *                            compiler.
-     * @throws LocationException  When a compilation error (incorrect program)
-     *                            occurs.
+     * @throws DecacFatalError
+     *             When an error prevented opening the source file
+     * @throws DecacInternalError
+     *             When an inconsistency was detected in the
+     *             compiler.
+     * @throws LocationException
+     *             When a compilation error (incorrect program)
+     *             occurs.
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
             throws DecacFatalError, DecacInternalError {

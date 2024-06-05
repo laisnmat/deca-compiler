@@ -33,6 +33,10 @@ public class CompilerOptions {
         return printBanner;
     }
 
+    public boolean getParseDecompile() {
+        return parseDecompile;
+    }
+
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }
@@ -40,10 +44,41 @@ public class CompilerOptions {
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
+
+    private boolean parseDecompile = false;
     private List<File> sourceFiles = new ArrayList<File>();
 
     public void parseArgs(String[] args) throws CLIException {
+        List<String> argsList = new ArrayList<String>();
         // A FAIRE : parcourir args pour positionner les options correctement.
+        for (String arg : args) {
+            // parse options
+            if (arg.startsWith("-")) {
+                switch (arg) {
+                    case "-p":
+                        if (argsList.contains("-v")) {
+                            throw new CLIException("Cannot use argument -v and -p at the same time");
+                        }
+                        argsList.add("-p");
+                        parseDecompile = true;
+                        break;
+                    default:
+                        throw new CLIException("Option not recognized: " + arg);
+                }
+                continue;
+            }
+
+            // parse filename
+            if (arg.endsWith(".deca")) {
+                this.sourceFiles.add(new File(arg));
+                continue;
+            }
+
+            // else the provided file does not have the right ".deca" extension
+            throw new CLIException(
+                    "Argument not recognized: the provided file does not have the extension \".deca\": " + arg);
+        }
+
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
@@ -71,8 +106,6 @@ public class CompilerOptions {
         } else {
             logger.info("Java assertions disabled");
         }
-        File sFile = new File(args[0]);
-        sourceFiles.add(sFile);
     }
 
     protected void displayUsage() {
@@ -88,4 +121,5 @@ public class CompilerOptions {
         System.out.println(
                 "-P          (parallel)      : if there are multiple source files, parallelize their compilation (to accelerate compilation)");
     }
+
 }

@@ -1,6 +1,8 @@
 package fr.ensimag.deca;
 
 import java.io.File;
+import java.io.PrintStream;
+import fr.ensimag.deca.tree.AbstractProgram;
 import org.apache.log4j.Logger;
 
 /**
@@ -40,8 +42,14 @@ public class DecacMain {
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);
-                if (compiler.compile()) {
-                    error = true;
+                if (options.getParseDecompile()) {
+                    if (compiler.decompile()) {
+                        error = true;
+                    }
+                } else {
+                    if (compiler.compile()) {
+                        error = true;
+                    }
                 }
             }
         }
