@@ -1,0 +1,10 @@
+{
+    boolean x = true;
+    boolean y = true;
+    boolean z = true;
+    boolean b = true;
+    //Should go over the max register limit for decac -r 4, and create "PUSH/POP" Instruction
+    if(  (x && x) && (y && y) &&  (z && z) && (b && b) ){
+        print("Bravo");
+    }
+}
