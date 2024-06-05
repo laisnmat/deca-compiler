@@ -8,6 +8,11 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 
 /**
@@ -35,15 +40,36 @@ public class BooleanLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        setType(compiler.environmentType.BOOLEAN);
+        return getType();
     }
 
+    /**
+     * For tests in conditions
+     * 
+     * @param compiler
+     * @param jumpIfTrue
+     * @param label
+     */
+    @Override
+    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
+        if (value == branchIf) {
+            compiler.addInstruction(new BEQ(new Label(labelName)));
+        }
+    }
+
+    /**
+     *
+     * To assign a boolean in a variable
+     * 
+     * @param compiler
+     * @param register
+     */
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addInstruction(new LOAD(value ? 1 : 0, GPRegister.getR(registerName)));
     }
 
-    @Override
     public void decompile(IndentPrintStream s) {
         s.print(Boolean.toString(value));
     }
