@@ -80,7 +80,7 @@ pages:
   stage: publish
   dependencies:
   - build
-  - test
+  - summary
   script:
     - mkdir public
     - mvn $MAVEN_CLI_OPTS clean verify
