@@ -63,7 +63,7 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
         compiler.addLabel(new Label("io_error"));
-        compiler.addInstruction(new WSTR(getLocation().toString() + " Input / Output error"));
+        compiler.addInstruction(new WSTR("Error: Input/Output error"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
     }
