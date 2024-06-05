@@ -47,14 +47,17 @@ public class CompilerOptions {
         return Collections.unmodifiableList(sourceFiles);
     }
 
+    public boolean getOnlyVerif() {
+        return onlyVerif;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
-    private boolean parseDecompile = false;
-    private int registerOption = 15;
-    private List<File> sourceFiles = new ArrayList<File>();
+    private boolean parseDecompile = false;    priate int registerOption = 15;
+    private boolean onlyVerif = fals    private List<File> sourceFiles = new ArrayList<File>();
+    pubic void parseArgs(String[] args) throws CLIException
 
-    public void parseArgs(String[] args) throws CLIException {
         boolean parsingR = false; // if -r option is detected, next arg must be an int value
         List<String> argsList = new ArrayList<String>();
         for (String arg : args) {
@@ -87,6 +90,13 @@ public class CompilerOptions {
                         }
                         argsList.add("-r");
                         parsingR = true; // Meaning next arg must be an int
+                        break;
+                    case "-v":
+                        if (argsList.contains("-p")) {
+                            throw new CLIException("Cannot use argument -v and -p at the same time");
+                        }
+                        argsList.add("-v");
+                        onlyVerif = true;
                         break;
                     default:
                         throw new CLIException("Option not recognized: " + arg);

@@ -266,11 +266,12 @@ public class DecacCompiler {
      * Internal function that does the job of compiling (i.e. calling lexer,
      * verification and code generation).
      *
+     * <<<<<<< HEAD
+     * 
      * @param sourceName name of the source (deca) file
      * @param destName   name of the destination (assembly) file
      * @param out        stream to use for standard output (output of decac -p)
      * @param err        stream to use to display compilation errors
-     *
      * @return true on error
      */
     private boolean doCompile(String sourceName, String destName,
@@ -311,6 +312,8 @@ public class DecacCompiler {
      * Build and call the lexer and parser to build the primitive abstract
      * syntax tree.
      *
+     * <<<<<<< HEAD
+     * 
      * @param sourceName Name of the file to parse
      * @param err        Stream to send error messages to
      * @return the abstract syntax tree
@@ -318,7 +321,7 @@ public class DecacCompiler {
      * @throws DecacInternalError When an inconsistency was detected in the
      *                            compiler.
      * @throws LocationException  When a compilation error (incorrect program)
-     *                            occurs.
+     * @return the abstract syntax tree
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
             throws DecacFatalError, DecacInternalError {
@@ -335,4 +338,46 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
+    /**
+     * Implement the -v option. Only verification with the doLexingAndParsing
+     * function.
+     * 
+     * @return true on error
+     */
+    public boolean onlyVerif() {
+        String sourceFile = source.getAbsolutePath();
+
+        // verify the source file is a deca file
+        if (!source.getName().endsWith(".deca")) {
+            LOG.error("The file must end with .deca");
+            return true;
+        }
+
+        PrintStream err = System.err;
+        AbstractProgram prog;
+        try {
+            prog = doLexingAndParsing(sourceFile, err);
+        } catch (DecacFatalError e) {
+            err.println(e.getMessage());
+            return true;
+        } catch (DecacInternalError e) {
+            err.println("Internal compiler error: " + e.getMessage());
+            return true;
+        }
+
+        if (prog == null) {
+            LOG.info("Parsing failed");
+            return true;
+        }
+
+        return false;
+    }
+
+    public void increaseOffset() {
+        offset++;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
 }
