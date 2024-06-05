@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-version>8</java-version>
-        <jacoco.skip>true</jacoco.skip>
+        <jacoco.skip>false</jacoco.skip>
         <jacoco.report_dir>${project.build.directory}/site/jacoco</jacoco.report_dir>
     </properties>
 
@@ -136,17 +136,16 @@
                 <version>0.8.11</version>
                 <configuration>
                     <outputDirectory>${jacoco.report_dir}/</outputDirectory>
-                    <excludes>
-                        <exclude>fr/ensimag/deca/tools/DecacInternalError.class</exclude>
-                        <exclude>fr/ensimag/deca/ima/pseudocode/IMAInternalError.class</exclude>
-                    </excludes>
-                </configuration>                               
+                        <includes>
+                            <include>fr/ensimag/deca/codegen/*</include>
+                        </includes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-instrument</id>
                         <goals>
                             <goal>instrument</goal>
-                        </goals>             
+                        </goals>
                     </execution>
                     <execution>
                         <id>default-restore-instrumented-classes</id>
@@ -173,7 +172,7 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.70</minimum>
+                                            <minimum>1</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
