@@ -52,8 +52,8 @@ public class BooleanLiteral extends AbstractExpr {
      * @param label
      */
     @Override
-    protected void codeGenExpBool(DecacCompiler compiler, boolean jumpIfTrue, String labelName) {
-        if (value == jumpIfTrue) {
+    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
+        if (value == branchIf) {
             compiler.addInstruction(new BEQ(new Label(labelName)));
         }
     }

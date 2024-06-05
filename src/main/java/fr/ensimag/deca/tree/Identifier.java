@@ -201,14 +201,14 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    protected void codeGenExpBool(DecacCompiler compiler, boolean jumpIfTrue, String label) {
+    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
         compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), Register.R1));
-        if (jumpIfTrue) {
+        if (branchIf) {
             compiler.addInstruction(new CMP(1, Register.R1));
         } else {
             compiler.addInstruction(new CMP(0, Register.R1));
         }
-        compiler.addInstruction(new BEQ(new Label(label)));
+        compiler.addInstruction(new BEQ(new Label(labelName)));
     }
 
     /**
