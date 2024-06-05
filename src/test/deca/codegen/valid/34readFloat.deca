@@ -1,7 +1,0 @@
-{
-    float a;
-    println("enter a number : ");
-    a = readFloat();
-    print("your number is : ");
-    println(a);
-}
