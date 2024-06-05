@@ -1,5 +1,19 @@
 package fr.ensimag.deca.tree;
 
+<<<<<<< HEAD
+=======
+import fr.ensimag.deca.context.Type;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.deca.tools.IndentPrintStream;
+
+
+import static org.mockito.ArgumentMatchers.eq;
+
+>>>>>>> 4455e7e ([PGL-36] fix(codegen): assembly comments)
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;

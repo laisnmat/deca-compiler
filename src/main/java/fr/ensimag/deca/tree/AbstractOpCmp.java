@@ -62,4 +62,8 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
         compiler.addInstruction(new CMP(dvalRightOp, registerLeftOp));
     }
+
+    protected void addComment(DecacCompiler compiler, boolean branchIf, String labelName){
+        compiler.addComment("Code(" + getLeftOperand().decompile() + " " + getOperatorName() + " " + getRightOperand().decompile() + ", "+ branchIf + ", "+ labelName + ")");
+    }
 }
