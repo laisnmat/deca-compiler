@@ -10,11 +10,6 @@ if [ "${decac}" == "" ] ; then
     exit 1
 fi
 
-echo "### INFO: recompiling java files for $decac ###" 
-cd "$(dirname "${decac}")/../../.."
-mvn compile || exit 1
-
-
 syntax_passed=0
 syntax_total=0
 context_passed=0
