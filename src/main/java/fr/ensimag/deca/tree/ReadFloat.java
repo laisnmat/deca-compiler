@@ -15,12 +15,24 @@ import java.io.PrintStream;
  */
 public class ReadFloat extends AbstractReadExpr {
 
+    /**
+     * Verify the type of the expression and return the type of the expression
+     * (float here)
+     * 
+     * @param compiler     the compiler used to compile the code
+     * @param localEnv     the environment in which the expression is checked
+     * @param currentClass the current class
+     * @return Type : the type of the expression (float here)
+     * @throws ContextualError if the types are not compatible (no error here
+     *                         because it's a leaf node)
+     */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type t = compiler.environmentType.FLOAT;
+        this.setType(t);
+        return t;
     }
-
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
         throw new UnsupportedOperationException("not yet implemented");
