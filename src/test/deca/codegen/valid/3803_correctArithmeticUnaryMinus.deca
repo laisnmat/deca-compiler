@@ -1,0 +1,13 @@
+{
+    int a = -2;
+    println("a = ",a);
+    
+    float b = -2.4;
+    println("b = ",b);
+
+    int c = -(2+2);
+    println("c = ",c);
+
+    float d = 0.2 - 1.4;
+    println("d = ",d);
+}
