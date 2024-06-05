@@ -34,9 +34,8 @@ public class ReadFloat extends AbstractReadExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type t = compiler.environmentType.FLOAT;
-        this.setType(t);
-        return t;
+        this.setType(compiler.environmentType.FLOAT);
+        return this.getType();
     }
 
     /**
