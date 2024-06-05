@@ -3,8 +3,14 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 stages:
   - build
-  - test
+  - test_renduInitial
+  - test_renduIntermediaire1
+  - test_renduIntermediaire2
+  - summary
+  - cov_test
   - cleanup
+  - publish
+  - deploy
 cache:
   paths:
     - .m2/repository/
@@ -59,6 +65,35 @@ test:summary:
     - develop
     - merge_requests
 
+cov_test:
+  stage: test
+  dependencies:
+    - build
+  script:
+    - mvn $MAVEN_CLI_OPTS verify
+  only:
+    - master
+    - develop
+    - merge_requests
+
+pages:
+  stage: publish
+  dependencies:
+  - build
+  - test
+  script:
+    - mkdir public
+    - mvn $MAVEN_CLI_OPTS clean verify
+    - src/test/script/jacoco-report.sh
+  after_script:
+    - cp target/site/jacoco/index.html public
+    - cp -r target/site/jacoco/jacoco-resources public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+    - develop
 
 cleanup:
   stage: cleanup
