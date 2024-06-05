@@ -2,10 +2,12 @@ package fr.ensimag.deca;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.util.List;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
+import fr.ensimag.ima.pseudocode.Register;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -37,6 +39,10 @@ public class CompilerOptions {
         return parseDecompile;
     }
 
+    public int getRegisterOption() {
+        return registerOption;
+    }
+
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }
@@ -44,19 +50,28 @@ public class CompilerOptions {
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
-
     private boolean parseDecompile = false;
+    private int registerOption = 15;
     private List<File> sourceFiles = new ArrayList<File>();
 
     public void parseArgs(String[] args) throws CLIException {
+        boolean parsingR = false;
         List<String> argsList = new ArrayList<String>();
         for (String arg : args) {
             // parse options
+            if (parsingR) {
+                registerOption = Integer.parseInt(arg) - 1;
+                parsingR = false;
+                continue;
+            }
             if (arg.startsWith("-")) {
                 switch (arg) {
                     case "-p":
                         if (argsList.contains("-v")) {
-                            throw new CLIException("Cannot use argument -v and -p at the same time");
+                            throw new CLIException("Cannot use option -v and -p at the same time");
+                        }
+                        if (argsList.contains("-p")) {
+                            throw new CLIException("Cannot use the same option twice");
                         }
                         argsList.add("-p");
                         parseDecompile = true;
@@ -65,6 +80,13 @@ public class CompilerOptions {
                         if (debug < TRACE) {
                             debug++;
                         }
+                        break;
+                    case "-r":
+                        if (argsList.contains("-r")) {
+                            throw new CLIException("Cannot use the same option twice");
+                        }
+                        argsList.add("-r");
+                        parsingR = true;
                         break;
                     default:
                         throw new CLIException("Option not recognized: " + arg);

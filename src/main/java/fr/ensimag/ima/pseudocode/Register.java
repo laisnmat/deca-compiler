@@ -1,5 +1,7 @@
 package fr.ensimag.ima.pseudocode;
 
+import static fr.ensimag.deca.DecacCompiler.MAXREGISTER;
+
 /**
  * Register operand (including special registers like SP).
  * 
@@ -8,6 +10,7 @@ package fr.ensimag.ima.pseudocode;
  */
 public class Register extends DVal {
     private String name;
+
     protected Register(String name) {
         this.name = name;
     }
@@ -34,12 +37,14 @@ public class Register extends DVal {
      * made immutable, use getR(i) to access it.
      */
     private static final GPRegister[] R = initRegisters();
+
     /**
      * General Purpose Registers
      */
     public static GPRegister getR(int i) {
         return R[i];
     }
+
     /**
      * Convenience shortcut for R[0]
      */
@@ -48,9 +53,10 @@ public class Register extends DVal {
      * Convenience shortcut for R[1]
      */
     public static final GPRegister R1 = R[1];
+
     static private GPRegister[] initRegisters() {
-        GPRegister [] res = new GPRegister[16];
-        for (int i = 0; i <= 15; i++) {
+        GPRegister[] res = new GPRegister[16];
+        for (int i = 0; i <= MAXREGISTER; i++) {
             res[i] = new GPRegister("R" + i, i);
         }
         return res;
