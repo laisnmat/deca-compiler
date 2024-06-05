@@ -1,0 +1,16 @@
+// Description:
+//    Vérification du parsing syntaxique de l'expression: exp1 < exp2
+//
+// Resultats:
+//    Hello
+//
+// Historique:
+//    cree le 22/05/2024
+
+{
+    int x;
+    1 < 1;
+    x < 2;
+    x = 2 < 3;
+    print(1 < 1);
+}

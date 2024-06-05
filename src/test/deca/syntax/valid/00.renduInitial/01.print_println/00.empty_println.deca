@@ -1,0 +1,14 @@
+// Description:
+//      Println et Print simple.
+//
+// Resultats:
+//    
+//
+// Historique:
+//      cree le 04/05/2024
+//      modifie le 11/05/2024: ajout du print
+
+{
+    print();
+    println();
+}

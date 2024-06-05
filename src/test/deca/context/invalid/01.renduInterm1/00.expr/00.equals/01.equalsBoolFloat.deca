@@ -1,0 +1,12 @@
+// Description:
+//    Vérification du contexte de l'expression: bool == float
+//
+// Resultats:
+//    Erreur ligne 11 : Comparaison entre un booléen et un float impossible
+//  
+// Historique:
+//    cree le 22/05/2024
+
+{
+    true == 1.2;
+}

@@ -1,0 +1,36 @@
+// Description:
+//      Compilation de l'expression: expr1 < expr2.
+//
+// Resultats:
+//      Voir le fichier .expected.
+//
+// Historique:
+//      cree le 27/05/2024
+
+{
+    boolean y;
+    int x = 4;
+    float z = 4.0;
+    (1 < 1);
+    2 < 2;
+    2 < 3;
+    3 < x;
+
+    2 < 2.0;
+    2 < 3.0;
+    3 < z;
+
+    y = (5 < 5);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+
+    y = (3 < 5);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+}

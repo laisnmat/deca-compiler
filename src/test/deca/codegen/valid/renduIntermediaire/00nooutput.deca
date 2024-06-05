@@ -1,6 +1,0 @@
-{
-    int x = 17;
-    while (x < 16){
-        print(x);
-    }
-}

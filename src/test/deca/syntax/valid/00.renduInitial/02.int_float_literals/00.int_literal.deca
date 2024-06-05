@@ -1,0 +1,13 @@
+// Description:
+//      Utilisation d'un IntLiteral.
+//
+// Resultats:
+//      x = 1 and y = 2
+//
+// Historique:
+//      cree le 11/05/2024
+
+{
+    print("x = ", 1, " and ");
+    println("y = ", 2);
+}

@@ -1,0 +1,52 @@
+// Description:
+//    Compilation de l'expression or.
+//      Même si l'expression n'est pas une condition, il faut générer du code pour 
+//      gérer les éventuelles assignations dans le code.
+//
+// Resultats:
+//      2=2
+//      true
+//      3=3
+//      true
+//      6=6
+//      false
+//
+// Historique:
+//    cree le 26/05/2024
+
+{
+    int x;
+    boolean y;
+
+    y = ((x = 2) == 2) || (3 < 4);
+    println("2=", x);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+
+    y = ((x = 3) == 3 || (x = 4) == 4);
+    println("3=", x);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+
+    y = ((x = 5) == 0 || (x = 6) == 6);
+    println("6=", x);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+
+    y = ((x = 7) == 0 || (x = 8) == 9);
+    println("8=", x);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+}

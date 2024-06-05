@@ -1,0 +1,13 @@
+// Description:
+//      Test de programme incorrect du parsing syntaxique de l'expression: readInt()
+//
+// Resultats:
+//    Erreur ligne 11: ')' attendu, pas "hello"
+//
+// Historique:
+//    cree le 22/05/2024
+
+{
+    int x = readInt("hello");
+    print(x);
+}

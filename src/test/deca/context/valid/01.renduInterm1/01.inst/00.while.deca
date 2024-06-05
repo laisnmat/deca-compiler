@@ -1,0 +1,14 @@
+// Description:
+//    Vérification du parsing syntaxique de l'expression: while
+//
+// Resultats:
+//    Hello
+//
+// Historique:
+//    cree le 22/05/2024
+
+{
+    while( 1 == 1 ) {
+        print("Hello World!");
+    }
+}

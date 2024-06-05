@@ -1,0 +1,13 @@
+// Description:
+//    Simple déclaration de variable, sans initialisation, puis assignement.
+//
+// Resultats:
+//    
+//
+// Historique:
+//    cree le 09/05/2024
+
+{
+    int x;
+    x=1;
+}

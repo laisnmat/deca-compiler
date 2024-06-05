@@ -1,0 +1,12 @@
+// Description:
+//    Vérification du context de l'expression: bool < float
+//
+// Resultats:
+//    Erreur ligne 11 : Comparaison entre booléen et float impossible
+//
+// Historique:
+//    cree le 27/05/2024
+
+{
+    true < 2.1;
+}

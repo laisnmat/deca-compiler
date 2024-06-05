@@ -1,0 +1,9 @@
+Error during option parsing:
+Option not recognized: -d
+-b          (banner)        : prints a banner with the team name
+-p          (parse)         : stops decac after the construction of the syntax tree
+-v          (verification)  : stops decac after the verification of the syntax tree
+-n          (no check)      : removes the tests at execution specified by points 11.1 and 11.3 of Deca semantics
+-r X        (registers)     : limits the available registers to R0 ... R{X-1}, with 4 <= X <= 16
+-d          (debug)         : activates debug trace - repeat the option multiple times for more info
+-P          (parallel)      : if there are multiple source files, parallelize their compilation (to accelerate compilation)

@@ -1,9 +1,0 @@
-{
-    int x =34;
-    if (x){
-        println("et pourquoi pas du gateau à la banane ?");
-    }
-    else {
-
-    }
-}

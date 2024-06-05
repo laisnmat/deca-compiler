@@ -1,0 +1,19 @@
+// Description:
+//    Vérification du contexte de l'expression: exp1 == exp2
+//
+// Resultats:
+//    Pas d'erreur de compilation
+//
+// Historique:
+//    cree le 22/05/2024
+
+{
+    int x;
+    true == false;
+    1 == 2;
+    1.2 == 2;
+    2.1 == 1;
+    2.2 == 2.1;
+    1 == x;
+    x == 2.2;
+}

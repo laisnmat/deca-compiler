@@ -1,0 +1,12 @@
+// Description:
+//    Vérification du contexte de l'expression: exp1 <= exp2
+//
+// Resultats:
+//    Erreur ligne 11 : Comparaison entre un booléen et un entier lu via readInt impossible
+//  
+// Historique:
+//    cree le 27/05/2024
+
+{
+    true <= readInt();
+}
