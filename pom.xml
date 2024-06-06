@@ -269,6 +269,16 @@
                         </goals>
                     </execution> -->
                     <execution>
+                        <id>clean_all</id>
+                        <configuration>
+                            <executable>./src/test/script/clean.sh</executable>
+                        </configuration>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>testPipeline_0</id>
                         <configuration>
                             <executable>./src/test/script/renduInitial.sh</executable>
