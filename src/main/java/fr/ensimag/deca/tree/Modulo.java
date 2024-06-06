@@ -6,6 +6,9 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.REM;
 
 /**
@@ -41,6 +44,8 @@ public class Modulo extends AbstractOpArith {
         this.getLeftOperand().codeGenExp(compiler, register);
         GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
         this.getRightOperand().codeGenExp(compiler, nextRegister);
+        compiler.addInstruction(new CMP(0, nextRegister));
+        compiler.addInstruction(new BEQ(new Label("div_zero_error")));
         compiler.addInstruction(new REM(nextRegister, register));
     }
 
