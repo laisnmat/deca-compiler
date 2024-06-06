@@ -265,8 +265,6 @@ public class DecacCompiler {
     /**
      * Internal function that does the job of compiling (i.e. calling lexer,
      * verification and code generation).
-     *
-     * <<<<<<< HEAD
      * 
      * @param sourceName name of the source (deca) file
      * @param destName   name of the destination (assembly) file
@@ -311,8 +309,6 @@ public class DecacCompiler {
     /**
      * Build and call the lexer and parser to build the primitive abstract
      * syntax tree.
-     *
-     * <<<<<<< HEAD
      * 
      * @param sourceName Name of the file to parse
      * @param err        Stream to send error messages to
