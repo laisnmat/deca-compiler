@@ -227,13 +227,6 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-
-        // verify the source file is a deca file
-        if (!source.getName().endsWith(".deca")) {
-            LOG.error("The file must end with .deca");
-            return true;
-        }
-
         String destFile = sourceFile.substring(0, sourceFile.lastIndexOf(".deca")) + ".ass";
 
         PrintStream err = System.err;
