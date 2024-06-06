@@ -18,6 +18,12 @@ public class Plus extends AbstractOpArith {
         return "+";
     }
 
+    /**
+     * Generate assembly code for the expression of a plus
+     * 
+     * @param compiler     The compiler
+     * @param registerName The register to store the result of the operation
+     */
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
         getLeftOperand().codeGenExp(compiler, registerName);

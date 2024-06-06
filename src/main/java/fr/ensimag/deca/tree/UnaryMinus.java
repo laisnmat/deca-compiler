@@ -19,6 +19,15 @@ public class UnaryMinus extends AbstractUnaryExpr {
         super(operand);
     }
 
+    /**
+     * Verify the unary minus expression
+     * 
+     * @param compiler     The compiler
+     * @param localEnv     The environment in which the expression is verified
+     * @param currentClass The current class
+     * @return The type of the expression
+     * @throws ContextualError The expression is not valid
+     */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
@@ -27,6 +36,12 @@ public class UnaryMinus extends AbstractUnaryExpr {
         return type;
     }
 
+    /**
+     * Generate assembly code for the expression of a unary minus
+     * 
+     * @param compiler     The compiler
+     * @param registerName The register to store the result of the operation
+     */
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
         if (getOperand().getDVal() == null) {
