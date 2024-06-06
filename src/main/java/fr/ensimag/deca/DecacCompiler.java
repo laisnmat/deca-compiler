@@ -44,6 +44,10 @@ import org.apache.log4j.Logger;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
+    public static int MAXREGISTER;// This corresponds to the highest register (RMAX) we can reach while generating
+                                  // code
+
+
     /**
      * Portable newline character.
      */
@@ -53,6 +57,7 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+        MAXREGISTER = compilerOptions.getRegisterOption();
     }
 
     /**

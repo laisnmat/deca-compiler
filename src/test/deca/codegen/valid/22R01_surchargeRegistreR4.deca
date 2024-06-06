@@ -1,0 +1,8 @@
+{
+    int x = 1;
+    int y = 2;
+    int z = 3;
+    int b = 4;
+    //Should go over the max register limit for decac -r 4, and create "PUSH/POP" Instruction
+    int res = (  (x + x) + (y + y) +  (z + z) + (b + b) );
+}
