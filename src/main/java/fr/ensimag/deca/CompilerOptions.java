@@ -59,7 +59,7 @@ public class CompilerOptions {
     private boolean onlyVerif = false;
     private List<File> sourceFiles = new ArrayList<File>();
 
-    public void parseArgs(String[] args) throws CLIException
+    public void parseArgs(String[] args) throws CLIException {
 
         boolean parsingR = false; // if -r option is detected, next arg must be an int value
         List<String> argsList = new ArrayList<String>();
@@ -76,7 +76,7 @@ public class CompilerOptions {
                         if (onlyVerif) {
                             throw new CLIException("Cannot use option -v and -p at the same time");
                         }
-                        if (parseDecompile){
+                        if (parseDecompile) {
                             throw new CLIException("Cannot use the same option twice");
                         }
                         argsList.add("-p");
