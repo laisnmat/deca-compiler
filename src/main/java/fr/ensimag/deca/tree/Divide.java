@@ -26,9 +26,9 @@ public class Divide extends AbstractOpArith {
         GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
         this.getRightOperand().codeGenExp(compiler, nextRegister);
         if (this.getType().isInt()) {
-            compiler.addInstruction(new QUO(register, nextRegister));
+            compiler.addInstruction(new QUO(nextRegister, register));
         } else {
-            compiler.addInstruction(new DIV(register, nextRegister));
+            compiler.addInstruction(new DIV(nextRegister, register));
         }
     }
 

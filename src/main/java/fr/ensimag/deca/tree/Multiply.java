@@ -23,6 +23,6 @@ public class Multiply extends AbstractOpArith {
         this.getLeftOperand().codeGenExp(compiler, register);
         GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
         this.getRightOperand().codeGenExp(compiler, nextRegister);
-        compiler.addInstruction(new MUL(register, nextRegister));
+        compiler.addInstruction(new MUL(nextRegister, register));
     }
 }
