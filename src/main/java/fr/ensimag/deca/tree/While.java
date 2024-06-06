@@ -42,9 +42,6 @@ public class While extends AbstractInst {
         LabelWhile labelWhile = compiler.labelManager.getWhile();
         Label labelEnd = labelWhile.getEndLabel();
         Label labelStart = labelWhile.getStartLabel();
-
-        compiler.addComment(labelWhile.toString() + ": while (" + this.condition.decompile() + ")");
-
         // generate start label
         compiler.addLabel(labelStart);
 
