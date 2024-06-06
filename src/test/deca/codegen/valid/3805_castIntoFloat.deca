@@ -1,4 +1,9 @@
 {
-    float x = 2 + 2;
-    println("x = ",x);
+    float a = 2 + 2;
+    float b = 2.5 + 2;
+    float c = 2 + 2.5;
+
+    println("a = ",a);    
+    println("b = ",b);
+    println("c = ",c);
 }
