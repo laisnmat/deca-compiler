@@ -1,10 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -12,34 +15,48 @@ import fr.ensimag.deca.context.EnvironmentExp;
  * @date 14/04/2024
  */
 public class Not extends AbstractUnaryExpr {
+    private static final Logger LOG = Logger.getLogger(Not.class);
 
     public Not(AbstractExpr operand) {
         super(operand);
     }
 
+    /**
+     * Verify rule (3.37) with 'not' operand. Verifies rule (3.63)
+     */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        getOperand().verifyExpr(compiler, localEnv, currentClass);
-        if (getOperand().getType() != compiler.environmentType.BOOLEAN) {
-            throw new ContextualError("L'opérande de la négation n'est pas une expression booléenne", getLocation());
+        LOG.debug("verify Not: at location " + this.getLocation());
+
+        Type typeOp = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        // verify type_unary_op()
+        if (typeOp != compiler.environmentType.BOOLEAN) {
+            throw new ContextualError(
+                    "Operand should be of type 'boolean', but is of type '"
+                            + typeOp + "'.",
+                    getLocation());
         }
-        setType(compiler.environmentType.BOOLEAN);
-        return compiler.environmentType.BOOLEAN;
-    }
 
-    @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @Override
-    public void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
-        this.getOperand().codeGenExpBool(compiler, !branchIf, labelName);
+        // type verification
+        this.setType(compiler.environmentType.BOOLEAN);
+        return this.getType();
     }
 
     @Override
     protected String getOperatorName() {
         return "!";
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        s.print("!");
+        this.getOperand().decompile(s);
+    }
+
+    @Override
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        this.getOperand().codeGenCondition(compiler, !jumpOnTrue, label);
     }
 }

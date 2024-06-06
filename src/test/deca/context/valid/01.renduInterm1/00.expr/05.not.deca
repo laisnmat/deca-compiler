@@ -1,0 +1,14 @@
+// Description:
+//    Vérification du contexte de l'expression: '!' expr.
+//
+// Resultats:
+//
+// Historique:
+//    cree le 21/05/2024
+
+{
+    int x = 1;
+    !(1==1);
+    !!(2==2);
+    !(x==1);
+}

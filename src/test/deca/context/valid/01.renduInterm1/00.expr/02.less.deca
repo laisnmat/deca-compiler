@@ -1,0 +1,21 @@
+// Description:
+//    Vérification du contexte de l'expression: exp1 < exp2
+//
+// Resultats:
+//    Pas d'erreur de compilation
+//
+// Historique:
+//    cree le 27/05/2024
+
+{
+    int x;
+
+    1 < 1;
+    1.2 < 1;
+    2 < 3.2;
+    1.2 < 3.2;
+
+    x < readInt();
+
+    readInt() < readInt();
+}

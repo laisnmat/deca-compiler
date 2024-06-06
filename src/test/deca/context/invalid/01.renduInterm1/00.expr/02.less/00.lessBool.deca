@@ -1,0 +1,12 @@
+// Description:
+//    Vérification du context de l'expression: bool < bool
+//
+// Resultats:
+//    Erreur ligne 11 : Comparaison entre booléen impossible
+//
+// Historique:
+//    cree le 27/05/2024
+
+{
+    true < false;
+}

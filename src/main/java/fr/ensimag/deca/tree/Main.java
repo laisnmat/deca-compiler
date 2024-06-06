@@ -2,7 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -27,11 +27,17 @@ public class Main extends AbstractMain {
         this.insts = insts;
     }
 
+    /**
+     * Verify rule (3.18)
+     */
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
+        // verify bloc by verifying ListDeclVarSet and ListInst
         EnvironmentExp env = new EnvironmentExp(null);
+        // verify rule (3.16)
         declVariables.verifyListDeclVariable(compiler, env, null);
+        // verify rule (3.19)
         insts.verifyListInst(compiler, env, null, compiler.environmentType.VOID);
         LOG.debug("verify Main: end");
     }
@@ -39,7 +45,7 @@ public class Main extends AbstractMain {
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         compiler.addComment("Beginning of main instructions");
-        declVariables.codeGenListDeclVar(compiler);
+        declVariables.codeGenDeclVarList(compiler);
         insts.codeGenListInst(compiler);
         compiler.addComment("End of main instructions");
     }

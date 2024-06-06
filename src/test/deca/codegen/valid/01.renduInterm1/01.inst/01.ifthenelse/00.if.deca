@@ -1,0 +1,14 @@
+// Description:
+//    Compilation d'un simple if.
+//
+// Resultats:
+//      hello
+//
+// Historique:
+//    cree le 23/05/2024
+
+{
+    if (1 < 2) {
+        println("hello");
+    }
+}

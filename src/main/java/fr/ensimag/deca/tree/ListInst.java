@@ -7,7 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
-import java.util.Iterator;
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -15,6 +15,7 @@ import java.util.Iterator;
  * @date 14/04/2024
  */
 public class ListInst extends TreeList<AbstractInst> {
+    private static final Logger LOG = Logger.getLogger(ListInst.class);
 
     /**
      * Implements non-terminal "list_inst" of [SyntaxeContextuelle] in pass 3
@@ -30,11 +31,16 @@ public class ListInst extends TreeList<AbstractInst> {
     public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        LOG.debug("verify ListInst: start");
 
-        for (Iterator<AbstractInst> it = iterator(); it.hasNext();) {
-            AbstractInst Inst = it.next();
-            Inst.verifyInst(compiler, localEnv, currentClass, returnType);
+        // verify each Inst in this List of Inst
+        // verify rule (3.19)
+        for (AbstractInst inst : this.getList()) {
+            // verify rules from (3.20) to (3.27), depending on what kind of AbstractInst is
+            // inst
+            inst.verifyInst(compiler, localEnv, currentClass, returnType);
         }
+        LOG.debug("verify ListInst: end");
     }
 
     public void codeGenListInst(DecacCompiler compiler) {

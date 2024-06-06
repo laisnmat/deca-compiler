@@ -1,17 +1,12 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.FLOAT;
-
-import static org.mockito.ArgumentMatchers.eq;
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.FLOAT;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -27,18 +22,14 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
-        throw new UnsupportedOperationException("not yet implemented");
+        this.setType(compiler.environmentType.FLOAT);
+        return this.getType();
     }
 
     @Override
-    protected DVal getDVal() {
-        return this.getOperand().getDVal();
-    }
-
-    @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        this.getOperand().codeGenExp(compiler, registerName);
-        compiler.addInstruction(new FLOAT(Register.getR(registerName), Register.getR(registerName)));
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        this.getOperand().codeGenExp(compiler, register);
+        compiler.addInstruction(new FLOAT(register, register));
     }
 
     @Override

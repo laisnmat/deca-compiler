@@ -1,0 +1,40 @@
+// Description:
+//    Vérification du parsing syntaxique de l'instruction : if then else
+//
+// Resultats:
+//      Ne doit pas produire d'erreur.
+//      Les elsif doivent s'imbriquer récursivement dans le if, 
+//      comme indiqué dans le lexème 4 du Théorème 1 de la spécification de l'analyseur syntaxique.
+//
+// Historique:
+//    cree le 22/05/2024
+
+{
+    if (1 == 1) {
+        ;
+    }
+    
+    if (1 == 1) {
+        1;
+    } else {
+        2;
+    }
+
+    if (1 == 1) {
+        1;
+    } else if (2 == 2) {
+        2;
+    } else if (3 == 3) {
+        3;
+    }
+
+    if (1 == 1) {
+        1;
+    } else if (2==2) {
+        2;
+    } else if (3==3) {
+        3;
+    } else {
+        4;
+    }
+}

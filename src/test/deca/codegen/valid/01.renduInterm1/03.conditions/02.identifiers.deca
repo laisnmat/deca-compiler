@@ -1,0 +1,30 @@
+// Description:
+//    Compilation de conditions contenant des variables (identifiers).
+//
+// Resultats:
+//      hello
+//      hello
+//      hello
+//      hello
+//
+// Historique:
+//    cree le 25/05/2024
+
+{
+    int x = 1, y = 2;
+    if (1 < 2) {
+        println("hello");
+    }
+
+    if (x < 2) {
+        println("hello");
+    }
+
+    if (1 < y) {
+        println("hello");
+    }
+
+    if (x < y) {
+        println("hello");
+    }
+}

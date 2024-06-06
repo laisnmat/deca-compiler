@@ -53,19 +53,21 @@ public class Program extends AbstractProgram {
     public void codeGenProgram(DecacCompiler compiler) {
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
-        compiler.addFirst(new ADDSP(compiler.getOffset() - 1));
-        compiler.addFirst(new BOV(new Label("stack_overflow")));
-        compiler.addFirst(new TSTO(compiler.getOffset() - 1));
         compiler.addInstruction(new HALT());
-        compiler.addComment("Error messages");
-        compiler.addLabel(new Label("stack_overflow"));
-        compiler.addInstruction(new WSTR(getLocation().toString() + " Stack overflow"));
+        if (compiler.labelManager.isIoError()) {
+            compiler.addLabel(compiler.labelManager.getIoErrorLabel());
+            compiler.addInstruction(new WSTR("Error: Input/Output error"));
+            compiler.addInstruction(new WNL());
+            compiler.addInstruction(new ERROR());
+        }
+        compiler.addLabel(compiler.labelManager.getStackOverflowError());
+        compiler.addInstruction(new WSTR("Error: Stack overflow"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
-        compiler.addLabel(new Label("io_error"));
-        compiler.addInstruction(new WSTR(getLocation().toString() + " Input / Output error"));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
+
+        compiler.addFirst(new Line(new BOV(compiler.labelManager.getStackOverflowError())));
+        compiler.addFirst(new Line(new TSTO(compiler.tsto.getCount())));
+        compiler.addFirst(new Line("stack overflow test"));
     }
 
     @Override

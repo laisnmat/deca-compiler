@@ -1,0 +1,14 @@
+// Description:
+//      Programme minimaliste utilisant print et println.
+//
+// Resultats:
+//      HelloHello
+//
+// Historique:
+//      cree le 14/04/2024
+//      modifie le 11/05/2024: ajout du print
+
+{
+        print("Hello");
+        println("Hello");
+}

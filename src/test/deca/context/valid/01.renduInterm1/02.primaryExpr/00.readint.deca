@@ -1,0 +1,19 @@
+// Description:
+//    Vérification du parsing syntaxique de l'expression: readInt()
+//
+// Resultats:
+//    Pas d'erreur de compilation
+//
+// Historique:
+//    cree le 22/05/2024
+//    Modifié le 27/05/2024: fusion avec un autre fichier de test et ajouts
+
+{
+    int i = readInt();
+    float j;
+    j = readInt();
+
+    readInt()==readInt() && readInt()==readInt() || readInt()==readInt();
+
+    println("i = ", i, " j = ", j, " k = ", readInt());
+}

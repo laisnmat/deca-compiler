@@ -1,0 +1,23 @@
+// Description:
+//      Compilation de readInt.
+//
+// Resultats:
+//      Voir le fichier .expected.
+//
+// Historique:
+//      cree le 27/05/2024
+
+{
+    float y;
+    int x = readInt();
+    println("1=", x);
+    
+    y = readInt();
+    println("2.0=", y);
+
+    println("3=", readInt());
+
+    readInt();
+
+    readInt(); // IO Error
+}

@@ -1,0 +1,59 @@
+// Description:
+//      Compilation de l'expression: !expr1.
+//
+// Resultats:
+//      Voir le fichier .expected.
+//
+// Historique:
+//      cree le 27/05/2024
+
+{
+    int x;
+    boolean y;
+
+    y = (!((x = 2) == 2)) || !(3 < 4);
+    println("2=", x);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+
+    y = (!((x = 3) == 3) && (x = 4) == 4);
+    println("3=", x);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+
+    y = !((x = 5) == 0 || (x = 6) == 6);
+    println("6=", x);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+
+    y = !((x = 7) == 0 || (x = 8) == 9);
+    println("8=", x);
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+
+    y = !false;
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+
+    y = !true;
+    if (y == true) {
+        println("true");
+    } else {
+        println("false");
+    }
+}

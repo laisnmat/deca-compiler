@@ -5,12 +5,13 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.StringType;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
-import fr.ensimag.deca.context.StringType;
+import org.apache.log4j.Logger;
 
 /**
  * String literal
@@ -19,6 +20,7 @@ import fr.ensimag.deca.context.StringType;
  * @date 14/04/2024
  */
 public class StringLiteral extends AbstractStringLiteral {
+    private static Logger LOG = Logger.getLogger(StringLiteral.class);
 
     @Override
     public String getValue() {
@@ -32,22 +34,21 @@ public class StringLiteral extends AbstractStringLiteral {
         this.value = value;
     }
 
+    /**
+     * Verify rule (3.46).
+     */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type t = compiler.environmentType.STRING;
-        setType(t);
-        return t;
+        LOG.debug("verify StringLiteral: setting type");
+        this.setType(compiler.environmentType.STRING);
+        return this.getType();
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new WSTR(new ImmediateString(value)));
-    }
-
-    @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
+        compiler.addComment("Print " + this.decompile());
+        compiler.addInstruction(new WSTR(value));
     }
 
     @Override

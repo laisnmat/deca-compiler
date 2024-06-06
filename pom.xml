@@ -281,7 +281,7 @@
                     <execution>
                         <id>testPipeline_1</id>
                         <configuration>
-                            <executable>./src/test/script/renduIntermediaire.sh</executable>
+                            <executable>./src/test/script/renduInterm1.sh</executable>
                         </configuration>
                         <phase>test</phase>
                         <goals>

@@ -1,0 +1,13 @@
+// Description:
+//      Utilisation d'un FloatLiteral.
+//
+// Resultats:
+//      x = 1.00000e+00 and y = 2.00000e+00
+//
+// Historique:
+//      cree le 11/05/2024
+
+{
+    print("x = ", 1.0, " and ");
+    println("y = ", 2.0);
+}

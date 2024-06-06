@@ -5,21 +5,23 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.VariableDefinition;
-import fr.ensimag.deca.context.TypeDefinition;
-import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
+import net.bytebuddy.dynamic.loading.PackageDefinitionStrategy.Definition;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * @author gl03
  * @date 14/04/2024
  */
 public class DeclVar extends AbstractDeclVar {
+    private static final Logger LOG = Logger.getLogger(DeclVar.class);
 
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
@@ -38,38 +40,55 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-
-        Type t = type.verifyType(compiler);
-        TypeDefinition typeDef = compiler.environmentType.defOfType(t.getName());
-        type.setDefinition(typeDef);
-        if (t.isVoid())
-            throw new ContextualError("type cannot be void", getLocation());
-        try {
-            ExpDefinition def = new VariableDefinition(t, getLocation());
-            localEnv.declare(varName.getName(), def);
-            varName.setDefinition(def);
-        } catch (EnvironmentExp.DoubleDefException e) {
-            throw new ContextualError("identifier is already defined", getLocation());
+        LOG.debug("verify DeclVar: start");
+        // type verification
+        Type type = this.type.verifyType(compiler);
+        if (type.isVoid()) {
+            throw new ContextualError(
+                    "Illegal declaration: Variable "
+                            + this.varName
+                            + " is of type void.",
+                    getLocation());
         }
 
-        initialization.verifyInitialization(compiler, t, localEnv, currentClass);
+        // create the definition of this variable
+        VariableDefinition varDef = new VariableDefinition(type, getLocation());
+
+        // put the definition of this variable into the current environment
+        try {
+            localEnv.declare(this.varName.getName(), varDef);
+        } catch (DoubleDefException dde) {
+            throw new ContextualError("Variable " + this.varName.getName() + " is already defined in this environment.",
+                    getLocation());
+        }
+
+        this.varName.setDefinition(varDef);
+
+        // setting Definition and Type of this Identifier
+        type = this.varName.verifyExpr(compiler, localEnv, currentClass);
+
+        // verify the initialization
+        this.initialization.verifyInitialization(compiler, type, localEnv, currentClass);
     }
 
     @Override
-    protected void codeGenDeclVar(DecacCompiler compiler) {
-        RegisterOffset offset = new RegisterOffset(compiler.getOffset(), Register.GB);
-        VariableDefinition varDef = varName.getVariableDefinition();
-        varDef.setOperand(offset); // assign offset(GB) to variable
-        compiler.increaseOffset(); // increase offset for next variable
+    protected int codeGenDeclVar(DecacCompiler compiler, int localBaseOffset) {
+        compiler.tsto.increment();
+        RegisterOffset offset = new RegisterOffset(localBaseOffset, GPRegister.LB);
 
+        // put this variable in the next free space in memory
+        this.varName.getExpDefinition().setOperand(offset);
+
+        // if there is an Initialization,
+        // then initialize variable using an Assign
         if (initialization instanceof Initialization) {
-            Initialization i = (Initialization) initialization;
-            int storageRegister = 2; // register number where rhs of initialization expr is stored
-            i.getExpression().codeGenExp(compiler, storageRegister);
-            compiler.addInstruction(new STORE(Register.getR(storageRegister), varName.getExpDefinition().getOperand()));
-        } else if (initialization instanceof NoInitialization) {
-            // do nothing ?
+            Initialization i = (Initialization) this.initialization;
+            new Assign(this.varName, i.getExpression()).codeGenInst(compiler);
         }
+
+        // increment the offset (could be incremented of more than one depending on the
+        // size of the type)
+        return localBaseOffset + 1;
     }
 
     @Override

@@ -1,0 +1,16 @@
+// Description:
+//    Vérification du parsing syntaxique de l'expression: expr '&&' expr.
+//
+// Resultats:
+//
+// Historique:
+//    cree le 21/05/2024
+
+{
+    int x, y;
+    1 && 2;
+    1 && 2 && 3;
+    x && y;
+    x = 1 && 2;
+    println("1" && "2", "3" && "4");
+}

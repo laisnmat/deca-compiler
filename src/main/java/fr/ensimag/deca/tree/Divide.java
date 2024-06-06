@@ -1,7 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.DecacCompiler;
-
 /**
  *
  * @author gl03
@@ -17,8 +15,4 @@ public class Divide extends AbstractOpArith {
         return "/";
     }
 
-    @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
 }

@@ -17,7 +17,7 @@ mvn compile || exit 1
 nbtests=0
 nbpassed=0
 
-cd "${root}/context/invalid/renduInitial"
+cd "${root}/context/invalid/00.renduInitial"
 echo "### TEST: $(pwd) ###"
 rm -f *.res *.ass || exit 1
 for f in *.deca ; do
@@ -36,7 +36,7 @@ for f in *.deca ; do
     echo
 done
 
-cd "${root}/codegen/valid/renduInitial"
+cd "${root}/codegen/valid/00.renduInitial"
 echo "### TEST: $(pwd) ###"
 rm -f *.res *.ass || exit 1
 for f in *.deca ; do

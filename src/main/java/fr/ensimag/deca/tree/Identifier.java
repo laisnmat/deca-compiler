@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -16,13 +17,14 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -34,6 +36,9 @@ import org.apache.log4j.Logger;
  * @date 14/04/2024
  */
 public class Identifier extends AbstractIdentifier {
+    private static final Logger LOG = Logger.getLogger(Identifier.class);
+
+    private Definition definition;
 
     @Override
     protected void checkDecoration() {
@@ -174,10 +179,20 @@ public class Identifier extends AbstractIdentifier {
         this.name = name;
     }
 
+    /**
+     * Implements terminal "Identifier" of [SyntaxeContextuelle] in the 3 passes.
+     * Verify rule (0.2).
+     */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verify Identifier: checking if defined in the current environment");
+
+        // getting the definition associated with the current Identifier if it exists
         ExpDefinition def = localEnv.get(this.name);
+
+        // if the current Identifier has no definition associated, that means it has
+        // never been defined.
         if (def == null)
             throw new ContextualError("Identifier not declared", getLocation());
         setType(def.getType());
@@ -185,51 +200,42 @@ public class Identifier extends AbstractIdentifier {
         return def.getType();
     }
 
-    @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        compiler.addInstruction(new LOAD(this.getVariableDefinition().getOperand(), Register.getR(registerName)));
-    }
-
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), GPRegister.R1));
-        if (this.getType().isInt()) {
-            compiler.addInstruction(new WINT());
-        } else if (this.getType().isFloat()) {
-            compiler.addInstruction(new WFLOAT());
-        }
-    }
-
-    @Override
-    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
-        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), Register.R1));
-        if (branchIf) {
-            compiler.addInstruction(new CMP(1, Register.R1));
-        } else {
-            compiler.addInstruction(new CMP(0, Register.R1));
-        }
-        compiler.addInstruction(new BEQ(new Label(labelName)));
-    }
-
     /**
-     * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
+     * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes.
+     * Verify rule (0.2).
      * 
      * @param compiler contains "env_types" attribute
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        if (compiler.environmentType.defOfType(name) == null)
-            throw new ContextualError("unknown type ", getLocation());
-        return compiler.environmentType.defOfType(name).getType();
+        LOG.debug("verify Type: setting type");
 
+        // getting the definition associated with the current Identifier if it exists
+        TypeDefinition typeDefinition = compiler.environmentType.defOfType(this.name);
+
+        // if the current Identifier (representing a Type) has no definition associated,
+        // that means it has never been defined.
+        if (typeDefinition == null) {
+            throw new ContextualError("Type " + this.getName() + " is never defined.", getLocation());
+        }
+
+        // setting Definition and Type of this Identifier
+        this.setDefinition(typeDefinition);
+        this.setType(typeDefinition.getType());
+        return typeDefinition.getType();
     }
 
     @Override
-    protected DVal getDVal() {
-        return this.getExpDefinition().getOperand();
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new LOAD(this.getVariableDefinition().getOperand(), register));
     }
 
-    private Definition definition;
+    @Override
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        this.codeGenExp(compiler, Register.R0);
+        compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
+        compiler.addInstruction(jumpOnTrue ? new BNE(label) : new BEQ(label));
+    }
 
     @Override
     protected void iterChildren(TreeFunction f) {

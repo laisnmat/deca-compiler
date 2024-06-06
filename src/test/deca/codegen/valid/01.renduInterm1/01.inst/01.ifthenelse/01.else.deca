@@ -1,0 +1,22 @@
+// Description:
+//    Compilation d'un simple if else.
+//
+// Resultats:
+//      hello world!
+//
+// Historique:
+//    cree le 25/05/2024
+
+{
+    if (1 < 2) {
+        print("hello");
+    } else {
+        println("BAD");
+    }
+
+    if (2 < 1) {
+        println("BAD");
+    } else {
+        println(" world!");
+    }
+}

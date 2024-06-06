@@ -1,0 +1,14 @@
+// Description:
+//    Test de programme incorrect du parsing syntaxique de l'expression: if then else
+//
+// Resultats:
+//    On doit afficher une erreur de syntaxe : Une condition est attendu à la ligne 11
+//
+// Historique:
+//    cree le 23/05/2024
+
+{
+    if() {
+        
+    }
+}

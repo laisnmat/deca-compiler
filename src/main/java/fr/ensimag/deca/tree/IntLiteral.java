@@ -5,15 +5,15 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+
 import java.io.PrintStream;
+import org.apache.log4j.Logger;
 
 /**
  * Integer literal
@@ -22,6 +22,8 @@ import java.io.PrintStream;
  * @date 14/04/2024
  */
 public class IntLiteral extends AbstractExpr {
+    private static Logger LOG = Logger.getLogger(IntLiteral.class);
+
     public int getValue() {
         return value;
     }
@@ -33,27 +35,21 @@ public class IntLiteral extends AbstractExpr {
     }
 
     @Override
-    protected DVal getDVal() {
-        return new ImmediateInteger(this.getValue());
-    }
-
-    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type t = compiler.environmentType.INT;
-        setType(t);
-        return t;
+        LOG.debug("verify IntLiteral: setting type");
+        this.setType(compiler.environmentType.INT);
+        return this.getType();
     }
 
     @Override
-    protected void codeGenExp(DecacCompiler compiler, int register_name) {
-        compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()), Register.getR(register_name)));
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new LOAD(this.getValue(), register));
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateInteger(this.getValue()), GPRegister.R1));
-        compiler.addInstruction(new WINT());
+    DVal codeGenExp(DecacCompiler compiler) {
+        return new ImmediateInteger(this.getValue());
     }
 
     @Override

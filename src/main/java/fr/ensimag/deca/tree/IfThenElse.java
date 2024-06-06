@@ -1,14 +1,15 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.LabelManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.LabelIf;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -37,50 +38,58 @@ public class IfThenElse extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        condition.verifyExpr(compiler, localEnv, currentClass);
-        if (condition.getType() != compiler.environmentType.BOOLEAN) {
-            throw new ContextualError("La condition n'est pas une expression booléenne", getLocation());
-        }
+        condition.verifyCondition(compiler, localEnv, currentClass);
         thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
-
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        String elseLabel = compiler.labelManager.getLabel("else");
-        String endLabel = compiler.labelManager.getLabel("endIfThenElse");
-        condition.codeGenExpBool(compiler, false, elseLabel);
+        LabelIf labelIf = compiler.labelManager.getIf();
+        boolean isElse = !(this.elseBranch.getList().isEmpty());
 
-        thenBranch.codeGenListInst(compiler);
-        compiler.addInstruction(new BRA(new Label(endLabel)));
+        // compiler.addComment(labelIf.toString() + ": " + this.decompile());
 
-        compiler.addLabel(new Label(elseLabel));
-        elseBranch.codeGenListInst(compiler);
-        compiler.addInstruction(new BRA(new Label(endLabel)));
-        compiler.addLabel(new Label(endLabel));
+        // generate condition, that branches to the 'else' label if there is an 'else',
+        // else to the 'end' label.
+        this.condition.codeGenCondition(compiler, false, (isElse ? labelIf.getElseLabel() : labelIf.getEndLabel()));
+
+        // generate if instructions
+        this.thenBranch.codeGenListInst(compiler);
+
+        // generate else instructions if there is one
+        if (isElse) {
+            // when the 'if' condition is true, branch to the end
+            compiler.addInstruction(new BRA(labelIf.getEndLabel()));
+            compiler.addLabel(labelIf.getElseLabel());
+
+            this.elseBranch.codeGenListInst(compiler);
+        }
+
+        compiler.addLabel(labelIf.getEndLabel());
+
+        // delete the label prefix in the prefix of the LabelManager
+        labelIf.destruct();
     }
 
     @Override
-    public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("If Then Else Decompile not supported yet");
-        /*
-         * s.print("if(");
-         * condition.decompile(s);
-         * s.print("){");
-         * s.println();
-         * s.indent();
-         * thenBranch.decompile(s);
-         * s.unindent();
-         * if (!this.elseBranch.isEmpty()) {
-         * s.print("} else {"); // A changer pour else if
-         * s.println();
-         * s.indent();
-         * elseBranch.decompile(s);
-         * s.unindent();
-         * }
-         * s.print("}");
-         */
+    public void decompile(IndentPrintStream s) {        
+        s.print("if(");
+        condition.decompile(s);
+        s.print("){");
+        s.println();
+        s.indent();
+        thenBranch.decompile(s);
+        s.unindent();
+        if (!this.elseBranch.isEmpty()) {
+        s.print("} else {"); // A changer pour else if
+        s.println();
+        s.indent();
+        elseBranch.decompile(s);
+        s.unindent();
+        }
+        s.print("}");
+         
     }
 
     @Override

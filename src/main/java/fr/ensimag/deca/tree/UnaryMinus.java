@@ -23,11 +23,6 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @Override
     protected String getOperatorName() {
         return "-";
     }

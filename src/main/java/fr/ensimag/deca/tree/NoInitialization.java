@@ -16,12 +16,15 @@ import java.io.PrintStream;
  * @date 14/04/2024
  */
 public class NoInitialization extends AbstractInitialization {
-
+    /**
+     * Implements terminal "NoInitialization" of [SyntaxeContextuelle] in pass 3.
+     * Verify rule (3.9).
+     */
     @Override
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        return; // enough ? nils
+        // nothing to verify
     }
 
     /**

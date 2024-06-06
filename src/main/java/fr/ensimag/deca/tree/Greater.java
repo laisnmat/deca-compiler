@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.DecacCompiler;
 
 /**
  *
@@ -18,8 +17,4 @@ public class Greater extends AbstractOpIneq {
         return ">";
     }
 
-    @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
 }

@@ -39,11 +39,6 @@ public class TestPlusWithoutMock {
         }
 
         @Override
-        protected void codeGenExp(DecacCompiler compiler, int registerName) {
-            throw new UnsupportedOperationException("Should not be called.");
-        }
-
-        @Override
         public void decompile(IndentPrintStream s) {
             throw new UnsupportedOperationException("Should not be called.");
         }

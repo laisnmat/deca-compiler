@@ -1,0 +1,19 @@
+// Description:
+//    Vérification du parsing syntaxique de l'expression : '(' expr ')'
+//
+// Resultats:
+//      Ne doit pas générer d'erreur.
+//      L'arbre syntaxique doit respecter la priorité des parenthèses.
+//
+// Historique:
+//    cree le 22/05/2024
+
+{
+    int x, y;
+    (1);
+    (1||2);
+    (1 || 2) || 3;
+    (x || y);
+    (x = 1) || 2;
+    println(("1" || "2"), ("3" || "4"));
+}

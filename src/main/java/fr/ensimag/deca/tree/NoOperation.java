@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -15,16 +16,22 @@ import java.io.PrintStream;
  * @date 14/04/2024
  */
 public class NoOperation extends AbstractInst {
+    private static Logger LOG = Logger.getLogger(NoOperation.class);
 
+    /**
+     * Verify rule (3.23)
+     */
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-
+        // nothing to verify
+        LOG.debug("verify NoOperation: nothing to be done");
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        compiler.addComment("nop instruction (;) in source code");
     }
 
     @Override
