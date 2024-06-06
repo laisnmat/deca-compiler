@@ -39,7 +39,7 @@ public class Modulo extends AbstractOpArith {
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         this.getLeftOperand().codeGenExp(compiler, register);
-        GPRegister nextRegister = GPRegister.getR(register.getNumber());
+        GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
         this.getRightOperand().codeGenExp(compiler, nextRegister);
         compiler.addInstruction(new REM(register, nextRegister));
     }

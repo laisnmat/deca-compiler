@@ -23,7 +23,7 @@ public class Divide extends AbstractOpArith {
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         this.getLeftOperand().codeGenExp(compiler, register);
-        GPRegister nextRegister = GPRegister.getR(register.getNumber());
+        GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
         this.getRightOperand().codeGenExp(compiler, nextRegister);
         if (this.getType().isInt()) {
             compiler.addInstruction(new QUO(register, nextRegister));
