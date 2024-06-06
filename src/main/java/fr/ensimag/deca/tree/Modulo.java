@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.REM;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -20,12 +22,26 @@ public class Modulo extends AbstractOpArith {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        if (!this.getLeftOperand().getType().isInt() || !this.getRightOperand().getType().isInt()) {
+            throw new ContextualError("Operands must be of type int for operator %", this.getLocation());
+        }
+        this.setType(compiler.environmentType.INT);
+        return this.getType();
     }
 
     @Override
     protected String getOperatorName() {
         return "%";
+    }
+
+    @Override
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        this.getLeftOperand().codeGenExp(compiler, register);
+        GPRegister nextRegister = GPRegister.getR(register.getNumber());
+        this.getRightOperand().codeGenExp(compiler, nextRegister);
+        compiler.addInstruction(new REM(register, nextRegister));
     }
 
 }
