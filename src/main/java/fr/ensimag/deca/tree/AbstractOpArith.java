@@ -48,10 +48,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         if (!type1.sameType(type2)) {
             if (type1.isInt() && type2.isFloat()) {
                 ConvFloat conv = new ConvFloat(this.getLeftOperand());
+                conv.verifyExpr(compiler, localEnv, currentClass);
                 this.setLeftOperand(conv);
                 this.setType(type2);
             } else if (type1.isFloat() && type2.isInt()) {
                 ConvFloat conv = new ConvFloat(this.getRightOperand());
+                conv.verifyExpr(compiler, localEnv, currentClass);
                 this.setRightOperand(conv);
             } else {
                 throw new ContextualError(

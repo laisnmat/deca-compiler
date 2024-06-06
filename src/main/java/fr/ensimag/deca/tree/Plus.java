@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
 
@@ -25,15 +26,10 @@ public class Plus extends AbstractOpArith {
      * @param registerName The register to store the result of the operation
      */
     @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+    public void codeGenExp(DecacCompiler compiler, GPRegister registerName) {
         getLeftOperand().codeGenExp(compiler, registerName);
-        if (getRightOperand().getDVal() == null) {
-            getRightOperand().codeGenExp(compiler, registerName + 1);
-            compiler.addInstruction(
-                    new ADD(Register.getR(registerName + 1), Register.getR(registerName)));
-        } else {
-            compiler.addInstruction(
-                    new ADD(getRightOperand().getDVal(), Register.getR(registerName)));
-        }
+        GPRegister nextRegister = GPRegister.getR(registerName.getNumber() + 1);
+        getRightOperand().codeGenExp(compiler, nextRegister);
+        compiler.addInstruction(new ADD(nextRegister, registerName));
     }
 }
