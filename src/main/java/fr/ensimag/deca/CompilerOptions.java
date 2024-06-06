@@ -54,12 +54,12 @@ public class CompilerOptions {
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
-    private boolean parseDecompile = false;priate
-    int registerOption = 15;
-    private boolean onlyVerif = fals
-    private List<File> sourceFiles = new ArrayList<File>();pubic
+    private boolean parseDecompile = false;
+    private int registerOption = 15;
+    private boolean onlyVerif = false;
+    private List<File> sourceFiles = new ArrayList<File>();
 
-    void parseArgs(String[] args) throws CLIException
+    public void parseArgs(String[] args) throws CLIException
 
         boolean parsingR = false; // if -r option is detected, next arg must be an int value
         List<String> argsList = new ArrayList<String>();
