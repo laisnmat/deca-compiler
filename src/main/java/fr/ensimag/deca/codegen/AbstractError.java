@@ -1,16 +1,12 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.Instruction;
+
 public abstract class AbstractError {
 
-    protected String errorMsg;
-    protected int id;
-
-    public AbstractError(String errorMsg, int id) {
-        this.errorMsg = errorMsg;
-        this.id = id;
+    public AbstractError() {
     }
 
-    protected String getErrorMessage() {
-        return this.errorMsg;
-    }
+    abstract public void generateError(DecacCompiler compiler);
 }

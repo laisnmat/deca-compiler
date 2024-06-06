@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.ErrorManager;
 import fr.ensimag.deca.codegen.LabelManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.codegen.StackManager;
@@ -148,6 +149,11 @@ public class DecacCompiler {
      * The StackManager.
      */
     public final StackManager stackManager = new StackManager();
+
+    /**
+     * The ErrorManager
+     */
+    public final ErrorManager errorManager = new ErrorManager();
 
     public Symbol createSymbol(String name) {
         return symbolTable.create(name);

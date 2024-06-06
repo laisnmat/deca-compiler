@@ -48,22 +48,9 @@ public class Program extends AbstractProgram {
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
-        if (compiler.labelManager.isIoError()) {
-            compiler.addLabel(compiler.labelManager.getIoErrorLabel());
-            compiler.addInstruction(new WSTR("Error: Input/Output error"));
-            compiler.addInstruction(new WNL());
-            compiler.addInstruction(new ERROR());
-        }
-        if (compiler.labelManager.isDivByZeroError()) {
-            compiler.addLabel(compiler.labelManager.getDivByZeroError());
-            compiler.addInstruction(new WSTR("Error: Division by zero"));
-            compiler.addInstruction(new WNL());
-            compiler.addInstruction(new ERROR());
-        }
-        compiler.addLabel(compiler.labelManager.getStackOverflowError());
-        compiler.addInstruction(new WSTR("Error: Stack overflow"));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
+
+        compiler.errorManager.addTSTOError();
+        compiler.errorManager.generateErrors(compiler);
 
         compiler.addFirst(new Line(new ADDSP(compiler.stackManager.getADDSPValue())));
         compiler.addFirst(new Line(new BOV(compiler.labelManager.getStackOverflowError())));

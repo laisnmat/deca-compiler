@@ -35,13 +35,13 @@ public class ReadFloat extends AbstractReadExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        compiler.labelManager.setIoError(true);
         this.setType(compiler.environmentType.FLOAT);
         return this.getType();
     }
 
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        compiler.errorManager.addIOError();
         super.addComment(compiler, register);
         compiler.addInstruction(new RFLOAT());
         super.codeGenExp(compiler, register);
