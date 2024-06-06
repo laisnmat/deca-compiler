@@ -20,7 +20,6 @@ codegen_total=0
 # COMPILING
 echo -e "\e[34m### INFO: recompiling java files for $decac ###\e[0m"
 cd "$(dirname "${decac}")/../../.."
-mvn compile || exit 1
 
 syntax_file=$(mktemp)
 context_file=$(mktemp)
