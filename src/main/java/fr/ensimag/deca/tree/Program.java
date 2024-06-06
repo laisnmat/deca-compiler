@@ -3,13 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.ADDSP;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
-import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.HALT;
-import fr.ensimag.ima.pseudocode.instructions.TSTO;
-import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import fr.ensimag.ima.pseudocode.*;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -71,8 +65,9 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
 
+        compiler.addFirst(new Line(new ADDSP(compiler.stackManager.getADDSPValue())));
         compiler.addFirst(new Line(new BOV(compiler.labelManager.getStackOverflowError())));
-        compiler.addFirst(new Line(new TSTO(compiler.tsto.getCount())));
+        compiler.addFirst(new Line(new TSTO(compiler.stackManager.getTSTOValue())));
         compiler.addFirst(new Line("stack overflow test"));
     }
 
