@@ -7,8 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.SUB;
+import fr.ensimag.ima.pseudocode.instructions.OPP;
 
 /**
  * @author gl03
@@ -30,16 +29,11 @@ public class UnaryMinus extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        if (this.getType().isFloat()) {
-            compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.getR(registerName)));
-        } else {
-            compiler.addInstruction(new LOAD(0, Register.getR(registerName)));
-        }
         if (getOperand().getDVal() == null) {
             getOperand().codeGenExp(compiler, registerName + 1);
-            compiler.addInstruction(new SUB(Register.getR(registerName + 1), Register.getR(registerName)));
+            compiler.addInstruction(new OPP(Register.getR(registerName + 1), Register.getR(registerName)));
         } else {
-            compiler.addInstruction(new SUB(getOperand().getDVal(), Register.getR(registerName)));
+            compiler.addInstruction(new OPP(getOperand().getDVal(), Register.getR(registerName)));
         }
     }
 
