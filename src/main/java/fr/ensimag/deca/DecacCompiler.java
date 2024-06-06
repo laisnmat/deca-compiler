@@ -47,6 +47,7 @@ public class DecacCompiler {
     public static int MAXREGISTER;// This corresponds to the highest register (RMAX) we can reach while generating
                                   // code
 
+
     /**
      * Portable newline character.
      */
