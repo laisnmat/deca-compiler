@@ -1,6 +1,7 @@
 package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.LabelManager;
+import fr.ensimag.deca.codegen.TSTO;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
@@ -14,6 +15,8 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Line;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -40,9 +43,6 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    public LabelManager labelManager = new LabelManager();
-
-    private int offset;
 
     /**
      * Portable newline character.
@@ -53,7 +53,6 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
-        this.offset = 1;
     }
 
     /**
@@ -113,19 +112,10 @@ public class DecacCompiler {
 
     /**
      * @see
-     *      fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction)
+     *      fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Line)
      */
-    public void addFirst(Instruction instruction) {
-        program.addFirst(instruction);
-    }
-
-    /**
-     * @see
-     *      fr.ensimag.ima.pseudocode.IMAProgram#addFirst(fr.ensimag.ima.pseudocode.Instruction,
-     *      java.lang.String)
-     */
-    public void addFirst(Instruction instruction, String comment) {
-        program.addFirst(instruction, comment);
+    public void addFirst(Line l) {
+        program.addFirst(l);
     }
 
     /**
@@ -147,8 +137,13 @@ public class DecacCompiler {
     public final SymbolTable symbolTable = new SymbolTable();
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
+    /** The LabelManager. */
+    public final LabelManager labelManager = new LabelManager();
+
+    /** The TSTO. */
+    public final TSTO tsto = new TSTO();
+
     public Symbol createSymbol(String name) {
-        // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
         return symbolTable.create(name);
     }
 
@@ -200,11 +195,11 @@ public class DecacCompiler {
      * tree.
      *
      * @param sourceFile
-     *            name of the source (deca) file
+     *                   name of the source (deca) file
      * @param err
-     *            stream to use to display compilation errors
+     *                   stream to use to display compilation errors
      * @param out
-     *            stream to use for standard output (output of decac -p)
+     *                   stream to use for standard output (output of decac -p)
      *
      * @return true on error
      */
@@ -273,14 +268,10 @@ public class DecacCompiler {
      * Internal function that does the job of compiling (i.e. calling lexer,
      * verification and code generation).
      *
-     * @param sourceName
-     *            name of the source (deca) file
-     * @param destName
-     *            name of the destination (assembly) file
-     * @param out
-     *            stream to use for standard output (output of decac -p)
-     * @param err
-     *            stream to use to display compilation errors
+     * @param sourceName name of the source (deca) file
+     * @param destName   name of the destination (assembly) file
+     * @param out        stream to use for standard output (output of decac -p)
+     * @param err        stream to use to display compilation errors
      *
      * @return true on error
      */
@@ -322,19 +313,14 @@ public class DecacCompiler {
      * Build and call the lexer and parser to build the primitive abstract
      * syntax tree.
      *
-     * @param sourceName
-     *            Name of the file to parse
-     * @param err
-     *            Stream to send error messages to
+     * @param sourceName Name of the file to parse
+     * @param err        Stream to send error messages to
      * @return the abstract syntax tree
-     * @throws DecacFatalError
-     *             When an error prevented opening the source file
-     * @throws DecacInternalError
-     *             When an inconsistency was detected in the
-     *             compiler.
-     * @throws LocationException
-     *             When a compilation error (incorrect program)
-     *             occurs.
+     * @throws DecacFatalError    When an error prevented opening the source file
+     * @throws DecacInternalError When an inconsistency was detected in the
+     *                            compiler.
+     * @throws LocationException  When a compilation error (incorrect program)
+     *                            occurs.
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
             throws DecacFatalError, DecacInternalError {
@@ -349,14 +335,6 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
-    }
-
-    public void increaseOffset() {
-        offset++;
-    }
-
-    public int getOffset() {
-        return offset;
     }
 
 }

@@ -5,16 +5,14 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
 
 /**
  * Single precision, floating-point literal
@@ -23,6 +21,7 @@ import org.apache.commons.lang.Validate;
  * @date 14/04/2024
  */
 public class FloatLiteral extends AbstractExpr {
+    private static Logger LOG = Logger.getLogger(FloatLiteral.class);
 
     public float getValue() {
         return value;
@@ -39,27 +38,21 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    protected DVal getDVal() {
-        return new ImmediateFloat(getValue());
-    }
-
-    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        Type t = compiler.environmentType.FLOAT;
-        setType(t);
-        return t;
+        LOG.debug("verify FloatLiteral: setting type");
+        setType(compiler.environmentType.FLOAT);
+        return getType();
     }
 
     @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()), Register.getR(registerName)));
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new LOAD(this.getValue(), register));
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateFloat(this.getValue()), GPRegister.R1));
-        compiler.addInstruction(new WFLOAT());
+    DVal codeGenExp(DecacCompiler compiler) {
+        return new ImmediateFloat(this.getValue());
     }
 
     @Override

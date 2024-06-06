@@ -6,8 +6,6 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
@@ -33,33 +31,21 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
-    protected DVal getDVal() {
-        return new ImmediateInteger(getValue() ? 1 : 0);
-    }
-
-    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         setType(compiler.environmentType.BOOLEAN);
         return getType();
     }
 
-    /**
-     * For tests in conditions
-     * 
-     * @param compiler
-     * @param jumpIfTrue
-     * @param label
-     */
     @Override
-    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
         if (value) {
-            if (branchIf) {
-                compiler.addInstruction(new BRA(new Label(labelName)));
+            if (jumpOnTrue) {
+                compiler.addInstruction(new BRA(label));
             }
         } else {
-            if (!branchIf) {
-                compiler.addInstruction(new BRA(new Label(labelName)));
+            if (!jumpOnTrue) {
+                compiler.addInstruction(new BRA(label));
             }
         }
     }
@@ -72,10 +58,11 @@ public class BooleanLiteral extends AbstractExpr {
      * @param register
      */
     @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        compiler.addInstruction(new LOAD(value ? 1 : 0, GPRegister.getR(registerName)));
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new LOAD((this.getValue() ? 1 : 0), register));
     }
 
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(Boolean.toString(value));
     }

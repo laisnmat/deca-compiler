@@ -17,22 +17,15 @@ public class Equals extends AbstractOpExactCmp {
     }
 
     @Override
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        // generate comparison before branching
+        super.codeGenCondition(compiler, jumpOnTrue, label);
+        compiler.addInstruction(jumpOnTrue ? new BEQ(label) : new BNE(label));
+    }
+
+    @Override
     protected String getOperatorName() {
         return "==";
     }
 
-    @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        // avoids generation of useless code when given "x == y;" for example
-    }
-
-    @Override
-    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
-        super.codeGenExp(compiler, 2);
-        if (branchIf) {
-            compiler.addInstruction(new BEQ(new Label(labelName)));
-        } else {
-            compiler.addInstruction(new BNE(new Label(labelName)));
-        }
-    }
 }

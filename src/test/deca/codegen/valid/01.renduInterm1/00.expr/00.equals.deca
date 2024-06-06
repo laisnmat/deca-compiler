@@ -20,18 +20,14 @@
     2 == 3.0;
     3 == z;
 
-    // TODO: fix this
-    // y = (5 == 5);
-    // if (y == true) {
-    if(true){
+    y = (5 == 5);
+    if (y == true) {
         println("true");
     } else {
         println("false");
     }
-    // TODO: fix this
-    // y = (3 == 5);
-    // if (y == true) {
-    if(false){
+    y = (3 == 5);
+    if (y == true) {
         println("true");
     } else {
         println("false");

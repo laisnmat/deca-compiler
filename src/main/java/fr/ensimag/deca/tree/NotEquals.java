@@ -22,24 +22,11 @@ public class NotEquals extends AbstractOpExactCmp {
     }
 
     @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        // avoids generation of useless code when given "x != y;" for example
-    }
-
-    /**
-     * Implementation of !=
-     *
-     * @param compiler
-     * @param branchIf
-     * @param labelName
-     */
-    @Override
-    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
-        super.codeGenExp(compiler, 2);
-        if (branchIf) {
-            compiler.addInstruction(new BNE(new Label(labelName)));
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        if (jumpOnTrue) {
+            compiler.addInstruction(new BNE(label));
         } else {
-            compiler.addInstruction(new BEQ(new Label(labelName)));
+            compiler.addInstruction(new BEQ(label));
         }
     }
 }

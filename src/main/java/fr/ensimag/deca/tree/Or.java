@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.LabelOr;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 
 /**
@@ -14,17 +16,28 @@ public class Or extends AbstractOpBool {
         super(leftOperand, rightOperand);
     }
 
+    
+
     @Override
-    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
-        branchIf = !branchIf;
-        String endLabel = compiler.labelManager.getLabel("end");
-        if (branchIf) {
-            this.getLeftOperand().codeGenExpBool(compiler, true, endLabel);
-            this.getRightOperand().codeGenExpBool(compiler, false, labelName);
-            compiler.addLabel(new Label(endLabel));
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        LabelOr labelOr = compiler.labelManager.getOr();
+        this.codeGenCondition(compiler, true, labelOr.getEndLabel());
+        compiler.addLabel(labelOr.getEndLabel());
+        labelOr.destruct();
+    }
+
+    @Override
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        // ⟨Code(C1 || C2, b, E)⟩ ≡ ⟨Code(!(!C1 && !C2)), b, E)⟩
+        if (jumpOnTrue) {
+            this.getLeftOperand().codeGenCondition(compiler, true, label);
+            this.getRightOperand().codeGenCondition(compiler, true, label);
         } else {
-            this.getLeftOperand().codeGenExpBool(compiler, true, labelName);
-            this.getRightOperand().codeGenExpBool(compiler, true, labelName);
+            LabelOr labelOr = compiler.labelManager.getOr();
+            this.getLeftOperand().codeGenCondition(compiler, true, labelOr.getEndLabel());
+            this.getRightOperand().codeGenCondition(compiler, false, label);
+            compiler.addLabel(labelOr.getEndLabel());
+            labelOr.destruct();
         }
     }
 
@@ -33,8 +46,4 @@ public class Or extends AbstractOpBool {
         return "||";
     }
 
-    @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
 }

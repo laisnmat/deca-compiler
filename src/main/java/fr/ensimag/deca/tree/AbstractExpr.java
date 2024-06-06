@@ -2,17 +2,21 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.LabelBoolExp;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -89,18 +93,37 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass,
             Type expectedType)
             throws ContextualError {
-        Type t = verifyExpr(compiler, localEnv, currentClass);
-        if (!(expectedType.sameType(this.type) || (expectedType.isFloat() && this.type.isInt())))
-            throw new ContextualError("Type incorrect", getLocation());
-        // ConvFloat
-        if (expectedType.isFloat() && this.type.isInt()) {
-            ConvFloat cv = new ConvFloat(this);
-            cv.setType(expectedType);
-            return cv;
+        this.verifyExpr(compiler, localEnv, currentClass);
+
+        // if the type is an int but the expected type is a float,
+        // then perform a convertion from int to float
+        if (this.getType().isInt() && expectedType.isFloat()) {
+            AbstractExpr convExpr = new ConvFloat(this);
+            convExpr.verifyExpr(compiler, localEnv, currentClass);
+            return convExpr;
         }
+
+        // if the RValue's type is not the same as the LValue's type,
+        // then throw an exception
+        if (!this.getType().sameType(expectedType)) {
+            throw new ContextualError(
+                    "RValue must have the same type as LValue: "
+                            + this.getType()
+                            + " instead of "
+                            + expectedType,
+                    getLocation());
+        }
+
+        // the expected type is the same as the current type
         return this;
     }
 
+    /**
+     * Verify an AbstractExpr.
+     * As this object is an AbstractExpr, this method will execute verifyExpr by
+     * default.
+     * Can be overidden in subclasses.
+     */
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
@@ -121,6 +144,41 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        Type type = this.verifyExpr(compiler, localEnv, currentClass);
+
+        // the expression should be of type boolean as it is a condition
+        if (type != compiler.environmentType.BOOLEAN) {
+            throw new ContextualError("The condition should be of type 'boolean' but is of type '" + type + "'.",
+                    getLocation());
+        }
+    }
+
+    /**
+     * Evaluate the expression and stores its result in the register
+     * Register.getR(register_name)
+     * 
+     * @param compiler
+     * @param register
+     *                 The register where the result is stored.
+     */
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    /**
+     * Evaluate the expression and returns a Dval that contains the result.
+     * 
+     * @param compiler
+     * @return
+     *         The DVal of the Register 2: all results will always be stored in the
+     *         2th register.
+     */
+    DVal codeGenExp(DecacCompiler compiler) {
+        this.codeGenExp(compiler, Register.getR(2));
+        return Register.getR(2);
+    }
+
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
@@ -128,12 +186,18 @@ public abstract class AbstractExpr extends AbstractInst {
      * Generate code to print the expression
      *
      * @param compiler
+     * @param printHex
+     *                 whether to print the value as hexadecimal
      */
-    protected void codeGenPrint(DecacCompiler compiler) {
+    protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
         DVal d = this.codeGenExp(compiler);
         compiler.addInstruction(new LOAD(d, Register.R1));
         if (this.getType().isFloat()) {
-            compiler.addInstruction(new WFLOAT());
+            if (printHex) {
+                compiler.addInstruction(new WFLOATX());
+            } else {
+                compiler.addInstruction(new WFLOAT());
+            }
         } else if (this.getType().isInt()) {
             compiler.addInstruction(new WINT());
         } else {
@@ -141,24 +205,21 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected DVal getDVal() {
-        return null;
-    }
-
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        this.codeGenExp(compiler, 2);
-    }
-
-    protected abstract void codeGenExp(DecacCompiler compiler, int registerName);
-
-    DVal codeGenExp(DecacCompiler compiler) {
-        this.codeGenExp(compiler, 2);
-        return Register.getR(2);
-    }
-
-    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
-        throw new DecacInternalError("This version should not be called.");
+        // if this instruction is of type boolean,
+        // then generate it as a condition,
+        // else generate it as an expression.
+        if (this.getType() != null && this.getType().isBoolean()) {
+            // label for this boolean expression
+            LabelBoolExp labelBoolExp = compiler.labelManager.getBoolExp();
+            this.codeGenCondition(compiler, false, labelBoolExp.getEndLabel());
+            compiler.addLabel(labelBoolExp.getEndLabel());
+            labelBoolExp.destruct();
+        } else {
+            // by default, store the result of this expression in the register R2
+            this.codeGenExp(compiler, GPRegister.getR(2));
+        }
     }
 
     @Override

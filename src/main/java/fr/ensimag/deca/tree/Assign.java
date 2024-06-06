@@ -1,10 +1,19 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.codegen.LabelBoolAssign;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -28,27 +37,63 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        Type t = getLeftOperand().getType();
-        setRightOperand(getRightOperand().verifyRValue(compiler, localEnv, currentClass, t));
-        setType(t);
-        // which type should I pass ?
-        return t;
+        // verify left operand and get its type
+        Type type = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        // verify if right operand can be assigned to left operand, eventually using an
+        // additional ConvFLoat
+        setRightOperand(getRightOperand().verifyRValue(compiler, localEnv, currentClass, type));
+
+        // set the type of this Assign an returns it
+        setType(type);
+        return getType();
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        // type ident = value; -> LOAD(value, ident.addr)
-        int storageRegister = 2;
-        getRightOperand().codeGenExp(compiler, storageRegister); // register number where rhs of initialization expr is
-                                                                 // stored
-        Identifier ident = (Identifier) getLeftOperand(); // get the identifier of the assignment
-        compiler.addInstruction(new STORE(Register.getR(storageRegister), ident.getExpDefinition().getOperand()));
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        // get the result of the right expression into the register
+        getRightOperand().codeGenExp(compiler, register);
+
+        // store the content of the register into the memory
+        if (this.getLeftOperand() instanceof Identifier) {
+            compiler.addInstruction(
+                    new STORE(
+                            register,
+                            ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()),
+                    "assignment");
+        } else {
+            throw new DecacInternalError("Unexpected case in Assign.codeGenExp: please report this bug.");
+        }
     }
 
     @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        // get the result of the right expression into the register
+        LabelBoolAssign labelBoolAssign = compiler.labelManager.getBoolAssign();
+
+        // 'if' instructions: the boolean takes the value one if the condition is true,
+        // else jump to the 'else' instructions
+        this.getRightOperand().codeGenCondition(compiler, false, labelBoolAssign.getFalseLabel());
+        compiler.addInstruction(new LOAD(1, Register.R0));
+
+        // 'else' instructions: the boolean takes the value zero
+        compiler.addInstruction(jumpOnTrue ? new BRA(label) : new BRA(labelBoolAssign.getTrueLabel()));
+        compiler.addLabel(labelBoolAssign.getFalseLabel());
+        compiler.addInstruction(new LOAD(0, Register.R0));
+        // end of the 'else' instructions
+        compiler.addLabel(labelBoolAssign.getTrueLabel());
+
+        // store the value into the boolean identifier
+        if (this.getLeftOperand() instanceof Identifier) {
+            compiler.addInstruction(
+                    new STORE(Register.R0,
+                            ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()),
+                    "assignment");
+        } else {
+            throw new DecacInternalError("Unexpected case in Assign.codeGenExp: please report this bug.");
+        }
+
+        labelBoolAssign.destruct();
     }
 
     @Override

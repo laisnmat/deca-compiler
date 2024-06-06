@@ -5,9 +5,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  *
@@ -23,39 +24,42 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        if (!(getLeftOperand().getType() == compiler.environmentType.INT
-                || getLeftOperand().getType() == compiler.environmentType.FLOAT)) {
-            throw new ContextualError("L'opérande gauche n'est ni un int ni un float", getLocation());
+        // verify that the two operands are of the same type
+        Type type1 = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type type2 = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+
+        // check that the two operands are comparable
+        if (!(type1.isFloat() || type1.isInt()) || !(type2.isFloat() || type2.isInt())) {
+            if (type1.sameType(type2)) {
+                throw new ContextualError(
+                        "Illegal operand \'" + this.getOperatorName() + "\' between " + type1.getName(),
+                        getLocation());
+            }
+            throw new ContextualError(
+                    "Illegal operand \'" + this.getOperatorName() + "\' between " + type1.getName() + " and "
+                            + type2.getName(),
+                    getLocation());
         }
 
-        getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        if (!(getRightOperand().getType() == compiler.environmentType.INT
-                || getRightOperand().getType() == compiler.environmentType.FLOAT)) {
-            throw new ContextualError("L'opérande droite n'est ni un int ni un float", getLocation());
+        if (type1.isFloat() && type2.isInt()) {
+            this.setRightOperand(new ConvFloat(this.getRightOperand()));
+            this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        }
+        if (type1.isInt() && type2.isFloat()) {
+            this.setLeftOperand(new ConvFloat(this.getLeftOperand()));
+            this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         }
 
-        if (getLeftOperand().getType() == compiler.environmentType.INT
-                && getRightOperand().getType() == compiler.environmentType.FLOAT) {
-            ConvFloat cv = new ConvFloat(getLeftOperand());
-            cv.setType(compiler.environmentType.FLOAT);
-            setLeftOperand(cv);
-        } else if (getRightOperand().getType() == compiler.environmentType.INT
-                && getLeftOperand().getType() == compiler.environmentType.FLOAT) {
-            ConvFloat cv = new ConvFloat(getRightOperand());
-            cv.setType(compiler.environmentType.FLOAT);
-            setRightOperand(cv);
-        }
-
-        setType(compiler.environmentType.BOOLEAN);
-        return compiler.environmentType.BOOLEAN;
+        this.setType(compiler.environmentType.BOOLEAN);
+        return this.getType();
     }
 
     @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        this.getLeftOperand().codeGenExp(compiler, registerName);
-        compiler.addInstruction(new LOAD(Register.getR(registerName), Register.getR(registerName + 1)));
-        this.getRightOperand().codeGenExp(compiler, registerName);
-        compiler.addInstruction(new CMP(Register.getR(registerName), Register.getR(registerName + 1)));
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        DVal dvalRightOp = this.getRightOperand().codeGenExp(compiler);
+        GPRegister registerLeftOp = (dvalRightOp == GPRegister.getR(2) ? GPRegister.getR(3) : GPRegister.getR(2));
+        this.getLeftOperand().codeGenExp(compiler, registerLeftOp);
+
+        compiler.addInstruction(new CMP(dvalRightOp, registerLeftOp));
     }
 }

@@ -2,12 +2,14 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.LabelWhile;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -37,24 +39,34 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        String startLabel = compiler.labelManager.getLabel("startWhile");
-        String endLabel = compiler.labelManager.getLabel("endWhile");
+        LabelWhile labelWhile = compiler.labelManager.getWhile();
+        Label labelEnd = labelWhile.getEndLabel();
+        Label labelStart = labelWhile.getStartLabel();
 
-        compiler.addLabel(new Label(startLabel));
-        condition.codeGenExpBool(compiler, false, endLabel);
+        compiler.addComment(labelWhile.toString() + ": while (" + this.condition.decompile() + ")");
+
+        // generate start label
+        compiler.addLabel(labelStart);
+
+        // generate condition, that branches to the 'end' label if false
+        condition.codeGenCondition(compiler, false, labelEnd);
+
+        // generate body instructions
         body.codeGenListInst(compiler);
-        compiler.addInstruction(new BRA(new Label(startLabel)));
-        compiler.addLabel(new Label(endLabel));
+
+        // generate branch to the start label
+        compiler.addInstruction(new BRA(labelStart));
+
+        // generate end label
+        compiler.addLabel(labelEnd);
+        labelWhile.destruct();
     }
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        condition.verifyExpr(compiler, localEnv, currentClass);
-        if (condition.getType() != compiler.environmentType.BOOLEAN) {
-            throw new ContextualError("La condition n'est pas une expression booléenne", getLocation());
-        }
+        condition.verifyCondition(compiler, localEnv, currentClass);
         body.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
 

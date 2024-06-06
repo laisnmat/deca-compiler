@@ -1,7 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.LabelManager;
+import fr.ensimag.deca.codegen.LabelAnd;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 
 /**
@@ -21,20 +22,24 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    protected void codeGenExp(DecacCompiler compiler, int registerName) {
-        throw new UnsupportedOperationException("not yet implemented");
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        LabelAnd labelAnd = compiler.labelManager.getAnd();
+        this.codeGenCondition(compiler, false, labelAnd.getEndLabel());
+        compiler.addLabel(labelAnd.getEndLabel());
+        labelAnd.destruct();
     }
 
     @Override
-    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
-        if (branchIf) {
-            String endLabel = compiler.labelManager.getLabel("end");
-            this.getLeftOperand().codeGenExpBool(compiler, false, endLabel);
-            this.getRightOperand().codeGenExpBool(compiler, true, labelName);
-            compiler.addLabel(new Label(endLabel));
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        if (jumpOnTrue) {
+            LabelAnd labelAnd = compiler.labelManager.getAnd();
+            this.getLeftOperand().codeGenCondition(compiler, false, labelAnd.getEndLabel());
+            this.getRightOperand().codeGenCondition(compiler, true, label);
+            compiler.addLabel(labelAnd.getEndLabel());
+            labelAnd.destruct();
         } else {
-            this.getLeftOperand().codeGenExpBool(compiler, false, labelName);
-            this.getRightOperand().codeGenExpBool(compiler, false, labelName);
+            this.getLeftOperand().codeGenCondition(compiler, false, label);
+            this.getRightOperand().codeGenCondition(compiler, false, label);
         }
     }
 }

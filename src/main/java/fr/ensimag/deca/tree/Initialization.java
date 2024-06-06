@@ -29,13 +29,18 @@ public class Initialization extends AbstractInitialization {
     public Initialization(AbstractExpr expression) {
         Validate.notNull(expression);
         this.expression = expression;
+        setLocation(expression.getLocation());
     }
 
+    /**
+     * Implements terminal "Initialization" of [SyntaxeContextuelle] in pass 3.
+     * Verify rule (3.8).
+     */
     @Override
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        expression.verifyRValue(compiler, localEnv, currentClass, t);
+        this.setExpression(expression.verifyRValue(compiler, localEnv, currentClass, t));
     }
 
     @Override
