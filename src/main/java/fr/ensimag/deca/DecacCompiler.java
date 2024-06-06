@@ -368,12 +368,4 @@ public class DecacCompiler {
 
         return false;
     }
-
-    public void increaseOffset() {
-        offset++;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
 }
