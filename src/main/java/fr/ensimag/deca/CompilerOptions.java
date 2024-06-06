@@ -95,7 +95,7 @@ public class CompilerOptions {
                         if (argsList.contains("-p")) {
                             throw new CLIException("Cannot use argument -v and -p at the same time");
                         }
-                        if (argsList.contains("-v")) {
+                        if (onlyVerif) {
                             throw new CLIException("Cannot use argument -v multiple times");
                         }
                         argsList.add("-v");
