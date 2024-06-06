@@ -5,6 +5,10 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.SUB;
 
 /**
  * @author gl03
@@ -17,9 +21,26 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        Type type = getOperand().verifyExpr(compiler, localEnv, currentClass);
+        setType(type);
+        return type;
+    }
+
+    @Override
+    protected void codeGenExp(DecacCompiler compiler, int registerName) {
+        if (this.getType().isFloat()) {
+            compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.getR(registerName)));
+        } else {
+            compiler.addInstruction(new LOAD(0, Register.getR(registerName)));
+        }
+        if (getOperand().getDVal() == null) {
+            getOperand().codeGenExp(compiler, registerName + 1);
+            compiler.addInstruction(new SUB(Register.getR(registerName + 1), Register.getR(registerName)));
+        } else {
+            compiler.addInstruction(new SUB(getOperand().getDVal(), Register.getR(registerName)));
+        }
     }
 
     @Override
