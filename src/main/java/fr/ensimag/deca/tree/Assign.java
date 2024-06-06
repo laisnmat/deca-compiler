@@ -52,6 +52,7 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         // get the result of the right expression into the register
+        super.addComment(compiler, register);
         getRightOperand().codeGenExp(compiler, register);
 
         // store the content of the register into the memory
@@ -69,6 +70,7 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
         // get the result of the right expression into the register
+        super.addComment(compiler, jumpOnTrue, label);
         LabelBoolAssign labelBoolAssign = compiler.labelManager.getBoolAssign();
 
         // 'if' instructions: the boolean takes the value one if the condition is true,

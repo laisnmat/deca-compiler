@@ -19,6 +19,7 @@ public class Lower extends AbstractOpIneq {
     @Override
     public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
         // generate comparison before branching
+        super.addComment(compiler, jumpOnTrue, label);
         super.codeGenCondition(compiler, jumpOnTrue, label);
         compiler.addInstruction(jumpOnTrue ? new BLT(label) : new BGE(label));
     }
@@ -27,5 +28,4 @@ public class Lower extends AbstractOpIneq {
     protected String getOperatorName() {
         return "<";
     }
-
 }

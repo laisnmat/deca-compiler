@@ -238,4 +238,8 @@ public abstract class AbstractExpr extends AbstractInst {
             s.println();
         }
     }
+
+    protected void addComment(DecacCompiler compiler, GPRegister register){
+        compiler.addComment("codeExp(" + decompile() + ", " + register + ")");
+    }
 }

@@ -38,6 +38,7 @@ public class ReadFloat extends AbstractReadExpr {
 
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        super.addComment(compiler, register);
         compiler.addInstruction(new RFLOAT());
         super.codeGenExp(compiler, register);
     }
