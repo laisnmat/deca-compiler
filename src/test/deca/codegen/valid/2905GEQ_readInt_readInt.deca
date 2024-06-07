@@ -1,0 +1,6 @@
+{
+    int x ; 
+    if(readInt() >= readInt()){
+        x = 2;
+    }
+}
