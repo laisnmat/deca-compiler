@@ -1,6 +1,6 @@
 {
     int x ; 
-    if(readInt() >= readFloat()){
+    if(readInt() >= readInt()){
         x = 2;
     }
 }
