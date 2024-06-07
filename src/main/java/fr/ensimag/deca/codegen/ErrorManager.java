@@ -15,6 +15,12 @@ public class ErrorManager {
         containsIOError = false;
     }
 
+    /**
+     * This methods will generate the error body of each AbstractError that must be
+     * implemented in the code
+     * 
+     * @param compiler
+     */
     public void generateErrors(DecacCompiler compiler) {
 
         for (AbstractError err : errors) {

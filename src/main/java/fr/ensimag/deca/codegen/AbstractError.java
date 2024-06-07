@@ -8,5 +8,10 @@ public abstract class AbstractError {
     public AbstractError() {
     }
 
+    /**
+     * Generate eroor body of this Error
+     * 
+     * @param compiler
+     */
     abstract public void generateError(DecacCompiler compiler);
 }
