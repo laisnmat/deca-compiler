@@ -46,6 +46,10 @@ public class DecacMain {
                     if (compiler.decompile()) {
                         error = true;
                     }
+                } else if (options.getOnlyVerif()) {
+                    if (compiler.onlyVerif()) {
+                        error = true;
+                    }
                 } else {
                     if (compiler.compile()) {
                         error = true;

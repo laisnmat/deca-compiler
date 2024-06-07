@@ -47,30 +47,44 @@ public class CompilerOptions {
         return Collections.unmodifiableList(sourceFiles);
     }
 
+    public boolean getOnlyVerif() {
+        return onlyVerif;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private boolean parseDecompile = false;
     private int registerOption = 15;
+    private boolean onlyVerif = false;
     private List<File> sourceFiles = new ArrayList<File>();
 
     public void parseArgs(String[] args) throws CLIException {
+
         boolean parsingR = false; // if -r option is detected, next arg must be an int value
         List<String> argsList = new ArrayList<String>();
         for (String arg : args) {
             // parse options
             if (parsingR) {
-                registerOption = Integer.parseInt(arg) - 1;
+                if (registerOption <= 16 && registerOption >= 4) {
+                    registerOption = Integer.parseInt(arg) - 1;
+                } else if (registerOption < 4) {
+                    System.out.println("The number of registers must be at least 4, setting it to 4");
+                    registerOption = 4;
+                } else {
+                    System.out.println("The number of registers must be maximum at 16, setting it to 16");
+                    registerOption = 16;
+                }
                 parsingR = false;
                 continue;
             }
             if (arg.startsWith("-")) {
                 switch (arg) {
                     case "-p":
-                        if (argsList.contains("-v")) {
+                        if (onlyVerif) {
                             throw new CLIException("Cannot use option -v and -p at the same time");
                         }
-                        if (argsList.contains("-p")) {
+                        if (parseDecompile) {
                             throw new CLIException("Cannot use the same option twice");
                         }
                         argsList.add("-p");
@@ -88,6 +102,16 @@ public class CompilerOptions {
                         argsList.add("-r");
                         parsingR = true; // Meaning next arg must be an int
                         break;
+                    case "-v":
+                        if (parseDecompile) {
+                            throw new CLIException("Cannot use argument -v and -p at the same time");
+                        }
+                        if (onlyVerif) {
+                            throw new CLIException("Cannot use argument -v multiple times");
+                        }
+                        argsList.add("-v");
+                        onlyVerif = true;
+                        break;
                     default:
                         throw new CLIException("Option not recognized: " + arg);
                 }
@@ -103,6 +127,11 @@ public class CompilerOptions {
             // else the provided file does not have the right ".deca" extension
             throw new CLIException(
                     "Argument not recognized: the provided file does not have the extension \".deca\": " + arg);
+        }
+
+        if (parsingR) {
+            System.out.println("The -r option must be followed by an integer, setting it to 16");
+            registerOption = 16;
         }
 
         Logger logger = Logger.getRootLogger();
