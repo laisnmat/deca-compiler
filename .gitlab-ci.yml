@@ -52,7 +52,7 @@ test_renduIntermediaire2:
     - merge_requests
 
 summary:
-  stage: test_renduIntermediaire2
+  stage: summary
   dependencies:
     - build
   script:
