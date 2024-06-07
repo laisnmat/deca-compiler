@@ -59,7 +59,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a class definition.
+     *                            if the definition is not a class definition.
      */
     @Override
     public ClassDefinition getClassDefinition() {
@@ -81,7 +81,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a method definition.
+     *                            if the definition is not a method definition.
      */
     @Override
     public MethodDefinition getMethodDefinition() {
@@ -103,7 +103,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public FieldDefinition getFieldDefinition() {
@@ -125,7 +125,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public VariableDefinition getVariableDefinition() {
@@ -147,7 +147,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *                            if the definition is not a field definition.
      */
     @Override
     public ExpDefinition getExpDefinition() {
@@ -204,7 +204,7 @@ public class Identifier extends AbstractIdentifier {
      * Verify rule (0.2).
      * 
      * @param compiler
-     *            contains "env_types" attribute
+     *                 contains "env_types" attribute
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {

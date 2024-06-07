@@ -28,15 +28,15 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
      * operands if necessary or throws an error if the types are not compatible
      * 
      * @param compiler
-     *            (type- DecacCompiler) the compiler
+     *                     (type- DecacCompiler) the compiler
      * @param localEnv
-     *            (type- EnvironmentExp) the environment in which the
-     *            expression is checked
+     *                     (type- EnvironmentExp) the environment in which the
+     *                     expression is checked
      * @param currentClass
-     *            (type- ClassDefinition) the current class
+     *                     (type- ClassDefinition) the current class
      * @return (type- Type) the type of the expression (int or float)
      * @throws ContextualError
-     *             if the types are not compatible
+     *                         if the types are not compatible
      */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -63,14 +63,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
     public DVal codeGenOpperand(DecacCompiler compiler, GPRegister register) {
         this.getLeftOperand().codeGenExp(compiler, register);
-        compiler.addInstruction(new PUSH(GPRegister.getR(2)));
-        DVal nextRegister = this.getRightOperand().getDVal();
-        if (nextRegister instanceof GPRegister) {
-            GPRegister next = GPRegister.getR(register.getNumber() + 1);
-            compiler.addInstruction(new LOAD(nextRegister, next));
-            nextRegister = next;
-            compiler.addInstruction(new POP(GPRegister.getR(2)));
+        DVal dVal = this.getRightOperand().getDVal();
+        if (dVal == null) {
+            GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
+            this.getRightOperand().codeGenExp(compiler, nextRegister);
+            return nextRegister;
         }
-        return nextRegister;
+        return dVal;
     }
 }
