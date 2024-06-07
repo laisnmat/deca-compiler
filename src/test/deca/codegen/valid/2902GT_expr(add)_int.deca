@@ -1,7 +1,8 @@
 {
     int x = 0; 
     int y = 1;
-    if((x*y) > y){
+    if((x+y) > y){
         x = 2;
+        printx(x);
     }
 }

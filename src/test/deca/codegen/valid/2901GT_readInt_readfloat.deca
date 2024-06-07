@@ -2,5 +2,6 @@
     int x ; 
     if(readInt() > readFloat()){
         x = 2;
+        printx(x);
     }
 }

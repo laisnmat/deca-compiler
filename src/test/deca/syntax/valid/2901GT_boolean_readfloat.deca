@@ -2,5 +2,6 @@
     boolean x = 6 ; 
     if(x > readFloat()){
         x = 2;
+        printx(x);
     }
 }

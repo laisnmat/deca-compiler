@@ -3,5 +3,6 @@
     int y = 1; 
     if(x >= y){
         x = 2;
+        printx(x);
     }
 }
