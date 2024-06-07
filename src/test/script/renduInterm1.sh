@@ -52,7 +52,7 @@ nbpassed=$(($syntax_passed+$context_passed+$codegen_passed))
 nbtests=$(($syntax_total+$context_total+$codegen_total))
 
 echo -e "############### SUMMARY ###############"
-echo -e "\t\tPASSED\tFAILED"
+echo -e "\t\tPASSED\tTOTAL"
 echo -e "SYNTAX: \t${syntax_passed}\t${syntax_total}"
 echo -e "CONTEXT: \t${context_passed}\t${context_total}"
 echo -e "CODEGEN: \t${codegen_passed}\t${codegen_total}"
