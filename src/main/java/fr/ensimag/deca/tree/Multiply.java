@@ -26,28 +26,13 @@ public class Multiply extends AbstractOpArith {
      * Generate assembly code for the expression (Multiply)
      * 
      * @param compiler
-     *                 the compiler
+     *            the compiler
      * @param register
-     *                 the register to store the result
+     *            the register to store the result
      */
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
-        this.getLeftOperand().codeGenExp(compiler, register);
-        DVal dvalRightOp = this.getRightOperand().getDVal();
-        if (dvalRightOp != null) {
-            compiler.addInstruction(new MUL(dvalRightOp, register));
-        } else {
-            if (register.getNumber() == DecacCompiler.MAXREGISTER) {
-                compiler.addInstruction(new PUSH(register), "sauvegarde ");
-                this.getRightOperand().codeGenExp(compiler, register);
-                compiler.addInstruction(new LOAD(register, GPRegister.R1));
-                compiler.addInstruction(new POP(register), "restauration ");
-                compiler.addInstruction(new MUL(GPRegister.R1, register));
-            } else {
-                GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
-                this.getRightOperand().codeGenExp(compiler, nextRegister);
-                compiler.addInstruction(new MUL(nextRegister, register));
-            }
-        }
+        DVal rDval = this.codeGenOp(compiler, register);
+        compiler.addInstruction(new MUL(rDval, register));
     }
 }

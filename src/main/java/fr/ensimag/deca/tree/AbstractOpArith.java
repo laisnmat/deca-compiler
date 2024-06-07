@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.MUL;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
@@ -28,15 +29,15 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
      * operands if necessary or throws an error if the types are not compatible
      * 
      * @param compiler
-     *                     (type- DecacCompiler) the compiler
+     *            (type- DecacCompiler) the compiler
      * @param localEnv
-     *                     (type- EnvironmentExp) the environment in which the
-     *                     expression is checked
+     *            (type- EnvironmentExp) the environment in which the
+     *            expression is checked
      * @param currentClass
-     *                     (type- ClassDefinition) the current class
+     *            (type- ClassDefinition) the current class
      * @return (type- Type) the type of the expression (int or float)
      * @throws ContextualError
-     *                         if the types are not compatible
+     *             if the types are not compatible
      */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -59,5 +60,25 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             }
         }
         return type1;
+    }
+
+    public DVal codeGenOp(DecacCompiler compiler, GPRegister register) {
+        this.getLeftOperand().codeGenExp(compiler, register);
+        DVal dvalRightOp = this.getRightOperand().getDVal();
+        if (dvalRightOp != null) {
+            return dvalRightOp;
+        } else {
+            if (register.getNumber() == DecacCompiler.MAXREGISTER) {
+                compiler.addInstruction(new PUSH(register), "sauvegarde ");
+                this.getRightOperand().codeGenExp(compiler, register);
+                compiler.addInstruction(new LOAD(register, GPRegister.R1));
+                compiler.addInstruction(new POP(register), "restauration ");
+                return GPRegister.R1;
+            } else {
+                GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
+                this.getRightOperand().codeGenExp(compiler, nextRegister);
+                return nextRegister;
+            }
+        }
     }
 }
