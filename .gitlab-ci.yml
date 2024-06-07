@@ -3,10 +3,7 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 stages:
   - build
-  - test_renduInitial
-  - test_renduIntermediaire1
-  - test_renduIntermediaire2
-  - summary
+  - test
 cache:
   paths:
     - .m2/repository/
@@ -18,8 +15,8 @@ build:
   script:
     - mvn $MAVEN_OPTS clean compile
 
-test_renduInitial:
-  stage: test_renduInitial
+test:initial:
+  stage: test
   dependencies:
     - build
   script:
@@ -29,10 +26,9 @@ test_renduInitial:
     - develop
     - merge_requests
 
-test_renduIntermediaire1:
-  stage: test_renduIntermediaire1
-  dependencies:
-    - build
+test:interm1:
+  stage: test
+  needs: ["test:initial"]
   script:
     - mvn $MAVEN_CLI_OPTS exec:exec@test_renduIntermediaire1
   only:
@@ -40,10 +36,9 @@ test_renduIntermediaire1:
     - develop
     - merge_requests
 
-test_renduIntermediaire2:
-  stage: test_renduIntermediaire2
-  dependencies:
-    - build
+test:interm2:
+  stage: test
+  needs: ["test:interm1"]
   script:
     - mvn $MAVEN_CLI_OPTS exec:exec@test_renduIntermediaire2
   only:
@@ -51,10 +46,9 @@ test_renduIntermediaire2:
     - develop
     - merge_requests
 
-summary:
-  stage: summary
-  dependencies:
-    - build
+test:summary:
+  stage: test
+  needs: ["test:interm2"]
   script:
     - mvn $MAVEN_CLI_OPTS exec:exec@summary
   only:
