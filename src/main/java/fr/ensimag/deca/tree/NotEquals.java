@@ -23,6 +23,8 @@ public class NotEquals extends AbstractOpExactCmp {
 
     @Override
     public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        super.addComment(compiler, jumpOnTrue, label);
+        super.codeGenCondition(compiler, jumpOnTrue, label);
         if (jumpOnTrue) {
             compiler.addInstruction(new BNE(label));
         } else {
