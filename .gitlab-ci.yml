@@ -19,7 +19,8 @@ build:
 
 test:initial:
   stage: test
-  needs: ["build"]
+  dependencies:
+    - "build"
   script:
     - mvn $MAVEN_CLI_OPTS exec:exec@test_renduInitial
   only:
@@ -61,7 +62,8 @@ test:summary:
 
 cleanup:
   stage: cleanup
-  needs: ["test:summary"]
+  dependencies:
+    - "test:summary"
   script:
     - mvn $MAVEN_CLI_OPTS clean
   only:
