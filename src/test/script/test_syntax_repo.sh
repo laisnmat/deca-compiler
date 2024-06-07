@@ -55,7 +55,7 @@ clean.sh syntax/valid/${path_repo} || exit 1
 echo
 echo -e "\e[34m### STARTING VALID TEST_SYNT VERIFICATION ###\e[0m"
 shopt -s globstar
-for f in ${root}/syntax/valid/${path_repo}/**/[0-9]*.*.deca; do
+for f in ${root}/syntax/valid/${path_repo}/**/*.deca; do
     file_abs="${f%.deca}"
     # get the path to the file, starting from $tests_repo
     file_print=$(echo "$f" | sed "s/.*\(${tests_repo}\)/\1/g")
@@ -108,7 +108,7 @@ clean.sh syntax/invalid/${path_repo} || exit 1
 echo
 echo -e "\e[34m### STARTING INVALID TEST_SYNT VERIFICATION ###\e[0m"
 shopt -s globstar
-for f in ${root}/syntax/invalid/${path_repo}/**/[0-9]*.*.deca; do
+for f in ${root}/syntax/invalid/${path_repo}/**/*.deca; do
     file_abs="${f%.deca}"
     # get the path to the file, starting from $tests_repo
     file_print=$(echo "$f" | sed "s/.*\(${tests_repo}\)/\1/g")
@@ -150,5 +150,10 @@ if [ ${nbpassed} -eq ${nbtests} ]; then
 else
     SCORE_COLOR="\e[31m"
 fi
+export SYNTAX_NB_PASSED="${nbpassed}"
 
 echo -e "### TOTAL SCORE: ${SCORE_COLOR}${nbpassed} PASSED / ${nbtests} TESTS \e[0m###"
+
+mkdir -p ./tmp/
+echo $nbpassed > ./tmp/syntax_passed.tmp
+echo $nbtests > ./tmp/syntax_total.tmp

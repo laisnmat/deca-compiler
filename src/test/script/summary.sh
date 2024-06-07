@@ -1,0 +1,92 @@
+#!/bin/bash
+
+
+cd "$(dirname "$0")/../deca"
+root="$(pwd)"
+
+rm -f "$root/tmp/*.tmp"
+
+
+echo "###############################"
+echo "######   SUMMARY TESTS   ######"
+echo -e "###############################\n\n"
+
+tmpdir=$root/tmp/renduInitial
+syntax_passed_initial=$(cat $tmpdir/syntax_passed.tmp)
+syntax_total_initial=$(cat $tmpdir/syntax_total.tmp)
+context_passed_initial=$(cat $tmpdir/context_passed.tmp)
+context_total_initial=$(cat $tmpdir/context_total.tmp)
+codegen_passed_initial=$(cat $tmpdir/codegen_passed.tmp)
+codegen_total_initial=$(cat $tmpdir/codegen_total.tmp)
+nbpassed_initial=$(cat $tmpdir/nbpassed.tmp)
+nbtests_initial=$(cat $tmpdir/nbtests.tmp)
+
+tmpdir=$root/tmp/renduInterm1
+syntax_passed_interm1=$(cat $tmpdir/syntax_passed.tmp)
+syntax_total_interm1=$(cat $tmpdir/syntax_total.tmp)
+context_passed_interm1=$(cat $tmpdir/context_passed.tmp)
+context_total_interm1=$(cat $tmpdir/context_total.tmp)
+codegen_passed_interm1=$(cat $tmpdir/codegen_passed.tmp)
+codegen_total_interm1=$(cat $tmpdir/codegen_total.tmp)
+nbpassed_interm1=$(cat $tmpdir/nbpassed.tmp)
+nbtests_interm1=$(cat $tmpdir/nbtests.tmp)
+
+tmpdir=$root/tmp/renduInterm2
+syntax_passed_interm2=$(cat $tmpdir/syntax_passed.tmp)
+syntax_total_interm2=$(cat $tmpdir/syntax_total.tmp)
+context_passed_interm2=$(cat $tmpdir/context_passed.tmp)
+context_total_interm2=$(cat $tmpdir/context_total.tmp)
+codegen_passed_interm2=$(cat $tmpdir/codegen_passed.tmp)
+codegen_total_interm2=$(cat $tmpdir/codegen_total.tmp)
+nbpassed_interm2=$(cat $tmpdir/nbpassed.tmp)
+nbtests_interm2=$(cat $tmpdir/nbtests.tmp)
+
+syntax_passed=$(($syntax_passed_initial+$syntax_passed_interm1+$syntax_passed_interm2))
+syntax_total=$(($syntax_total_initial+$syntax_total_interm1+$syntax_total_interm2))
+context_passed=$(($context_passed_initial+$context_passed_interm1+$context_passed_interm2))
+context_total=$(($context_total_initial+$context_total_interm1+$context_total_interm2))
+codegen_passed=$(($codegen_passed_initial+$codegen_passed_interm1+$codegen_passed_interm2))
+codegen_total=$(($codegen_total_initial+$codegen_total_interm1+$codegen_total_interm2))
+
+nbpassed=$(($nbpassed_initial+$nbpassed_interm1+$nbpassed_interm2))
+nbtests=$(($nbtests_initial+$nbtests_interm1+$nbtests_interm2))
+
+if [ "$nbpassed_initial" -lt "$nbtests_initial" ]; then
+    echo -e "renduInitial : \033[31mFAILED\033[0m"
+else
+    echo -e "renduInitial : \033[32mPASSED\033[0m"
+fi
+
+echo
+
+if [ "$nbpassed_interm1" -lt "$nbtests_interm1" ]; then
+    echo -e "RenduInterm1 : \033[31mFAILED\033[0m"
+else
+    echo -e "RenduInterm1 : \033[32mPASSED\033[0m"
+fi
+
+echo
+
+if [ "$nbpassed_interm2" -lt "$nbtests_interm2" ]; then
+    echo -e "RenduInterm2 : \033[31mFAILED\033[0m"
+else
+    echo -e "RenduInterm2 : \033[32mPASSED\033[0m"
+fi
+
+echo
+
+echo -e "############### SUMMARY ###############"
+echo -e "\t\tPASSED\tFAILED"
+echo -e "SYNTAX: \t${syntax_passed}\t${syntax_total}"
+echo -e "CONTEXT: \t${context_passed}\t${context_total}"
+echo -e "CODEGEN: \t${codegen_passed}\t${codegen_total}"
+echo
+echo -e "TOTAL: \t\t${nbpassed}\t${nbtests}"
+echo -e "#######################################"
+
+if [ "$nbpassed" -lt "$nbtests" ]; then
+    exit 1
+else
+    exit 0
+fi
+

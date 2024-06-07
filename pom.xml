@@ -279,7 +279,17 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>testPipeline_0</id>
+                        <id>clean_tmp</id>
+                        <configuration>
+                            <executable>./src/test/script/clean_tmp.sh</executable>
+                        </configuration>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test_renduInitial</id>
                         <configuration>
                             <executable>./src/test/script/renduInitial.sh</executable>
                         </configuration>
@@ -289,9 +299,29 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>testPipeline_1</id>
+                        <id>test_renduIntermediaire1</id>
                         <configuration>
                             <executable>./src/test/script/renduInterm1.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test_renduIntermediaire2</id>
+                        <configuration>
+                            <executable>./src/test/script/renduInterm2.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>summary</id>
+                        <configuration>
+                            <executable>./src/test/script/summary.sh</executable>
                         </configuration>
                         <phase>test</phase>
                         <goals>

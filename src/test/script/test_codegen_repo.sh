@@ -52,7 +52,7 @@ clean.sh codegen/valid/${path_repo} || exit 1
 echo 
 echo -e "\e[34m### STARTING VALID CODEGEN VERIFICATION ###\e[0m"
 shopt -s globstar
-for f in ${root}/codegen/valid/${path_repo}/[0-9]*.*.deca; do
+for f in ${root}/codegen/valid/${path_repo}/*.deca; do
     file_abs="${f%.deca}"
     # get the path to the file, starting from $tests_repo
     file_print=$(echo "$f" | sed "s/.*\(${tests_repo}\)/\1/g")
@@ -97,3 +97,7 @@ else
 fi
 echo -e "### VALID SCORE: ${SCORE_COLOR}${nbvalidpassed} PASSED / ${nbvalidtests} TESTS \e[0m###"
 echo
+
+mkdir -p ./tmp/
+echo $nbvalidpassed > ./tmp/codegen_passed.tmp
+echo $nbvalidtests > ./tmp/codegen_total.tmp

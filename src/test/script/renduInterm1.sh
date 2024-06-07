@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 cd "$(dirname "$0")/../deca"
 root="$(pwd)"
 
@@ -20,6 +21,7 @@ codegen_total=0
 # COMPILING
 echo -e "\e[34m### INFO: recompiling java files for $decac ###\e[0m"
 cd "$(dirname "${decac}")/../../.."
+mvn test-compile || exit 1
 
 syntax_file=$(mktemp)
 context_file=$(mktemp)
@@ -33,15 +35,19 @@ syntax=$(cat "$syntax_file")
 context=$(cat "$context_file")
 codegen=$(cat "$codegen_file")
 
-syntax_passed=$(echo "$syntax" | grep -oP '\d+(?= PASSED)' | awk '{s+=$1} END {print s}')
-syntax_total=$(echo "$syntax" | grep -oP '\d+(?= TESTS)' | awk '{s+=$1} END {print s}')
+syntax_passed=$(cat ./src/test/deca/tmp/syntax_passed.tmp)
+syntax_total=$(cat ./src/test/deca/tmp/syntax_total.tmp)
 
-context_passed=$(echo "$context" | grep -oP '\d+(?= PASSED)' | awk '{s+=$1} END {print s}')
-context_total=$(echo "$context" | grep -oP '\d+(?= TESTS)' | awk '{s+=$1} END {print s}')
+# get variables context_passed and context_total from file  ./tmp/
+context_passed=$(cat ./src/test/deca/tmp/context_passed.tmp)
+context_total=$(cat ./src/test/deca/tmp/context_total.tmp)
 
-codegen_passed=$(echo "$codegen" | grep -oP '\d+(?= PASSED)' | awk '{s+=$1} END {print s}')
-codegen_total=$(echo "$codegen" | grep -oP '\d+(?= TESTS)' | awk '{s+=$1} END {print s}')
+# get variables codegen_passed and codegen_total from file  ./tmp/
+codegen_passed=$(cat ./src/test/deca/tmp/codegen_passed.tmp)
+codegen_total=$(cat ./src/test/deca/tmp/codegen_total.tmp)
 
+nbpassed=$(($syntax_passed+$context_passed+$codegen_passed))
+nbtests=$(($syntax_total+$context_total+$codegen_total))
 
 echo -e "############### SUMMARY ###############"
 echo -e "\t\tPASSED\tFAILED"
@@ -49,15 +55,29 @@ echo -e "SYNTAX: \t${syntax_passed}\t${syntax_total}"
 echo -e "CONTEXT: \t${context_passed}\t${context_total}"
 echo -e "CODEGEN: \t${codegen_passed}\t${codegen_total}"
 echo
-echo -e "TOTAL: \t\t$(($syntax_passed+$context_passed+$codegen_passed))\t$(($syntax_total+$context_total+$codegen_total))"
+echo -e "TOTAL: \t\t${nbpassed}\t${nbtests}"
 echo -e "#######################################"
 
-nbpassed=$(($syntax_passed+$context_passed+$codegen_passed))
-nbtests=$(($syntax_total+$context_total+$codegen_total))
+
+rm "$syntax_file" "$context_file" "$codegen_file"
+
+
+tmpDir="${root}/tmp/renduInterm1"
+mkdir -p "$tmpDir"
+echo $syntax_passed > "$tmpDir/syntax_passed.tmp"
+echo $syntax_total > "$tmpDir/syntax_total.tmp"
+echo $context_passed > "$tmpDir/context_passed.tmp"
+echo $context_total > "$tmpDir/context_total.tmp"
+echo $codegen_passed > "$tmpDir/codegen_passed.tmp"
+echo $codegen_total > "$tmpDir/codegen_total.tmp"
+
+echo $nbpassed > "$tmpDir/nbpassed.tmp"
+echo $nbtests > "$tmpDir/nbtests.tmp"
+
+
 if [ "$nbpassed" -lt "$nbtests" ]; then
     exit 1
 else
     exit 0
 fi
 
-rm "$syntax_file" "$context_file" "$codegen_file"
