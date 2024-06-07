@@ -5,6 +5,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -50,5 +55,18 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             }
         }
         return type1;
+    }
+
+    public DVal codeGenOpperand(DecacCompiler compiler, GPRegister register) {
+        this.getLeftOperand().codeGenExp(compiler, register);
+        compiler.addInstruction(new PUSH(GPRegister.getR(2)));
+        DVal nextRegister = this.getRightOperand().codeGenExp(compiler);
+        if (nextRegister instanceof GPRegister) {
+            GPRegister next = GPRegister.getR(register.getNumber() + 1);
+            compiler.addInstruction(new LOAD(nextRegister, next));
+            nextRegister = next;
+            compiler.addInstruction(new POP(GPRegister.getR(2)));
+        }
+        return nextRegister;
     }
 }

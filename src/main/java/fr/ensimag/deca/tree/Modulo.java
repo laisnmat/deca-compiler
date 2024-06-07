@@ -6,9 +6,14 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.REM;
 
 /**
@@ -39,13 +44,22 @@ public class Modulo extends AbstractOpArith {
         return "%";
     }
 
+    /**
+     * Generate assembly code for the expression (Modulo)
+     * 
+     * @param compiler the compiler
+     * @param register the register to store the result
+     */
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
-        this.getLeftOperand().codeGenExp(compiler, register);
-        GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
-        this.getRightOperand().codeGenExp(compiler, nextRegister);
-        compiler.addInstruction(new CMP(0, nextRegister));
-        compiler.addInstruction(new BEQ(new Label("div_zero_error")));
+        DVal nextRegister = super.codeGenOpperand(compiler, register);
+
+        compiler.addInstruction(new PUSH(register));
+        compiler.addInstruction(new LOAD(0, register));
+        compiler.addInstruction(new CMP(nextRegister, register));
+        compiler.addInstruction(new BOV(compiler.labelManager.getDivByZeroError()));
+        compiler.labelManager.setDivByZeroError(true);
+        compiler.addInstruction(new POP(register));
         compiler.addInstruction(new REM(nextRegister, register));
     }
 
