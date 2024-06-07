@@ -9,7 +9,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
@@ -48,7 +47,7 @@ public class IntLiteral extends AbstractExpr {
     }
 
     @Override
-    DVal codeGenExp(DecacCompiler compiler) {
+    public DVal getDVal() {
         return new ImmediateInteger(this.getValue());
     }
 

@@ -2,7 +2,6 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.TypeDefinition;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -204,7 +203,8 @@ public class Identifier extends AbstractIdentifier {
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes.
      * Verify rule (0.2).
      * 
-     * @param compiler contains "env_types" attribute
+     * @param compiler
+     *                 contains "env_types" attribute
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
@@ -235,6 +235,11 @@ public class Identifier extends AbstractIdentifier {
         this.codeGenExp(compiler, Register.R0);
         compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
         compiler.addInstruction(jumpOnTrue ? new BNE(label) : new BEQ(label));
+    }
+
+    @Override
+    public DVal getDVal() {
+        return this.getExpDefinition().getOperand();
     }
 
     @Override

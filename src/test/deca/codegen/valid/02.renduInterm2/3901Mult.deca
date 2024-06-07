@@ -1,0 +1,8 @@
+{
+    int i;
+    int j;
+    i = 2*4;
+    println(i);
+    j = 2*(i*2);
+    println(j);
+}

@@ -21,12 +21,16 @@ public class ReadFloat extends AbstractReadExpr {
      * Verify the type of the expression and return the type of the expression
      * (float here)
      * 
-     * @param compiler     the compiler used to compile the code
-     * @param localEnv     the environment in which the expression is checked
-     * @param currentClass the current class
+     * @param compiler
+     *            the compiler used to compile the code
+     * @param localEnv
+     *            the environment in which the expression is checked
+     * @param currentClass
+     *            the current class
      * @return Type : the type of the expression (float here)
-     * @throws ContextualError if the types are not compatible (no error here
-     *                         because it's a leaf node)
+     * @throws ContextualError
+     *             if the types are not compatible (no error here
+     *             because it's a leaf node)
      */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,

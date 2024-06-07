@@ -60,6 +60,12 @@ public class Program extends AbstractProgram {
             compiler.addInstruction(new WNL());
             compiler.addInstruction(new ERROR());
         }
+        if (compiler.labelManager.isDivByZeroError()) {
+            compiler.addLabel(compiler.labelManager.getDivByZeroError());
+            compiler.addInstruction(new WSTR("Error: Division by zero"));
+            compiler.addInstruction(new WNL());
+            compiler.addInstruction(new ERROR());
+        }
         compiler.addLabel(compiler.labelManager.getStackOverflowError());
         compiler.addInstruction(new WSTR("Error: Stack overflow"));
         compiler.addInstruction(new WNL());

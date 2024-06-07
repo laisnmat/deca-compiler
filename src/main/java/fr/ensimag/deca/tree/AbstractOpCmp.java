@@ -56,14 +56,21 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
-        DVal dvalRightOp = this.getRightOperand().codeGenExp(compiler);
-        GPRegister registerLeftOp = (dvalRightOp == GPRegister.getR(2) ? GPRegister.getR(3) : GPRegister.getR(2));
+        DVal dvalRightOp = this.getRightOperand().getDVal();
+        GPRegister r2 = GPRegister.getR(2);
+        if (dvalRightOp == null) {
+            dvalRightOp = GPRegister.getR(2);
+            this.getRightOperand().codeGenExp(compiler, r2);
+        }
+
+        GPRegister registerLeftOp = (dvalRightOp == r2 ? GPRegister.getR(3) : r2);
         this.getLeftOperand().codeGenExp(compiler, registerLeftOp);
 
         compiler.addInstruction(new CMP(dvalRightOp, registerLeftOp));
     }
 
-    protected void addComment(DecacCompiler compiler, boolean jumpOnTrue, Label label){
-        compiler.addComment("Code(" + getLeftOperand().decompile() + " " + getOperatorName() + " " + getRightOperand().decompile() + ", "+ jumpOnTrue + ", "+ label + ")");
+    protected void addComment(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        compiler.addComment("Code(" + getLeftOperand().decompile() + " " + getOperatorName() + " "
+                + getRightOperand().decompile() + ", " + jumpOnTrue + ", " + label + ")");
     }
 }

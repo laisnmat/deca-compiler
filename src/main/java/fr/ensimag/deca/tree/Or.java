@@ -16,8 +16,6 @@ public class Or extends AbstractOpBool {
         super(leftOperand, rightOperand);
     }
 
-    
-
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         LabelOr labelOr = compiler.labelManager.getOr();

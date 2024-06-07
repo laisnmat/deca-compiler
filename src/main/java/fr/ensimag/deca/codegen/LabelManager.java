@@ -17,6 +17,11 @@ public class LabelManager {
   private boolean ioError = false;
 
   /**
+   * True if there is a possibility of division by zero in the code, else False.
+   */
+  private boolean divByZeroError = false;
+
+  /**
    * Prefix for the label.
    */
   private String prefix = new String();
@@ -129,6 +134,30 @@ public class LabelManager {
 
   public Label getIoErrorLabel() {
     return new Label("io_error");
+  }
+
+  /**
+   * Get if there is a possibility of division by zero in the code.
+   * 
+   * @return
+   *         True if there is a possibility of division by zero in the code, else
+   *         False.
+   */
+  public boolean isDivByZeroError() {
+    return divByZeroError;
+  }
+
+  /**
+   * Set the possibility of division by zero in the code.
+   * 
+   * @param divByZeroError the status of the division by zero error.
+   */
+  public void setDivByZeroError(boolean divByZeroError) {
+    this.divByZeroError = divByZeroError;
+  }
+
+  public Label getDivByZeroError() {
+    return new Label("div_zero_error");
   }
 
   public Label getStackOverflowError() {
