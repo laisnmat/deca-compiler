@@ -66,7 +66,11 @@ public class CompilerOptions {
         for (String arg : args) {
             // parse options
             if (parsingR) {
-                registerOption = Integer.parseInt(arg) - 1;
+                if (registerOption <= 16 && registerOption >= 4) {
+                    registerOption = Integer.parseInt(arg) - 1;
+                } else {
+                    throw new CLIException("Number of registers must be between 4 and 16 included");
+                }
                 parsingR = false;
                 continue;
             }
