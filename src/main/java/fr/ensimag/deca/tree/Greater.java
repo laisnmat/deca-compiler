@@ -21,18 +21,15 @@ public class Greater extends AbstractOpIneq {
         return ">";
     }
 
-    @Override
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
         // nothing is returned
     }
 
     @Override
-    protected void codeGenExpBool(DecacCompiler compiler, boolean branchIf, String labelName) {
-        super.codeGenExp(compiler, 2);
-        if (!branchIf) {
-            compiler.addInstruction(new BLE(new Label(labelName)));
-        } else {
-            compiler.addInstruction(new BGT(new Label(labelName)));
-        }
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        // generate comparison before branching
+        super.addComment(compiler, jumpOnTrue, label);
+        super.codeGenCondition(compiler, jumpOnTrue, label);
+        compiler.addInstruction(jumpOnTrue ? new BGT(label) : new BLE(label));
     }
 }
