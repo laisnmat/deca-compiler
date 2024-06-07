@@ -1,7 +1,0 @@
-{
-    float x = 0; 
-    float y = 1;
-    if((x*y) > (x+y) || (x+y) > (x/y)){
-        x = 2;
-    }
-}

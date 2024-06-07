@@ -1,7 +1,7 @@
 {
     int x = 0; 
-    float y = 1; 
-    if(x > ){
+    boolean y = 1;
+    if((x+y) >= y){
         x = 2;
     }
 }
