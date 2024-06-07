@@ -20,6 +20,13 @@ context_total=0
 codegen_passed=0
 codegen_total=0
 
+if [ -z $COVERAGE] ; then
+    # COMPILING
+    echo -e "\e[34m### INFO: recompiling java files for $decac ###\e[0m"
+    cd "$(dirname "${decac}")/../../.."
+    mvn clean test-compile || exit 1
+fi
+
 syntax_file=$(mktemp)
 context_file=$(mktemp)
 codegen_file=$(mktemp)
