@@ -4,6 +4,7 @@ variables:
 stages:
   - build
   - test
+  - cleanup
 cache:
   paths:
     - .m2/repository/
@@ -51,6 +52,17 @@ test:summary:
   needs: ["test:interm2"]
   script:
     - mvn $MAVEN_CLI_OPTS exec:exec@summary
+  only:
+    - master
+    - develop
+    - merge_requests
+
+cleanup:
+  stage: cleanup
+  dependencies:
+    - test:summary
+  script:
+    - mvn $MAVEN_CLI_OPTS clean
   only:
     - master
     - develop

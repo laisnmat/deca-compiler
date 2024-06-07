@@ -4,42 +4,41 @@
 cd "$(dirname "$0")/../deca"
 root="$(pwd)"
 
-rm -f "$root/tmp/*.tmp"
-
 
 echo "###############################"
 echo "######   SUMMARY TESTS   ######"
 echo -e "###############################\n\n"
 
-tmpdir=$root/tmp/renduInitial
-syntax_passed_initial=$(cat $tmpdir/syntax_passed.tmp)
-syntax_total_initial=$(cat $tmpdir/syntax_total.tmp)
-context_passed_initial=$(cat $tmpdir/context_passed.tmp)
-context_total_initial=$(cat $tmpdir/context_total.tmp)
-codegen_passed_initial=$(cat $tmpdir/codegen_passed.tmp)
-codegen_total_initial=$(cat $tmpdir/codegen_total.tmp)
-nbpassed_initial=$(cat $tmpdir/nbpassed.tmp)
-nbtests_initial=$(cat $tmpdir/nbtests.tmp)
+tmpDir=$root/../../../tmp/renduInitial
+syntax_passed_initial=$(cat $tmpDir/syntax_passed.tmp)
+syntax_total_initial=$(cat $tmpDir/syntax_total.tmp)
+context_passed_initial=$(cat $tmpDir/context_passed.tmp)
+context_total_initial=$(cat $tmpDir/context_total.tmp)
+codegen_passed_initial=$(cat $tmpDir/codegen_passed.tmp)
+codegen_total_initial=$(cat $tmpDir/codegen_total.tmp)
+nbpassed_initial=$(cat $tmpDir/nbpassed.tmp)
+nbtests_initial=$(cat $tmpDir/nbtests.tmp)
 
-tmpdir=$root/tmp/renduInterm1
-syntax_passed_interm1=$(cat $tmpdir/syntax_passed.tmp)
-syntax_total_interm1=$(cat $tmpdir/syntax_total.tmp)
-context_passed_interm1=$(cat $tmpdir/context_passed.tmp)
-context_total_interm1=$(cat $tmpdir/context_total.tmp)
-codegen_passed_interm1=$(cat $tmpdir/codegen_passed.tmp)
-codegen_total_interm1=$(cat $tmpdir/codegen_total.tmp)
-nbpassed_interm1=$(cat $tmpdir/nbpassed.tmp)
-nbtests_interm1=$(cat $tmpdir/nbtests.tmp)
 
-tmpdir=$root/tmp/renduInterm2
-syntax_passed_interm2=$(cat $tmpdir/syntax_passed.tmp)
-syntax_total_interm2=$(cat $tmpdir/syntax_total.tmp)
-context_passed_interm2=$(cat $tmpdir/context_passed.tmp)
-context_total_interm2=$(cat $tmpdir/context_total.tmp)
-codegen_passed_interm2=$(cat $tmpdir/codegen_passed.tmp)
-codegen_total_interm2=$(cat $tmpdir/codegen_total.tmp)
-nbpassed_interm2=$(cat $tmpdir/nbpassed.tmp)
-nbtests_interm2=$(cat $tmpdir/nbtests.tmp)
+tmpDir=$root/../../../tmp/renduInterm1
+syntax_passed_interm1=$(cat $tmpDir/syntax_passed.tmp)
+syntax_total_interm1=$(cat $tmpDir/syntax_total.tmp)
+context_passed_interm1=$(cat $tmpDir/context_passed.tmp)
+context_total_interm1=$(cat $tmpDir/context_total.tmp)
+codegen_passed_interm1=$(cat $tmpDir/codegen_passed.tmp)
+codegen_total_interm1=$(cat $tmpDir/codegen_total.tmp)
+nbpassed_interm1=$(cat $tmpDir/nbpassed.tmp)
+nbtests_interm1=$(cat $tmpDir/nbtests.tmp)
+
+tmpDir=$root/../../../tmp/renduInterm2
+syntax_passed_interm2=$(cat $tmpDir/syntax_passed.tmp)
+syntax_total_interm2=$(cat $tmpDir/syntax_total.tmp)
+context_passed_interm2=$(cat $tmpDir/context_passed.tmp)
+context_total_interm2=$(cat $tmpDir/context_total.tmp)
+codegen_passed_interm2=$(cat $tmpDir/codegen_passed.tmp)
+codegen_total_interm2=$(cat $tmpDir/codegen_total.tmp)
+nbpassed_interm2=$(cat $tmpDir/nbpassed.tmp)
+nbtests_interm2=$(cat $tmpDir/nbtests.tmp)
 
 syntax_passed=$(($syntax_passed_initial+$syntax_passed_interm1+$syntax_passed_interm2))
 syntax_total=$(($syntax_total_initial+$syntax_total_interm1+$syntax_total_interm2))
@@ -89,4 +88,5 @@ if [ "$nbpassed" -lt "$nbtests" ]; then
 else
     exit 0
 fi
+
 

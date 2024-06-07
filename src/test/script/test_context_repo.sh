@@ -149,6 +149,7 @@ fi
 
 echo -e "### TOTAL SCORE: ${SCORE_COLOR}${nbpassed} PASSED / ${nbtests} TESTS \e[0m###"
 
-mkdir -p ./tmp/
-echo $nbpassed > ./tmp/context_passed.tmp
-echo $nbtests > ./tmp/context_total.tmp
+tmpDir=$root/../../../tmp
+mkdir -p ${tmpDir}
+echo $nbpassed > $tmpDir/context_passed.tmp
+echo $nbtests > $tmpDir/context_total.tmp

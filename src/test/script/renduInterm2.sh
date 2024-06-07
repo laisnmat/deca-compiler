@@ -37,17 +37,18 @@ syntax=$(cat "$syntax_file")
 context=$(cat "$context_file")
 codegen=$(cat "$codegen_file")
 
-# get variables syntax_passed and syntax_total from file  ./tmp/
-syntax_passed=$(cat ./src/test/deca/tmp/syntax_passed.tmp)
-syntax_total=$(cat ./src/test/deca/tmp/syntax_total.tmp)
+tmpDir=$root/../../../tmp
+
+syntax_passed=$(cat $tmpDir/syntax_passed.tmp)
+syntax_total=$(cat $tmpDir/syntax_total.tmp)
 
 # get variables context_passed and context_total from file  ./tmp/
-context_passed=$(cat ./src/test/deca/tmp/context_passed.tmp)
-context_total=$(cat ./src/test/deca/tmp/context_total.tmp)
+context_passed=$(cat $tmpDir/context_passed.tmp)
+context_total=$(cat $tmpDir/context_total.tmp)
 
 # get variables codegen_passed and codegen_total from file  ./tmp/
-codegen_passed=$(cat ./src/test/deca/tmp/codegen_passed.tmp)
-codegen_total=$(cat ./src/test/deca/tmp/codegen_total.tmp)
+codegen_passed=$(cat $tmpDir/codegen_passed.tmp)
+codegen_total=$(cat $tmpDir/codegen_total.tmp)
 
 nbpassed=$(($syntax_passed+$context_passed+$codegen_passed))
 nbtests=$(($syntax_total+$context_total+$codegen_total))
@@ -66,7 +67,7 @@ echo -e "#######################################"
 rm "$syntax_file" "$context_file" "$codegen_file"
 
 
-tmpDir="${root}/tmp/renduInterm2"
+tmpDir=$root/../../../tmp/renduInterm2
 mkdir -p "$tmpDir"
 echo $syntax_passed > "$tmpDir/syntax_passed.tmp"
 echo $syntax_total > "$tmpDir/syntax_total.tmp"

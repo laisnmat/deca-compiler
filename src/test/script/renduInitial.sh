@@ -81,7 +81,7 @@ echo -e "#######################################"
 
 
 
-tmpDir="${root}/tmp/renduInitial"
+tmpDir=$root/../../../tmp/renduInitial
 mkdir -p "$tmpDir"
 echo $syntax_passed > "$tmpDir/syntax_passed.tmp"
 echo $syntax_total > "$tmpDir/syntax_total.tmp"

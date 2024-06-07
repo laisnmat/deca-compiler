@@ -98,6 +98,7 @@ fi
 echo -e "### VALID SCORE: ${SCORE_COLOR}${nbvalidpassed} PASSED / ${nbvalidtests} TESTS \e[0m###"
 echo
 
-mkdir -p ./tmp/
-echo $nbvalidpassed > ./tmp/codegen_passed.tmp
-echo $nbvalidtests > ./tmp/codegen_total.tmp
+tmpDir=$root/../../../tmp
+mkdir -p ${tmpDir}
+echo $nbvalidpassed > $tmpDir/codegen_passed.tmp
+echo $nbvalidtests > $tmpDir/codegen_total.tmp

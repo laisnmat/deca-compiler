@@ -154,6 +154,7 @@ export SYNTAX_NB_PASSED="${nbpassed}"
 
 echo -e "### TOTAL SCORE: ${SCORE_COLOR}${nbpassed} PASSED / ${nbtests} TESTS \e[0m###"
 
-mkdir -p ./tmp/
-echo $nbpassed > ./tmp/syntax_passed.tmp
-echo $nbtests > ./tmp/syntax_total.tmp
+tmpDir=$root/../../../tmp
+mkdir -p ${tmpDir}
+echo $nbpassed > $tmpDir/syntax_passed.tmp
+echo $nbtests > $tmpDir/syntax_total.tmp
