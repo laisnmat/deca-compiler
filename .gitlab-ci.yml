@@ -9,6 +9,7 @@ cache:
   paths:
     - .m2/repository/
     - target/
+    - tmp/
 before_script:
   - export PATH="$CI_PROJECT_DIR/global_bin:$CI_PROJECT_DIR/src/main/bin:$CI_PROJECT_DIR/src/test/script:$CI_PROJECT_DIR/src/test/script/launchers:$PATH"
 build:
@@ -25,9 +26,6 @@ test:initial:
     - master
     - develop
     - merge_requests
-  artifacts:
-      paths:
-        - tmp/
 
 test:interm1:
   stage: test
@@ -38,9 +36,6 @@ test:interm1:
     - master
     - develop
     - merge_requests
-  artifacts:
-      paths:
-        - tmp/
 
 test:interm2:
   stage: test
@@ -51,9 +46,7 @@ test:interm2:
     - master
     - develop
     - merge_requests
-  artifacts:
-      paths:
-        - tmp/
+
 
 test:summary:
   stage: test
@@ -64,9 +57,7 @@ test:summary:
     - master
     - develop
     - merge_requests
-  artifacts:
-      paths:
-        - tmp/
+
 
 cleanup:
   stage: cleanup
