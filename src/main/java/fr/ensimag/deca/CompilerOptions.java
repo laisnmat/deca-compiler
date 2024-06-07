@@ -68,8 +68,12 @@ public class CompilerOptions {
             if (parsingR) {
                 if (registerOption <= 16 && registerOption >= 4) {
                     registerOption = Integer.parseInt(arg) - 1;
+                } else if (registerOption < 4) {
+                    System.out.println("The number of registers must be at least 4, setting it to 4");
+                    registerOption = 4;
                 } else {
-                    throw new CLIException("Number of registers must be between 4 and 16 included");
+                    System.out.println("The number of registers must be maximum at 16, setting it to 16");
+                    registerOption = 16;
                 }
                 parsingR = false;
                 continue;
@@ -123,6 +127,11 @@ public class CompilerOptions {
             // else the provided file does not have the right ".deca" extension
             throw new CLIException(
                     "Argument not recognized: the provided file does not have the extension \".deca\": " + arg);
+        }
+
+        if (parsingR) {
+            System.out.println("The -r option must be followed by an integer, setting it to 16");
+            registerOption = 16;
         }
 
         Logger logger = Logger.getRootLogger();
