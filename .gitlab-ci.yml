@@ -1,7 +1,6 @@
 image: "maven:3-openjdk-18-slim"
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  GIT_STRATEGY: none
 stages:
   - build
   - test
@@ -27,6 +26,9 @@ test:initial:
     - master
     - develop
     - merge_requests
+  artifacts:
+      paths:
+        - tmp/
 
 test:interm1:
   stage: test
@@ -37,6 +39,9 @@ test:interm1:
     - master
     - develop
     - merge_requests
+  artifacts:
+      paths:
+        - tmp/
 
 test:interm2:
   stage: test
@@ -47,6 +52,9 @@ test:interm2:
     - master
     - develop
     - merge_requests
+  artifacts:
+      paths:
+        - tmp/
 
 test:summary:
   stage: test
@@ -57,6 +65,9 @@ test:summary:
     - master
     - develop
     - merge_requests
+  artifacts:
+      paths:
+        - tmp/
 
 cleanup:
   stage: cleanup
