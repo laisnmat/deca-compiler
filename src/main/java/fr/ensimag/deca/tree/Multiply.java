@@ -22,10 +22,16 @@ public class Multiply extends AbstractOpArith {
         return "*";
     }
 
+    /**
+     * Generate assembly code for the expression (Multiply)
+     * 
+     * @param compiler
+     *                 the compiler
+     * @param register
+     *                 the register to store the result
+     */
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
-        // DVal nextRegister = super.codeGenOpperand(compiler, register);
-        // compiler.addInstruction(new MUL(nextRegister, register));
         this.getLeftOperand().codeGenExp(compiler, register);
         DVal dvalRightOp = this.getRightOperand().getDVal();
         if (dvalRightOp != null) {

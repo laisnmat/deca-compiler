@@ -60,15 +60,4 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         }
         return type1;
     }
-
-    public DVal codeGenOpperand(DecacCompiler compiler, GPRegister register) {
-        this.getLeftOperand().codeGenExp(compiler, register);
-        DVal dVal = this.getRightOperand().getDVal();
-        if (dVal == null) {
-            GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
-            this.getRightOperand().codeGenExp(compiler, nextRegister);
-            return nextRegister;
-        }
-        return dVal;
-    }
 }
