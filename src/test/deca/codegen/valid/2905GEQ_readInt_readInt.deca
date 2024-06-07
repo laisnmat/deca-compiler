@@ -1,7 +1,0 @@
-{
-    int x ; 
-    if(readInt() >= readInt()){
-        x = 2;
-        printx(x);
-    }
-}

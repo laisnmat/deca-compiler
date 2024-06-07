@@ -2,6 +2,5 @@
     boolean x ; 
     if(x >= readInt()){
         x = 2;
-        printx(x);
     }
 }

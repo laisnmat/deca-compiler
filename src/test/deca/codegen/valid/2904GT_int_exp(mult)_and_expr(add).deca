@@ -3,6 +3,7 @@
     int y = 1;
     if((x*y) > 0 && (x+y) > 0){
         x = 2;
-        printx(x);
+        print(x);
     }
+    print(x);
 }
