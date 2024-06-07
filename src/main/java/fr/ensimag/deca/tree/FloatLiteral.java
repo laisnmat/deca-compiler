@@ -51,8 +51,8 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    DVal codeGenExp(DecacCompiler compiler) {
-        return new ImmediateFloat(this.getValue());
+    public DVal getDVal() {
+        return new ImmediateFloat(this.value);
     }
 
     @Override

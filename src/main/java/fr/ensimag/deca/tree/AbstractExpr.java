@@ -16,7 +16,7 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
 
@@ -63,14 +63,15 @@ public abstract class AbstractExpr extends AbstractInst {
      * implements non-terminals "expr" and "lvalue"
      * of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler     (contains the "env_types" attribute)
+     * @param compiler
+     *            (contains the "env_types" attribute)
      * @param localEnv
-     *                     Environment in which the expression should be checked
-     *                     (corresponds to the "env_exp" attribute)
+     *            Environment in which the expression should be checked
+     *            (corresponds to the "env_exp" attribute)
      * @param currentClass
-     *                     Definition of the class containing the expression
-     *                     (corresponds to the "class" attribute)
-     *                     is null in the main bloc.
+     *            Definition of the class containing the expression
+     *            (corresponds to the "class" attribute)
+     *            is null in the main bloc.
      * @return the Type of the expression
      *         (corresponds to the "type" attribute)
      */
@@ -83,10 +84,14 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * implements non-terminal "rvalue" of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler     contains the "env_types" attribute
-     * @param localEnv     corresponds to the "env_exp" attribute
-     * @param currentClass corresponds to the "class" attribute
-     * @param expectedType corresponds to the "type1" attribute
+     * @param compiler
+     *            contains the "env_types" attribute
+     * @param localEnv
+     *            corresponds to the "env_exp" attribute
+     * @param currentClass
+     *            corresponds to the "class" attribute
+     * @param expectedType
+     *            corresponds to the "type1" attribute
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
@@ -136,11 +141,11 @@ public abstract class AbstractExpr extends AbstractInst {
      * boolean.
      *
      * @param localEnv
-     *                     Environment in which the condition should be checked.
+     *            Environment in which the condition should be checked.
      * @param currentClass
-     *                     Definition of the class containing the expression, or
-     *                     null in
-     *                     the main program.
+     *            Definition of the class containing the expression, or
+     *            null in
+     *            the main program.
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -159,7 +164,7 @@ public abstract class AbstractExpr extends AbstractInst {
      * 
      * @param compiler
      * @param register
-     *                 The register where the result is stored.
+     *            The register where the result is stored.
      */
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         throw new UnsupportedOperationException("not yet implemented");
@@ -167,15 +172,12 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Evaluate the expression and returns a Dval that contains the result.
-     * 
-     * @param compiler
-     * @return
-     *         The DVal of the Register 2: all results will always be stored in the
+     *
+     * @return The DVal of the Register 2: all results will always be stored in the
      *         2th register.
      */
-    DVal codeGenExp(DecacCompiler compiler) {
-        this.codeGenExp(compiler, Register.getR(2));
-        return Register.getR(2);
+    public DVal getDVal() {
+        return null;
     }
 
     public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
@@ -187,11 +189,12 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      * @param printHex
-     *                 whether to print the value as hexadecimal
+     *            whether to print the value as hexadecimal
      */
     protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
-        DVal d = this.codeGenExp(compiler);
-        compiler.addInstruction(new LOAD(d, Register.R1));
+        this.codeGenExp(compiler, Register.getR(2));
+        Register r2 = Register.getR(2);
+        compiler.addInstruction(new LOAD(r2, Register.R1));
         if (this.getType().isFloat()) {
             if (printHex) {
                 compiler.addInstruction(new WFLOATX());
@@ -239,7 +242,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-    protected void addComment(DecacCompiler compiler, GPRegister register){
+    protected void addComment(DecacCompiler compiler, GPRegister register) {
         compiler.addComment("codeExp(" + decompile() + ", " + register + ")");
     }
 }

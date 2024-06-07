@@ -47,8 +47,10 @@ public class Modulo extends AbstractOpArith {
     /**
      * Generate assembly code for the expression (Modulo)
      * 
-     * @param compiler the compiler
-     * @param register the register to store the result
+     * @param compiler
+     *            the compiler
+     * @param register
+     *            the register to store the result
      */
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {

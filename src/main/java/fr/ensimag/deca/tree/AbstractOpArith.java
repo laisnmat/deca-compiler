@@ -27,12 +27,16 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
      * Verify the type of the operands and the type of the expression and casts the
      * operands if necessary or throws an error if the types are not compatible
      * 
-     * @param compiler     (type- DecacCompiler) the compiler
-     * @param localEnv     (type- EnvironmentExp) the environment in which the
-     *                     expression is checked
-     * @param currentClass (type- ClassDefinition) the current class
+     * @param compiler
+     *            (type- DecacCompiler) the compiler
+     * @param localEnv
+     *            (type- EnvironmentExp) the environment in which the
+     *            expression is checked
+     * @param currentClass
+     *            (type- ClassDefinition) the current class
      * @return (type- Type) the type of the expression (int or float)
-     * @throws ContextualError if the types are not compatible
+     * @throws ContextualError
+     *             if the types are not compatible
      */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -60,7 +64,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     public DVal codeGenOpperand(DecacCompiler compiler, GPRegister register) {
         this.getLeftOperand().codeGenExp(compiler, register);
         compiler.addInstruction(new PUSH(GPRegister.getR(2)));
-        DVal nextRegister = this.getRightOperand().codeGenExp(compiler);
+        DVal nextRegister = this.getRightOperand().getDVal();
         if (nextRegister instanceof GPRegister) {
             GPRegister next = GPRegister.getR(register.getNumber() + 1);
             compiler.addInstruction(new LOAD(nextRegister, next));

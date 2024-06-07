@@ -2,7 +2,6 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.TypeDefinition;
-import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -60,7 +59,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *                            if the definition is not a class definition.
+     *             if the definition is not a class definition.
      */
     @Override
     public ClassDefinition getClassDefinition() {
@@ -82,7 +81,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *                            if the definition is not a method definition.
+     *             if the definition is not a method definition.
      */
     @Override
     public MethodDefinition getMethodDefinition() {
@@ -104,7 +103,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *                            if the definition is not a field definition.
+     *             if the definition is not a field definition.
      */
     @Override
     public FieldDefinition getFieldDefinition() {
@@ -126,7 +125,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *                            if the definition is not a field definition.
+     *             if the definition is not a field definition.
      */
     @Override
     public VariableDefinition getVariableDefinition() {
@@ -148,7 +147,7 @@ public class Identifier extends AbstractIdentifier {
      * when the cast fails.
      * 
      * @throws DecacInternalError
-     *                            if the definition is not a field definition.
+     *             if the definition is not a field definition.
      */
     @Override
     public ExpDefinition getExpDefinition() {
@@ -204,7 +203,8 @@ public class Identifier extends AbstractIdentifier {
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes.
      * Verify rule (0.2).
      * 
-     * @param compiler contains "env_types" attribute
+     * @param compiler
+     *            contains "env_types" attribute
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
@@ -235,6 +235,11 @@ public class Identifier extends AbstractIdentifier {
         this.codeGenExp(compiler, Register.R0);
         compiler.addInstruction(new CMP(new ImmediateInteger(0), Register.R0));
         compiler.addInstruction(jumpOnTrue ? new BNE(label) : new BEQ(label));
+    }
+
+    @Override
+    public DVal getDVal() {
+        return this.getExpDefinition().getOperand();
     }
 
     @Override
