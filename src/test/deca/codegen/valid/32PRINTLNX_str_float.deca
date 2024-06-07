@@ -1,4 +1,0 @@
-{
-    float x = 5.2;
-    printlnx(x,"ahah",x);
-}
