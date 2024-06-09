@@ -46,13 +46,15 @@ public class IfThenElse extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         LabelIf labelIf = compiler.labelManager.getIf();
+        Label endLabel = labelIf.getEndLabel();
+        Label elseLabel = labelIf.getElseLabel();
         boolean isElse = !(this.elseBranch.getList().isEmpty());
 
         // compiler.addComment(labelIf.toString() + ": " + this.decompile());
 
         // generate condition, that branches to the 'else' label if there is an 'else',
         // else to the 'end' label.
-        this.condition.codeGenCondition(compiler, false, (isElse ? labelIf.getElseLabel() : labelIf.getEndLabel()));
+        this.condition.codeGenCondition(compiler, false, (isElse ? elseLabel : endLabel));
 
         // generate if instructions
         this.thenBranch.codeGenListInst(compiler);
@@ -60,20 +62,20 @@ public class IfThenElse extends AbstractInst {
         // generate else instructions if there is one
         if (isElse) {
             // when the 'if' condition is true, branch to the end
-            compiler.addInstruction(new BRA(labelIf.getEndLabel()));
-            compiler.addLabel(labelIf.getElseLabel());
+            compiler.addInstruction(new BRA(endLabel));
+            compiler.addLabel(elseLabel);
 
             this.elseBranch.codeGenListInst(compiler);
         }
 
-        compiler.addLabel(labelIf.getEndLabel());
+        compiler.addLabel(endLabel);
 
         // delete the label prefix in the prefix of the LabelManager
         labelIf.destruct();
     }
 
     @Override
-    public void decompile(IndentPrintStream s) {        
+    public void decompile(IndentPrintStream s) {
         s.print("if(");
         condition.decompile(s);
         s.print("){");
@@ -82,14 +84,14 @@ public class IfThenElse extends AbstractInst {
         thenBranch.decompile(s);
         s.unindent();
         if (!this.elseBranch.isEmpty()) {
-        s.print("} else {"); // A changer pour else if
-        s.println();
-        s.indent();
-        elseBranch.decompile(s);
-        s.unindent();
+            s.print("} else {"); // A changer pour else if
+            s.println();
+            s.indent();
+            elseBranch.decompile(s);
+            s.unindent();
         }
         s.print("}");
-         
+
     }
 
     @Override

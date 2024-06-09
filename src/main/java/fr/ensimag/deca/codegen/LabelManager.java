@@ -114,7 +114,6 @@ public class LabelManager {
      *            the new prefix
      */
     public void addPrefix(String addPrefix) {
-        System.out.println("current pref : " + prefix + "\n" + "adding : " + addPrefix);
         if (this.prefix1 == null) {
             this.prefix1 = addPrefix;
             this.updatePrefix();
@@ -139,7 +138,6 @@ public class LabelManager {
      *
      */
     public void removePrefix() {
-        System.out.println("current pref : " + prefix + "(removing)");
         if (this.prefix3 != null) {
             this.prefix3 = null;
             this.updatePrefix();
@@ -151,9 +149,6 @@ public class LabelManager {
             return;
         }
 
-        if (this.prefix1 == null) {
-            throw new RuntimeException("Error while generating label : current prefix count < 0");
-        }
         this.prefix1 = null;
         this.updatePrefix();
     }
