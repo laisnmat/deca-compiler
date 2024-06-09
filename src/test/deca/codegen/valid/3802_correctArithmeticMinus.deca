@@ -1,0 +1,7 @@
+{
+    int a = 5 - 2;
+    float b = 2.4 - 0.9;
+    
+    println("a = ",a);
+    println("b = ",b);
+}
