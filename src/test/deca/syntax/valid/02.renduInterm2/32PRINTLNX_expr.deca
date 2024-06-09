@@ -1,4 +1,0 @@
-{
-    boolean x = 5;
-    printlnx(x+x);
-}
