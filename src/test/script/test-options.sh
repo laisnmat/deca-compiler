@@ -13,7 +13,6 @@ fi
 
 time="$(which time)"
 
-FAILED=0
 nbpassed=0
 nbtests=0
 
@@ -24,20 +23,31 @@ echo -e "\e[34m### INFO: Testing option -P ###\e[0m"
 
 listOfFiles="$root/options/test1.deca $root/options/test2.deca"
 
-time1=$($time -f "%e" decac $listOfFiles 2>&1)
-time2=$($time -f "%e" decac -P $listOfFiles 2>&1)
+# Function to measure time difference
+measure_time() {
+    start_time=$(date +%s%N)
+    $1
+    end_time=$(date +%s%N)
+    duration=$(( (end_time - start_time) / 1000000 ))
+    echo $duration
+}
+
+# Measure execution time without -P
+time1=$(measure_time "decac $listOfFiles")
+
+# Measure execution time with -P
+time2=$(measure_time "decac -P $listOfFiles")
 
 echo
 
-echo "Time without -P option: $time1 seconds"
-echo "Time with -P option: $time2 seconds"
+echo "Time without -P option: $time1 milliseconds"
+echo "Time with -P option: $time2 milliseconds"
 
 echo
 
-# Comparing times using bc for floating point arithmetic
-if (( $(echo "$time2 > $time1" | bc -l) )); then
+# Compare the times
+if [ "$time2" -gt "$time1" ]; then
     echo -e "Options -P : \e[31m FAILED\e[0m"
-    FAILED=1
 else
     echo -e "Options -P : \e[32m PASSED\e[0m"
     nbpassed=$((nbpassed+1))
@@ -47,4 +57,14 @@ nbtests=$((nbtests+1))
 mkdir -p "$tmpDir/options"
 echo $nbpassed > "$tmpDir/options/nbpassed.tmp"
 echo $nbtests > "$tmpDir/options/nbtests.tmp"
-exit $FAILED
+
+
+echo
+
+if [ "$nbpassed" -lt "$nbtests" ]; then
+    echo -e "Options : \e[31mFAILED\e[0m"
+    exit 1
+else
+    echo -e "Options : \e[32mPASSED\e[0m"
+    exit 0
+fi
