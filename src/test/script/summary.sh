@@ -47,8 +47,15 @@ context_total=$(($context_total_initial+$context_total_interm1+$context_total_in
 codegen_passed=$(($codegen_passed_initial+$codegen_passed_interm1+$codegen_passed_interm2))
 codegen_total=$(($codegen_total_initial+$codegen_total_interm1+$codegen_total_interm2))
 
-nbpassed=$(($nbpassed_initial+$nbpassed_interm1+$nbpassed_interm2))
-nbtests=$(($nbtests_initial+$nbtests_interm1+$nbtests_interm2))
+
+tmpDir=$root/../../../tmp/options
+options_passed=$(cat $tmpDir/nbpassed.tmp)
+options_total=$(cat $tmpDir/nbtests.tmp)
+
+nbpassed=$(($nbpassed_initial+$nbpassed_interm1+$nbpassed_interm2+$options_passed))
+nbtests=$(($nbtests_initial+$nbtests_interm1+$nbtests_interm2+$options_total))
+
+
 
 if [ "$nbpassed_initial" -lt "$nbtests_initial" ]; then
     echo -e "renduInitial : \033[31mFAILED\033[0m"
@@ -74,11 +81,20 @@ fi
 
 echo
 
+if [ "$options_passed" -lt "$options_total" ]; then
+    echo -e "Options : \033[31mFAILED\033[0m"
+else
+    echo -e "Options : \033[32mPASSED\033[0m"
+fi
+
+echo
+
 echo -e "############### SUMMARY ###############"
 echo -e "\t\tPASSED\tTOTAL"
 echo -e "SYNTAX: \t${syntax_passed}\t${syntax_total}"
 echo -e "CONTEXT: \t${context_passed}\t${context_total}"
 echo -e "CODEGEN: \t${codegen_passed}\t${codegen_total}"
+echo -e "OPTIONS: \t${options_passed}\t${options_total}"
 echo
 echo -e "TOTAL: \t\t${nbpassed}\t${nbtests}"
 echo -e "#######################################"

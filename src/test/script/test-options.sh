@@ -2,6 +2,7 @@
 
 cd "$(dirname "$0")/../deca"
 root="$(pwd)"
+tmpDir=$root/../../../tmp
 
 decac="$(which decac)"
 if [ "${decac}" == "" ] ; then
@@ -13,6 +14,8 @@ fi
 time="$(which time)"
 
 FAILED=0
+nbpassed=0
+nbtests=0
 
 echo -e "\e[34m### INFO: Tests of decac options ###\e[0m"
 
@@ -37,6 +40,11 @@ if (( $(echo "$time2 > $time1" | bc -l) )); then
     FAILED=1
 else
     echo -e "Options -P : \e[32m PASSED\e[0m"
+    nbpassed=$((nbpassed+1))
 fi
+nbtests=$((nbtests+1))
 
+mkdir -p "$tmpDir/options"
+echo $nbpassed > "$tmpDir/options/nbpassed.tmp"
+echo $nbtests > "$tmpDir/options/nbtests.tmp"
 exit $FAILED
