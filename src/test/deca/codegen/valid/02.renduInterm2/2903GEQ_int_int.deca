@@ -1,0 +1,9 @@
+{
+    int x = 0; 
+    int y = 1; 
+    if(x >= y){
+        x = 2;
+        print(x);
+    }
+    print(x);
+}

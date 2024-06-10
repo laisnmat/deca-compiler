@@ -1,0 +1,7 @@
+{
+    int x = 0; 
+    boolean y = 1;
+    if((x*y) >= y){
+        x = 2;
+    }
+}
