@@ -10,10 +10,12 @@ if [ "${decac}" == "" ] ; then
     exit 1
 fi
 
-echo "### INFO: recompiling java files for $decac ###" 
-cd "$(dirname "${decac}")/../../.."
-mvn compile || exit 1
-
+if [ -z $COVERAGE] ; then
+    # COMPILING
+    echo -e "\e[34m### INFO: recompiling java files for $decac ###\e[0m"
+    cd "$(dirname "${decac}")/../../.."
+    mvn clean test-compile || exit 1
+fi
 
 syntax_passed=0
 syntax_total=0
@@ -23,7 +25,6 @@ codegen_passed=0
 codegen_total=0
 nbtests=0
 nbpassed=0
-
 
 cd "${root}/context/invalid/00.renduInitial"
 echo "### TEST: $(pwd) ###"

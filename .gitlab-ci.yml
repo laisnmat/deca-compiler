@@ -4,6 +4,8 @@ variables:
 stages:
   - build
   - test
+  - publish
+  - deploy
   - cleanup
 cache:
   paths:
@@ -59,6 +61,32 @@ test:summary:
     - develop
     - merge_requests
 
+test:coverage:
+  stage: test
+  dependencies:
+    - build
+  script:
+    - mvn $MAVEN_CLI_OPTS clean verify
+  only:
+    - master
+    - develop
+    - merge_requests
+
+pages:
+  stage: publish
+  script:
+    - mkdir public
+    - export COVERAGE=1
+    - mvn $MAVEN_CLI_OPTS clean verify
+    - src/test/script/jacoco-report.sh
+  after_script:
+    - cp -r target/site/jacoco/* public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+    - develop
 
 cleanup:
   stage: cleanup
