@@ -1,0 +1,7 @@
+{
+    println(加斯頓");
+}
+
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : mismatched input '加'

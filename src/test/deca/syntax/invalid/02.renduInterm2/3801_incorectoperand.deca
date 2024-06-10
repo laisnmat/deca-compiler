@@ -1,0 +1,7 @@
+{
+    int x = 1 plus 1
+}
+
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : no viable alternative at input 'plus'
