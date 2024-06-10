@@ -1,3 +1,10 @@
+// Description : Test avec deux valeurs entières 
+// test de not equal
+//
+// Resultats : x and y are different
+// 
+
+
 {
   int x, y;
   x = 5;

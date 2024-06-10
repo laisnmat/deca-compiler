@@ -1,3 +1,9 @@
+// Description : Test avec deux valeurs booléenne
+// test de not equal
+//
+// Resultats : x and y are different
+// 
+
 {
   boolean x, y;
   x = true;

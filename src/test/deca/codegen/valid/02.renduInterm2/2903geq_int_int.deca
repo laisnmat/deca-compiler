@@ -1,0 +1,16 @@
+// Description : Test avec deux valeurs entières 
+// test de inequality expression (greater or equal)
+//
+// Resultats : 0
+// 
+
+
+{
+    int x = 0; 
+    int y = 1; 
+    if(x >= y){
+        x = 2;
+        print(x);
+    }
+    print(x);
+}
