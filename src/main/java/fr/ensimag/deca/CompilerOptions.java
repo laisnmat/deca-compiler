@@ -80,6 +80,11 @@ public class CompilerOptions {
             }
             if (arg.startsWith("-")) {
                 switch (arg) {
+                    case "-d":
+                        if (debug < TRACE) {
+                            debug++;
+                        }
+                        break;
                     case "-p":
                         if (onlyVerif) {
                             throw new CLIException("Cannot use option -v and -p at the same time");
@@ -90,10 +95,8 @@ public class CompilerOptions {
                         argsList.add("-p");
                         parseDecompile = true;
                         break;
-                    case "-d":
-                        if (debug < TRACE) {
-                            debug++;
-                        }
+                    case "-P":
+                        parallel = true;
                         break;
                     case "-r":
                         if (argsList.contains("-r")) {

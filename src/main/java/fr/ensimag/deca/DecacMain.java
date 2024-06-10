@@ -4,6 +4,13 @@ import java.io.File;
 import java.io.PrintStream;
 import fr.ensimag.deca.tree.AbstractProgram;
 import org.apache.log4j.Logger;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ExecutionException;
+import java.util.List;
 
 /**
  * Main class for the command-line Deca compiler.
@@ -34,11 +41,43 @@ public class DecacMain {
             options.displayUsage();
         }
         if (options.getParallel()) {
-            // A FAIRE : instancier DecacCompiler pour chaque fichier à
-            // compiler, et lancer l'exécution des méthodes compile() de chaque
-            // instance en parallèle. Il est conseillé d'utiliser
-            // java.util.concurrent de la bibliothèque standard Java.
-            throw new UnsupportedOperationException("Parallel build not yet implemented");
+            // we create a thread pool with the number of source files
+            ExecutorService executor = Executors.newFixedThreadPool(options.getSourceFiles().size());
+            // we create a list of futures to store the result of the compilation
+            List<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
+            for (File source : options.getSourceFiles()) {
+                // we instanciate a compiler for each source file
+                DecacCompiler compiler = new DecacCompiler(options, source);
+                // we create a task for each compiler (depends of the options)
+                Callable<Boolean> task = new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() {
+                        // here that's depends of the options (-v, -p, ...)
+                        if (options.getParseDecompile()) {
+                            return compiler.decompile();
+                        } else if (options.getOnlyVerif()) {
+                            return compiler.onlyVerif();
+                        } else {
+                            return compiler.compile();
+                        }
+                    }
+                };
+                // we submit the task to the executor
+                futures.add(executor.submit(task));
+            }
+            for (Future<Boolean> future : futures) {
+                try {
+                    if (future.get()) {
+                        error = true;
+                    }
+                } catch (InterruptedException
+                        | ExecutionException e) {
+                    e.printStackTrace();
+                    error = true;
+                }
+            }
+            executor.shutdown();
+
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);
