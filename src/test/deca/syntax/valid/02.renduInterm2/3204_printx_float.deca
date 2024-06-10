@@ -1,0 +1,10 @@
+{
+    float x = 5.2;
+    printx(x);
+}
+
+// Description :
+// test du printx sur une variable de type float
+//
+// Resultats :
+// étape A : OK

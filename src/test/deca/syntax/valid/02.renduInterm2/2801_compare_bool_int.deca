@@ -1,0 +1,14 @@
+{
+  int x = 2;
+  boolean y = true;
+
+  if (x != y) {
+    println("This won't be possible at step B");
+  }
+}
+
+// Description :
+// test de la comparaison entre un int et un boolean
+//
+// Resultats :
+//  étape A : OK (This won't be possible at step B)

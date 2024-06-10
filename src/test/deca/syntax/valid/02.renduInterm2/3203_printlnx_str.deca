@@ -1,0 +1,9 @@
+{
+    printlnx("ahah");
+}
+
+// Description :
+// test du printlnx avec un string
+//
+// Resultats :
+// étape A : OK

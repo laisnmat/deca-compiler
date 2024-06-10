@@ -1,0 +1,9 @@
+{
+    printx("ahah");
+}
+
+// Description :
+// test du printx sur une chaine de caractère
+//
+// Resultats :
+// étape A : OK

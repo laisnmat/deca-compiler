@@ -8,3 +8,9 @@
         println("false");
     }
 }
+
+// Description :
+// test sur les booléens et l'opération de négation (!)
+//
+// Resultats :
+// étape A : OK
