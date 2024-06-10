@@ -1,3 +1,9 @@
 {
     int a = 1 * 2.2;
 }
+
+
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 3901multBad.deca:2:

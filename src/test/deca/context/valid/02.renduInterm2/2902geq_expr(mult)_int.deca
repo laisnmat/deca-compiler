@@ -1,0 +1,14 @@
+// Description : initialisation de deux valeurs entières
+//               plus test plus affection d'une valeur
+// test du greater or equal 
+//
+// Resultats : aucune erreur
+// 
+
+{
+    int x = 0; 
+    int y = 1;
+    if((x*y) >= y){
+        x = 2;
+    }
+}

@@ -2,3 +2,7 @@
     int a = readFloat();
     println(a);
 }
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 3401InvalidReadFloat.deca:2:

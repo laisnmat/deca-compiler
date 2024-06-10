@@ -1,0 +1,8 @@
+{
+    int x = 2 + 2.1;
+}
+
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 3801_incorectCastIntoInt.deca:2

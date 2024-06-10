@@ -1,3 +1,7 @@
 {
     boolean x = 1;
 }
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 3501_booleandecl.deca:2:

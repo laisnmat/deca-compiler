@@ -1,0 +1,13 @@
+// Description : test de la soustraction de valeur entière et floatante
+// test du minus  
+//
+// Resultats :a = 3
+//            b = 1.50000e+00
+// 
+
+
+
+{
+    int a = 5 - 2;
+    float b = 2.4 - 1.9;
+}

@@ -1,3 +1,11 @@
+// Description : test du type booléenne
+// test de 
+//
+// Resultats :aucune erreur
+// 
+
+
+
 {
     boolean x = false;
     boolean y = true;

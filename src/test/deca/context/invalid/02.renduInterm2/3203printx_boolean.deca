@@ -1,0 +1,8 @@
+{
+    boolean x = true;
+    printlnx(x);
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 3: 32PRINTX_boolean.deca:3:
