@@ -29,15 +29,15 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
      * operands if necessary or throws an error if the types are not compatible
      * 
      * @param compiler
-     *            (type- DecacCompiler) the compiler
+     *                     (type- DecacCompiler) the compiler
      * @param localEnv
-     *            (type- EnvironmentExp) the environment in which the
-     *            expression is checked
+     *                     (type- EnvironmentExp) the environment in which the
+     *                     expression is checked
      * @param currentClass
-     *            (type- ClassDefinition) the current class
+     *                     (type- ClassDefinition) the current class
      * @return (type- Type) the type of the expression (int or float)
      * @throws ContextualError
-     *             if the types are not compatible
+     *                         if the types are not compatible
      */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -57,7 +57,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
                 this.setRightOperand(conv);
             } else {
                 throw new ContextualError(
-                        "Incompatible types \'" + type2.getName() + "\' with \'" + type1.getName() + "\'",
+                        "Incompatible types: \'" + type2.getName() + "\' with \'" + type1.getName() + "\'",
                         getLocation());
             }
         }

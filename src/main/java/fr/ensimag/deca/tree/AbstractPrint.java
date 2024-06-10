@@ -54,7 +54,8 @@ public abstract class AbstractPrint extends AbstractInst {
 
             // condition verification
             if (!type.isInt() && !type.isFloat() && !type.isString()) {
-                throw new ContextualError("Arguments of print must be int, float or string", expr.getLocation());
+                throw new ContextualError("Incompatible Types: Arguments of print must be int, float or string",
+                        expr.getLocation());
             }
         }
         LOG.debug("verify AbstractPrint: end");

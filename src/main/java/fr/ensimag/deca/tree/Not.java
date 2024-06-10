@@ -35,7 +35,7 @@ public class Not extends AbstractUnaryExpr {
         // verify type_unary_op()
         if (typeOp != compiler.environmentType.BOOLEAN) {
             throw new ContextualError(
-                    "Operand should be of type 'boolean', but is of type '"
+                    "Incompatible Types: Operand should be of type 'boolean', but is of type '"
                             + typeOp + "'.",
                     getLocation());
         }

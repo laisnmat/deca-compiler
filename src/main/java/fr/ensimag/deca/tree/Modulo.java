@@ -36,7 +36,8 @@ public class Modulo extends AbstractOpArith {
         this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         if (!this.getLeftOperand().getType().isInt() || !this.getRightOperand().getType().isInt()) {
-            throw new ContextualError("Operands must be of type int for operator %", this.getLocation());
+            throw new ContextualError("Incompatible Types: Operands must be of type int for operator %",
+                    this.getLocation());
         }
         this.setType(compiler.environmentType.INT);
         return this.getType();
