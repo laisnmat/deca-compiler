@@ -21,3 +21,5 @@ src/main/antlr4/fr/ensimag/deca/syntax/.antlr
 
 *.tmp
 src/test/deca/tmp
+
+/gen
