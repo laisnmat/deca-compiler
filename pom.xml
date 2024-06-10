@@ -140,13 +140,13 @@
                         <exclude>fr/ensimag/deca/tools/DecacInternalError.class</exclude>
                         <exclude>fr/ensimag/deca/ima/pseudocode/IMAInternalError.class</exclude>
                     </excludes>
-                </configuration>
+                </configuration>                               
                 <executions>
                     <execution>
                         <id>default-instrument</id>
                         <goals>
                             <goal>instrument</goal>
-                        </goals>
+                        </goals>             
                     </execution>
                     <execution>
                         <id>default-restore-instrumented-classes</id>
@@ -181,7 +181,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>      
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -309,16 +309,6 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>test_options</id>
-                        <configuration>
-                            <executable>./src/test/script/test-options.sh</executable>
-                        </configuration>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                    <execution>
                         <id>test_renduIntermediaire2</id>
                         <configuration>
                             <executable>./src/test/script/renduInterm2.sh</executable>
@@ -381,11 +371,11 @@
                             <!--
                                 Build an uber-jar that is packaged with all the other dependencies,
                                 such as the antlr-runtime and so on. You can run this as:
-
+                                
                                 java -jar Deca-0.0.1-jar-with-dependencies.jar foo.deca
-
+                                
                                 assuming you have a file called foo.deca to attempt a parse.
-
+                                
                                 Not really useful for developers, but may be useful for
                                 users.
                             -->
@@ -518,7 +508,7 @@
                     <threshold>Exp</threshold>
                 </configuration>
             </plugin>
-
+      
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -533,7 +523,7 @@
                                 <additionalparam>-Xdoclint:none</additionalparam>
                             </configuration>
                         </execution>
-                    </executions>
+                    </executions>          
                     <tags>
                         <tag>
                             <name>date</name>
