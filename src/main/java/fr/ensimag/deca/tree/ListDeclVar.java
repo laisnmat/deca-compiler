@@ -23,23 +23,25 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        for (AbstractDeclVar dv : getList()) {
+            dv.decompile(s);
+        }
     }
 
     /**
      * Implements non-terminal "list_decl_var" of [SyntaxeContextuelle] in pass 3
      * 
      * @param compiler
-     *                     contains the "env_types" attribute
+     *            contains the "env_types" attribute
      * @param localEnv
-     *                     its "parentEnvironment" corresponds to "env_exp_sup"
-     *                     attribute
-     *                     in precondition, its "current" dictionary corresponds to
-     *                     the "env_exp" attribute
-     *                     in postcondition, its "current" dictionary corresponds to
-     *                     the "env_exp_r" attribute
+     *            its "parentEnvironment" corresponds to "env_exp_sup"
+     *            attribute
+     *            in precondition, its "current" dictionary corresponds to
+     *            the "env_exp" attribute
+     *            in postcondition, its "current" dictionary corresponds to
+     *            the "env_exp_r" attribute
      * @param currentClass
-     *                     corresponds to "class" attribute (null in the main bloc).
+     *            corresponds to "class" attribute (null in the main bloc).
      */
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -74,9 +76,9 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      * Set the offset to the LB Register.
      *
      * @param offset
-     *               The new offset.
-     *               Precondition:
-     *               offset > 0
+     *            The new offset.
+     *            Precondition:
+     *            offset > 0
      */
     public void setLocalBaseOffset(int offset) {
         if (offset <= 0) {
