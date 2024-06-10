@@ -1,5 +1,7 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.ima.pseudocode.Label;
+
 public abstract class AbstractLabel {
     /**
      * The unique id of this Label.
@@ -17,26 +19,41 @@ public abstract class AbstractLabel {
     protected final LabelManager labelManager;
 
     /**
-     * Label objects are used to get the right labels when generating assembly structures.
+     * Label objects are used to get the right labels when generating assembly
+     * structures.
      * 
      * Every instance must call .destruct() when not using it anymore.
+     * 
      * @param id
-*      The id of this structure. Must be unique.
+     *            The id of this structure. Must be unique.
      * @param labelManager
-     *      The associated labelManager, used to manage prefix.
+     *            The associated labelManager, used to manage prefix.
      */
     public AbstractLabel(int id, LabelManager labelManager) {
         this.id = id;
         this.labelManager = labelManager;
         this.prefixBefore = new String(labelManager.getPrefix());
-        labelManager.setPrefix(prefixBefore + this + ".");
+        labelManager.addPrefix(this + ".");
     }
 
     /**
-     * Set back the prefix of the LabelManager to what it was before adding this new Label.
+     * Set back the prefix of the LabelManager to what it was before adding this new
+     * Label.
      */
     public void destruct() {
-        this.labelManager.setPrefix(prefixBefore);
+        this.labelManager.removePrefix();
+    }
+
+    /**
+     * Label at the end of this structure.
+     *
+     * Composed of the prefix of the labelManager and the value of this label.
+     * 
+     * @return
+     *         an IMA Label.
+     */
+    public Label getEndLabel() {
+        return new Label(labelManager.getPrefix() + "end");
     }
 
     /**

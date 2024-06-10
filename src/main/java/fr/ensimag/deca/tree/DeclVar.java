@@ -10,7 +10,6 @@ import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import net.bytebuddy.dynamic.loading.PackageDefinitionStrategy.Definition;
 
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -73,7 +72,7 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected int codeGenDeclVar(DecacCompiler compiler, int localBaseOffset) {
-        compiler.tsto.increment();
+        compiler.stackManager.incrementVarCount();
         RegisterOffset offset = new RegisterOffset(localBaseOffset, GPRegister.LB);
 
         // put this variable in the next free space in memory

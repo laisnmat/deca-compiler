@@ -69,11 +69,11 @@ public class CompilerOptions {
                 if (registerOption <= 16 && registerOption >= 4) {
                     registerOption = Integer.parseInt(arg) - 1;
                 } else if (registerOption < 4) {
-                    System.out.println("The number of registers must be at least 4, setting it to 4");
-                    registerOption = 4;
+                    System.out.println("The number of registers must be at least 3, setting it to 3");
+                    registerOption = 3;
                 } else {
-                    System.out.println("The number of registers must be maximum at 16, setting it to 16");
-                    registerOption = 16;
+                    System.out.println("The number of registers must be maximum at 15, setting it to 15");
+                    registerOption = 15;
                 }
                 parsingR = false;
                 continue;
