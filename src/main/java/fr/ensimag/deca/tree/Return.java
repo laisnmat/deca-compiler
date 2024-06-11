@@ -33,15 +33,18 @@ public class Return extends AbstractInst {
         expression.decompile(s);
     }
 
-    // @Override
-    // protected void codeGenExpr(DecacCompiler compiler, GPRegister register) {
-    // throw new UnsupportedOperationException("not yet implemented");
-    // }
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass,
+            Type returnType)
             throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
 }
+
+    
