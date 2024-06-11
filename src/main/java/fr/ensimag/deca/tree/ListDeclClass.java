@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
@@ -22,7 +23,7 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         // (down) env_types, (up) env_typesr
         LOG.debug("verify listClass: start");
         for (AbstractDeclClass declClass : this.getList()) {
-            declClass.codeGenDeclClass(compiler, compiler.stackManager.getVarCount() + 1);
+            declClass.verifyClass(compiler);
         }
         LOG.debug("verify listClass: end");
     }
@@ -51,6 +52,12 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
             declClass.verifyClassBody(compiler);
         }
         LOG.debug("verify listClassBody: end");
+    }
+
+    public void codeGenDeclClassList(DecacCompiler compiler, ClassDefinition currentClass) {
+        for (AbstractDeclClass declClass : this.getList()) {
+            declClass.codeGenDeclClass(compiler, currentClass);
+        }
     }
 
     @Override

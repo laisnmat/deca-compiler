@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 
 /**
@@ -34,11 +35,9 @@ public abstract class AbstractDeclClass extends Tree {
 
     /**
      * Generate code to declare new classes
-     * 
-     * @param compiler
-     *            DecacCompiler associated
-     * @param globalBaseOffset
-     *            Current offsent for the global register
+     *
+     * @param compiler     DecacCompiler associated
+     * @param currentClass
      */
-    protected abstract void codeGenDeclClass(DecacCompiler compiler, int globalBaseOffset);
+    protected abstract void codeGenDeclClass(DecacCompiler compiler, ClassDefinition currentClass);
 }

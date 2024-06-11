@@ -62,18 +62,16 @@ public class Program extends AbstractProgram {
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
         compiler.addComment("Main program");
+        classes.codeGenDeclClassList(compiler, null);
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
 
         compiler.errorManager.addTSTOError();
         compiler.errorManager.generateErrors(compiler);
 
-        compiler.addFirst(new Line(
-                new ADDSP(compiler.stackManager.getADDSPValue())));
-        compiler.addFirst(new Line(new BOV(
-                compiler.labelManager.getStackOverflowError())));
-        compiler.addFirst(new Line(
-                new TSTO(compiler.stackManager.getTSTOValue())));
+        compiler.addFirst(new Line(new ADDSP(compiler.stackManager.getGlobalADDSPValue())));
+        compiler.addFirst(new Line(new BOV(compiler.labelManager.getStackOverflowError())));
+        compiler.addFirst(new Line(new TSTO(compiler.stackManager.getTSTOValue())));
         compiler.addFirst(new Line("stack overflow test"));
     }
 

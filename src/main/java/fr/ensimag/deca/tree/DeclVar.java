@@ -13,7 +13,7 @@ import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 /**
@@ -74,9 +74,19 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     @Override
-    protected void codeGenDeclVar(DecacCompiler compiler, int localBaseOffset) {
-        RegisterOffset offset = new RegisterOffset(localBaseOffset, GPRegister.LB);
-        compiler.stackManager.incrementVarCount();
+    protected void codeGenDeclVar(DecacCompiler compiler, ClassDefinition currentClass) {
+        Register reg;
+        int baseOffset;
+        if (currentClass == null) {
+            reg = Register.GB;
+            baseOffset = compiler.stackManager.getVarGlobalCount() + 1;
+            compiler.stackManager.incrementVarGlobalCount();
+        } else {
+            reg = Register.LB;
+            baseOffset = compiler.stackManager.getVarLocalCount() + 1;
+            compiler.stackManager.incrementVarLocalCount();
+        }
+        RegisterOffset offset = new RegisterOffset(baseOffset, reg);
 
         // put this variable in the next free space in memory
         this.varName.getExpDefinition().setOperand(offset);

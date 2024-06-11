@@ -138,24 +138,39 @@ public class DeclClass extends AbstractDeclClass {
         methods.iter(f);
     }
 
-    protected void codeGenDeclClass(DecacCompiler compiler, int localBaseOffset) {
+    protected void codeGenDeclClass(DecacCompiler compiler, ClassDefinition currentClass) {
+        Register reg;
+        int baseOffset;
+        if (currentClass == null) {
+            reg = Register.GB;
+            baseOffset = compiler.stackManager.getVarGlobalCount();
+        } else {
+            reg = Register.LB;
+            baseOffset = compiler.stackManager.getVarLocalCount();
+        }
+        baseOffset++;
+
         // code adresse
         ClassDefinition superClass = this.classType.getDefinition().getSuperClass();
-        compiler.stackManager.incrementVarCount();
         if (superClass == null) {
             compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         } else {
             compiler.addInstruction(new LEA(superClass.getType().getAddr(), Register.R0));
         }
-        RegisterOffset offset = new RegisterOffset(localBaseOffset, GPRegister.GB);
-        compiler.addInstruction(new STORE(Register.R0, offset));
 
-        localBaseOffset++;
+        RegisterOffset offset = new RegisterOffset(baseOffset, GPRegister.GB);
+        compiler.addInstruction(new STORE(Register.R0, offset));
+        baseOffset++;
         // code equals
 
         // code attributes ?
 
         // code methods
 
+        if (currentClass == null) {
+            compiler.stackManager.setGlobalCount(baseOffset);
+        } else {
+            compiler.stackManager.setLocalCount(baseOffset);
+        }
     }
 }

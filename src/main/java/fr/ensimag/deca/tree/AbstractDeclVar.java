@@ -37,8 +37,7 @@ public abstract class AbstractDeclVar extends Tree {
      * Generate assembly code for the variable declaration.
      * 
      * @param compiler
-     *
-     * @param localBaseOffset
+     * @param currentClass
      */
-    protected abstract void codeGenDeclVar(DecacCompiler compiler, int localBaseOffset);
+    protected abstract void codeGenDeclVar(DecacCompiler compiler, ClassDefinition currentClass);
 }
