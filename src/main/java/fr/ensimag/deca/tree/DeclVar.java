@@ -73,6 +73,14 @@ public class DeclVar extends AbstractDeclVar {
         this.initialization.verifyInitialization(compiler, type, localEnv, currentClass);
     }
 
+    /**
+     * Method to generate code for a new var declaration.
+     * 
+     * @param compiler
+     *            Decac Compiler
+     * @param currentClass
+     *            Current Class in which the the var is declared
+     */
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler, ClassDefinition currentClass) {
         Register reg;

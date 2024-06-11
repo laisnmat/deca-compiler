@@ -54,6 +54,14 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         LOG.debug("verify listClassBody: end");
     }
 
+    /**
+     * Method to generate code for all Class declarations.
+     * 
+     * @param compiler
+     *            Decac Compiler
+     * @param currentClass
+     *            Current Class in which the class is declared
+     */
     public void codeGenDeclClassList(DecacCompiler compiler, ClassDefinition currentClass) {
         for (AbstractDeclClass declClass : this.getList()) {
             declClass.codeGenDeclClass(compiler, currentClass);
