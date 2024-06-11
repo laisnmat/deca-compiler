@@ -74,9 +74,9 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     @Override
-    protected int codeGenDeclVar(DecacCompiler compiler, int localBaseOffset) {
-        compiler.stackManager.incrementVarCount();
+    protected void codeGenDeclVar(DecacCompiler compiler, int localBaseOffset) {
         RegisterOffset offset = new RegisterOffset(localBaseOffset, GPRegister.LB);
+        compiler.stackManager.incrementVarCount();
 
         // put this variable in the next free space in memory
         this.varName.getExpDefinition().setOperand(offset);
@@ -87,10 +87,6 @@ public class DeclVar extends AbstractDeclVar {
             Initialization i = (Initialization) this.initialization;
             new Assign(this.varName, i.getExpression()).codeGenInst(compiler);
         }
-
-        // increment the offset (could be incremented of more than one depending on the
-        // size of the type)
-        return localBaseOffset + 1;
     }
 
     @Override

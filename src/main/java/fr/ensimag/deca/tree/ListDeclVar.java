@@ -19,8 +19,6 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     /**
      * Offset to the LB Register.
      */
-    private int localBaseOffset = 1;
-
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclVar dv : getList()) {
@@ -57,34 +55,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     public void codeGenDeclVarList(DecacCompiler compiler) {
         for (AbstractDeclVar declVar : this.getList()) {
-            int offset = declVar.codeGenDeclVar(compiler, this.getLocalBaseOffset());
-            this.setLocalBaseOffset(offset);
+            declVar.codeGenDeclVar(compiler, compiler.stackManager.getVarCount() + 1);
         }
-    }
-
-    /**
-     * Get the offset to the LB Register.
-     *
-     * @return
-     *         the localBaseOffset
-     */
-    public int getLocalBaseOffset() {
-        return this.localBaseOffset;
-    }
-
-    /**
-     * Set the offset to the LB Register.
-     *
-     * @param offset
-     *            The new offset.
-     *            Precondition:
-     *            offset > 0
-     */
-    public void setLocalBaseOffset(int offset) {
-        if (offset <= 0) {
-            throw new IllegalArgumentException("LocalBase offset should not be less than one.");
-        }
-
-        this.localBaseOffset = offset;
     }
 }

@@ -1,17 +1,26 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.context.ClassDefinition;
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.TypeDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+
 import fr.ensimag.deca.tools.IndentPrintStream;
+
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
+import java.io.PrintStream;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -33,6 +42,8 @@ public class DeclClass extends AbstractDeclClass {
         this.fields = fields;
         this.methods = methods;
     }
+
+    private ClassType classType;
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -127,4 +138,24 @@ public class DeclClass extends AbstractDeclClass {
         methods.iter(f);
     }
 
+    protected void codeGenDeclClass(DecacCompiler compiler, int localBaseOffset) {
+        // code adresse
+        ClassDefinition superClass = this.classType.getDefinition().getSuperClass();
+        compiler.stackManager.incrementVarCount();
+        if (superClass == null) {
+            compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        } else {
+            compiler.addInstruction(new LEA(superClass.getType().getAddr(), Register.R0));
+        }
+        RegisterOffset offset = new RegisterOffset(localBaseOffset, GPRegister.GB);
+        compiler.addInstruction(new STORE(Register.R0, offset));
+
+        localBaseOffset++;
+        // code equals
+
+        // code attributes ?
+
+        // code methods
+
+    }
 }

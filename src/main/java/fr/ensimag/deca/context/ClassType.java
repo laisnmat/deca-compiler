@@ -1,7 +1,10 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.DAddr;
+import org.apache.log4j.Logger;
 
 /**
  * Type defined by a class.
@@ -10,6 +13,10 @@ import fr.ensimag.deca.tree.Location;
  * @date 14/04/2024
  */
 public class ClassType extends Type {
+
+    private static final Logger LOG = Logger.getLogger(ClassType.class);
+    protected DAddr addr;
+
     protected ClassDefinition definition;
 
     /**
@@ -46,6 +53,10 @@ public class ClassType extends Type {
     @Override
     public boolean isClassOrNull() {
         return true;
+    }
+
+    public DAddr getAddr() {
+        return addr;
     }
 
     @Override

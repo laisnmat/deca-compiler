@@ -21,8 +21,8 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         // (1.2)
         // (down) env_types, (up) env_typesr
         LOG.debug("verify listClass: start");
-        for (AbstractDeclClass declClass : getList()) {
-            declClass.verifyClass(compiler);
+        for (AbstractDeclClass declClass : this.getList()) {
+            declClass.codeGenDeclClass(compiler, compiler.stackManager.getVarCount() + 1);
         }
         LOG.debug("verify listClass: end");
     }
