@@ -9,7 +9,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
-public class Return extends AbstractExpr {
+public class Return extends AbstractInst {
 
     private AbstractExpr expression;
 
