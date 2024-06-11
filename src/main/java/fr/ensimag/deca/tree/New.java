@@ -24,7 +24,7 @@ public class New extends AbstractExpr {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        type.prettyPrint(s, prefix, false);
+        type.prettyPrint(s, prefix, true);
     }
 
     @Override
