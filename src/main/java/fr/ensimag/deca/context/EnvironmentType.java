@@ -23,6 +23,7 @@ public class EnvironmentType {
     public final FloatType FLOAT;
     public final StringType STRING;
     public final BooleanType BOOLEAN;
+    public final NullType NULL;
     private final Map<Symbol, TypeDefinition> envTypes;
 
     public EnvironmentType(DecacCompiler compiler) {
@@ -46,6 +47,10 @@ public class EnvironmentType {
 
         Symbol stringSymb = compiler.createSymbol("string");
         STRING = new StringType(stringSymb);
+
+        Symbol nullSymb = compiler.createSymbol("null");
+        NULL = new NullType(nullSymb);
+
         // not added to envTypes, it's not visible for the user.
     }
 

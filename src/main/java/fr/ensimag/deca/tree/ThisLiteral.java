@@ -15,7 +15,7 @@ import java.io.PrintStream;
 import org.apache.log4j.Logger;
 
 /**
- * Integer literal
+ * This literal
  *
  * @author gl03
  * @date 14/04/2024
