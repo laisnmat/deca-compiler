@@ -1,0 +1,11 @@
+class Single {
+    int methodInt() {
+        return 1;
+    }
+    float methodFloat() {
+        return 1.1;
+    }
+    boolean methodBool() {
+        return true;
+    }
+}

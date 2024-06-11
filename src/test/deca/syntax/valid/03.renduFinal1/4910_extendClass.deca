@@ -1,0 +1,10 @@
+protected class Single{
+    int a = 1;
+    int b;
+}
+protected class Double extends Single{
+    boolean c = true;
+}
+class Triple extends Double{
+    String d = "Hello";
+}

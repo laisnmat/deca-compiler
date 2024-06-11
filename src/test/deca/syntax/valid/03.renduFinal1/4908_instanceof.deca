@@ -1,0 +1,9 @@
+class Single {
+    int a = 1;
+    int b;
+}
+
+{
+    Single x = new Single();
+    boolean y = x instanceof Single;
+}

@@ -1,0 +1,5 @@
+class Assembleur{
+    void ass(){
+        asm("LOAD #0, r1");
+    }
+}

@@ -1,0 +1,4 @@
+protected class Single {
+    int a = 1;
+    int b;
+}
