@@ -135,10 +135,11 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.11</version>
                 <configuration>
+                    <excludes>
+                        <exclude>fr/ensimag/deca/tools/DecacInternalError.class</exclude>
+                        <exclude>fr/ensimag/deca/ima/pseudocode/IMAInternalError.class</exclude>
+                    </excludes>
                     <outputDirectory>${jacoco.report_dir}/</outputDirectory>
-                        <includes>
-                            <include>fr/ensimag/deca/codegen/*</include>
-                        </includes>
                 </configuration>
                 <executions>
                     <execution>
@@ -153,6 +154,36 @@
                             <goal>restore-instrumented-classes</goal>
                         </goals>
                     </execution>
+                        <execution>
+                            <id>merge</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>merge</goal>
+                            </goals>
+                            <configuration>
+                                <fileSets>
+                                    <fileSet>
+                                        <directory>${project.basedir}/src/test/deca/codegen/valid/00.renduInitial/target</directory>
+                                        <includes>
+                                            <include>jacoco.exec</include>
+                                        </includes>
+                                    </fileSet>
+                                    <fileSet>
+                                        <directory>${project.basedir}/src/test/deca/context/invalid/00.renduInitial/target</directory>
+                                        <includes>
+                                            <include>jacoco.exec</include>
+                                        </includes>
+                                    </fileSet>
+                                    <fileSet>
+                                        <directory>${project.basedir}/src/test/deca/target</directory>
+                                        <includes>
+                                            <include>jacoco.exec</include>
+                                        </includes>
+                                    </fileSet>
+                                </fileSets>
+                                <destFile>${project.build.directory}/jacoco.exec</destFile>
+                            </configuration>
+                        </execution>
                     <execution>
                         <id>default-report</id>
                         <goals>
