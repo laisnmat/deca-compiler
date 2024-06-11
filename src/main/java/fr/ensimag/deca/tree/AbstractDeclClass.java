@@ -32,5 +32,13 @@ public abstract class AbstractDeclClass extends Tree {
     protected abstract void verifyClassBody(DecacCompiler compiler)
             throws ContextualError;
 
-    protected abstract void codeGenDeclClass(DecacCompiler compiler, int localBaseOffset);
+    /**
+     * Generate code to declare new classes
+     * 
+     * @param compiler
+     *            DecacCompiler associated
+     * @param globalBaseOffset
+     *            Current offsent for the global register
+     */
+    protected abstract void codeGenDeclClass(DecacCompiler compiler, int globalBaseOffset);
 }
