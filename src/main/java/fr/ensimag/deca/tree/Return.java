@@ -28,15 +28,15 @@ public class Return extends AbstractExpr {
     }
 
     @Override
-    protected void decompile(IndentPrintStream s) {
-        s.print("New");
+    public void decompile(IndentPrintStream s) {
+        s.print("Return ");
         expression.decompile(s);
     }
 
-    @Override
-    protected void codeGenExpr(DecacCompiler compiler, GPRegister register) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
+    // @Override
+    // protected void codeGenExpr(DecacCompiler compiler, GPRegister register) {
+    // throw new UnsupportedOperationException("not yet implemented");
+    // }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
