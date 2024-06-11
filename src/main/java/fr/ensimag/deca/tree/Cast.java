@@ -1,0 +1,61 @@
+package fr.ensimag.deca.tree;
+
+import java.io.PrintStream;
+import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.tools.IndentPrintStream;
+
+public class Cast extends AbstractExpr {
+
+    private AbstractIdentifier type;
+    private AbstractExpr expr;
+
+    public Cast(AbstractIdentifier type, AbstractExpr expr) {
+        this.type = type;
+        this.expr = expr;
+    }
+
+    @Override
+    protected void iterChildren(TreeFunction f) {
+        type.iter(f);
+        expr.iter(f);
+    }
+
+    @Override
+    protected void prettyPrintChildren(PrintStream s, String prefix) {
+        type.prettyPrint(s, prefix, false);
+        expr.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        s.print("(");
+        type.decompile(s);
+        s.print(")(");
+        expr.decompile(s);
+        s.print(")");
+    }
+
+    // @Override
+    // protected void codeGenExpr(DecacCompiler compiler, GPRegister register) {
+    // throw new UnsupportedOperationException("not yet implemented");
+    // }
+
+    @Override
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        throw new UnsupportedOperationException("not yet implemented");
+        // Type type = this.type.verifyType(compiler);
+        // if (!type.isClass()) {
+        // throw new ContextualError("Incompatible Type: " + type.getName() + " is not a
+        // class", getLocation());
+        // }
+        // this.setType(type);
+        // return type;
+    }
+
+}
