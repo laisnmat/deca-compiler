@@ -1,0 +1,6 @@
+proteger class Hello{
+    int x;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 1 : <message d'erreur de votre compilateur>

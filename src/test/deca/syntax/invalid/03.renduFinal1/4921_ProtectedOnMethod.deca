@@ -1,0 +1,8 @@
+class Hello{
+    protected int method(){
+        return 1;
+    }
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : <message d'erreur de votre compilateur>

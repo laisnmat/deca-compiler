@@ -1,0 +1,8 @@
+int method(){
+    class Hello{
+        return 1;
+    }
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 1 : <message d'erreur de votre compilateur>

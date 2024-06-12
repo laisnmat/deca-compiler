@@ -1,0 +1,8 @@
+class Assembleur{
+    void ass(){
+        asm(LOAD #0, r1);
+    }
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 5 : <message d'erreur de votre compilateur>

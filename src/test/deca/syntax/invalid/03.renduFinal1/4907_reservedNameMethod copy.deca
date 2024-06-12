@@ -1,0 +1,8 @@
+class Hello{
+    boolean class(){
+        return 1;
+    }
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : <message d'erreur de votre compilateur>
