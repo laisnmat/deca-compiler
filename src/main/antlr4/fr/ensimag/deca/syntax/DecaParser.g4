@@ -584,13 +584,16 @@ decl_method returns[DeclMethod tree]
 }
     : type ident OPARENT params=list_params CPARENT (block {
             method = new MethodBody(block.tree);
-            setLocation(method, block.start);
+            setLocation(method, type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
             method = new MethodASMBody($code.text);
             setLocation(method, $ASM);
         }
       ) {
+            assert($type.tree != null);
+            assert($ident.tree != null);
+            assert($params.tree != null);
             $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, method);
             setLocation($tree, $type.start);
         }
@@ -601,8 +604,10 @@ list_params returns[ListDeclParam tree]
     $tree = new ListDeclParam();
 }
     : (p1=param {
+            assert($p1.tree != null);
             $tree.add($p1.tree);
         } (COMMA p2=param {
+            assert($p2.tree != null);
             $tree.add($p2.tree);
         }
       )*)?
