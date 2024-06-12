@@ -564,10 +564,10 @@ list_decl_field[ListDeclField l, AbstractIdentifier t, Visibility v]
       )*
     ;
 
-decl_field[AbsractIdentifier t, Visibility v] returns[AbstractDeclField tree]
+decl_field[AbstractIdentifier t, Visibility v] returns[AbstractDeclField tree]
     : i=ident {
             assert($i.tree != null);
-            $tree = new DeclField($v, $t, $i.tree, $v, new NoInitialization());
+            $tree = new DeclField($v, $t, $i.tree, new NoInitialization());
         }
       (EQUALS e=expr {
             assert($e.tree != null);
@@ -583,11 +583,11 @@ decl_method returns[DeclMethod tree]
     AbstractMethodBody method;
 }
     : type ident OPARENT params=list_params CPARENT (block {
-            method = new MethodBody(block.tree);
-            setLocation(method, type.start);
+            method = new MethodBody($block.decls, $block.insts);
+            setLocation(method, $type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
-            method = new MethodASMBody($code.text);
+            method = new MethodAsmBody(new StringLiteral($code.text));
             setLocation(method, $ASM);
         }
       ) {

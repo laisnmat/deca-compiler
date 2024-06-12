@@ -11,13 +11,31 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class InstanceOf extends AbstractExpr {
 
-    public InstanceOf(AbstractExpr expression, AbstractExpr type) {
-        super(expression, type);
+    private AbstractExpr expression;
+    private AbstractIdentifier type;
+
+    public InstanceOf(AbstractExpr expression, AbstractIdentifier type) {
+        this.expression = expression;
+        this.type = type;
     }
 
     @Override
-    protected String getOperatorName() {
-        return "instanceof";
+    protected void iterChildren(TreeFunction f) {
+        expression.iter(f);
+        type.iter(f);
+    }
+
+    @Override
+    protected void prettyPrintChildren(PrintStream s, String prefix) {
+        expression.prettyPrint(s, prefix, false);
+        type.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        expression.decompile(s);
+        s.print(" instanceof ");
+        type.decompile(s);
     }
 
     // @Override
