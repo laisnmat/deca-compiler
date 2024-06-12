@@ -1,10 +1,11 @@
 package fr.ensimag.deca;
 
 import java.io.File;
-import java.io.PrintStream;
-import java.util.*;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
-import fr.ensimag.ima.pseudocode.Register;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -213,7 +214,8 @@ public class CompilerOptions {
             System.out.println(
                     "*                                                                         *");
             System.out.println(
-                    "*                    Vincent, Rôle: Code Owner / Responsable              *");
+
+                    "*       Vincent, Rôle: Code Owner / Responsable GIT / Chef de projet      *");
             System.out.println(
                     "*                                                                         *");
             System.out.println(
@@ -245,10 +247,6 @@ public class CompilerOptions {
             System.out.println(
                     "*                                                                         *");
             System.out.println(
-                    "*    Alexander, Rôle: Responsable technique / testeur déca / extension    *");
-            System.out.println(
-                    "*                                                                         *");
-            System.out.println(
                     "***************************************************************************");
         } else {
 
@@ -267,7 +265,7 @@ public class CompilerOptions {
             System.out.println(
                     "                      ░▒▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                               *                                                                         *");
             System.out.println(
-                    "                      ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                             *                    Vincent, Rôle: Code Owner / Responsable              *");
+                    "                      ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                             *       Vincent, Rôle: Code Owner / Responsable GIT / Chef de projet      *");
             System.out.println(
                     "                      ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                            *                                                                         *");
             System.out.println(
@@ -299,11 +297,11 @@ public class CompilerOptions {
             System.out.println(
                     "░▓▓▓▓▓▒▒       ▒▒▒    ▒▒▒ ▒▒▒     ▒▒▒▒  ░▒▒▒     ░▒▒▒   ▒      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                     *                                                                         *");
             System.out.println(
-                    "░▒▓▓▓▓▓▒▒       ░▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒   ▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒  ▒      ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓                      *    Alexander, Rôle: Responsable technique / testeur déca / extension    *");
+                    "░▒▓▓▓▓▓▒▒       ░▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒   ▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒  ▒      ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓                      ***************************************************************************");
             System.out.println(
-                    "  ▓▓▓▓▓▓▒▒                                            ░▒      ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓                      *                                                                         *");
+                    "  ▓▓▓▓▓▓▒▒                                            ░▒      ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓                      ");
             System.out.println(
-                    "  ▒▓▓▓▓▓▓░▒                                          ░▒      ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓                       ***************************************************************************");
+                    "  ▒▓▓▓▓▓▓░▒                                          ░▒      ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓                       ");
             System.out.println(
                     "  ░▓▓▓▓▓▓▓░▒▒              ▒▓▓▓▓                    ░▒        ▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                          ");
             System.out.println(
