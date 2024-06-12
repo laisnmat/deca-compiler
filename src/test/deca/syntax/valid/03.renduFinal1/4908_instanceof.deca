@@ -7,3 +7,9 @@ class Single {
     Single x = new Single();
     boolean y = x instanceof Single;
 }
+// Description :
+// test du mot clé "instanceof" 
+// On test aussi la déclaration des attributs d'une classe avec une variable ou sans.
+//
+// Resultats :
+// rien (Etape A : OK)

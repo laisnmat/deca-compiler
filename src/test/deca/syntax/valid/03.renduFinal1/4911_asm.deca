@@ -3,3 +3,8 @@ class Assembleur{
         asm("LOAD #0, r1");
     }
 }
+// Description :
+// test du mot clé asm pour écrire du code assembleur
+//
+// Resultats :
+// rien (Etape A : OK)

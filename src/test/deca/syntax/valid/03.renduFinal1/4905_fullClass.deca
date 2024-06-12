@@ -15,3 +15,8 @@ class Single {
         return this.e && f;
     }
 }
+// Description :
+// test de la création d'une classe des attributs et des méthodes non organisés
+//
+// Resultats :
+// rien (Etape A : OK)

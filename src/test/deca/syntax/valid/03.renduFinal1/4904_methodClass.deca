@@ -9,3 +9,8 @@ class Single {
         return a && b;
     }
 }
+// Description :
+// test de la création d'une classe avec des méthodes qui prennent des paramètres.
+//
+// Resultats :
+// rien (Etape A : OK)

@@ -2,3 +2,9 @@ protected class Single {
     int a = 1;
     int b;
 }
+// Description :
+// test du mot clé protected 
+// On test aussi la déclaration des attributs d'une classe avec une variable ou sans.
+//
+// Resultats :
+// rien (Etape A : OK)

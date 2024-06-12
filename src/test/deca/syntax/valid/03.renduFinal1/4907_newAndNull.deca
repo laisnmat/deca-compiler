@@ -7,3 +7,9 @@ class Single {
     Single x = new Single();
     Single y = null;
 }
+// Description :
+// test des mots clés new et null
+// On test aussi la déclaration des attributs d'une classe avec une variable ou sans.
+//
+// Resultats :
+// rien (Etape A : OK)

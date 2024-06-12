@@ -9,3 +9,8 @@ class Single {
         return true;
     }
 }
+// Description :
+// test de la création d'une classe avec des méthodes sans paramètres qui retournent des types primitifs
+//
+// Resultats :
+// rien (Etape A : OK)

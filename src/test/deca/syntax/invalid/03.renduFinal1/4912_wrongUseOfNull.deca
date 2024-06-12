@@ -1,0 +1,10 @@
+class Single {
+    int a = 1;
+    int b;
+}
+{
+    Single x = null.Single();
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 6 : <message d'erreur de votre compilateur>

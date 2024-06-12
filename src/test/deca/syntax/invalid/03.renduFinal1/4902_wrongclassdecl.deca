@@ -1,0 +1,6 @@
+string class Empty{
+        
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 1 : <message d'erreur de votre compilateur>

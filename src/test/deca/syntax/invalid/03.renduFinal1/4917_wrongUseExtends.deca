@@ -1,0 +1,10 @@
+protected class Single{
+    int a = 1;
+    int b;
+}
+class Double extends Single(){
+    boolean c = true;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 5 : <message d'erreur de votre compilateur>
