@@ -1,0 +1,12 @@
+class Single {
+    int a = 1;
+    int b;
+
+    void constructor(int a, int b) {
+        this.a.b = a;
+        this.b = b;
+    }
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 6 : <message d'erreur de votre compilateur>
