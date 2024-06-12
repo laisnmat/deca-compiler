@@ -578,20 +578,32 @@ decl_field[AbsractIdentifier t, Visibility v] returns[AbstractDeclField tree]
         }
     ;
 
-decl_method
+decl_method returns[DeclMethod tree]
 @init {
+    AbstractMethodBody method;
 }
     : type ident OPARENT params=list_params CPARENT (block {
+            method = new MethodBody(block.tree);
+            setLocation(method, block.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+            method = new MethodASMBody($code.text);
+            setLocation(method, $ASM);
         }
       ) {
+            $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, method);
+            setLocation($tree, $type.start);
         }
     ;
 
-list_params
+list_params returns[ListDeclParam tree]
+@init {
+    $tree = new ListDeclParam();
+}
     : (p1=param {
+            $tree.add($p1.tree);
         } (COMMA p2=param {
+            $tree.add($p2.tree);
         }
       )*)?
     ;
@@ -607,7 +619,11 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-param
+param returns[DeclParam tree]
     : type ident {
+            assert($type.tree != null);
+            assert($ident.tree != null);
+            $tree = new DeclParam($type.tree, $ident.tree);
+            setLocation($tree, $type.start);
         }
     ;
