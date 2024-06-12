@@ -1,5 +1,5 @@
-proteger class Hello{
-    int x;
+class Hello{
+    proteger int x;
 }
 // Resultats :
 // Erreur de syntaxe

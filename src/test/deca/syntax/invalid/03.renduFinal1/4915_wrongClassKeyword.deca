@@ -1,0 +1,10 @@
+classe Single {
+    int a = 1;
+    int b;
+}
+{
+    Single x = new Single();
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 1 : <message d'erreur de votre compilateur>

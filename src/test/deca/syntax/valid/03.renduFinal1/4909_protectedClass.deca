@@ -1,6 +1,6 @@
-protected class Single {
-    int a = 1;
-    int b;
+class Single {
+    protected int a = 1;
+    protected int b;
 }
 // Description :
 // test du mot clé protected 

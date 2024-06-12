@@ -1,8 +1,8 @@
-protected class Single{
+class Single{
     int a = 1;
     int b;
 }
-protected Double extends Single{
+class Double extends class Single{
     boolean c = true;
 }
 // Resultats :
