@@ -39,6 +39,13 @@ public class Identifier extends AbstractIdentifier {
 
     private Definition definition;
 
+    private final Symbol name;
+
+    public Identifier(Symbol name) {
+        Validate.notNull(name);
+        this.name = name;
+    }
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -51,16 +58,6 @@ public class Identifier extends AbstractIdentifier {
         return definition;
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * ClassDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a class definition.
-     */
     @Override
     public ClassDefinition getClassDefinition() {
         try {
@@ -73,16 +70,6 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * MethodDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a method definition.
-     */
     @Override
     public MethodDefinition getMethodDefinition() {
         try {
@@ -95,16 +82,6 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * FieldDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a field definition.
-     */
     @Override
     public FieldDefinition getFieldDefinition() {
         try {
@@ -117,16 +94,6 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * VariableDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a field definition.
-     */
     @Override
     public VariableDefinition getVariableDefinition() {
         try {
@@ -139,16 +106,6 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * ExpDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a field definition.
-     */
     @Override
     public ExpDefinition getExpDefinition() {
         try {
@@ -169,13 +126,6 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Symbol getName() {
         return name;
-    }
-
-    private Symbol name;
-
-    public Identifier(Symbol name) {
-        Validate.notNull(name);
-        this.name = name;
     }
 
     /**
@@ -199,13 +149,6 @@ public class Identifier extends AbstractIdentifier {
         return def.getType();
     }
 
-    /**
-     * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes.
-     * Verify rule (0.2).
-     * 
-     * @param compiler
-     *                 contains "env_types" attribute
-     */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Type: setting type");

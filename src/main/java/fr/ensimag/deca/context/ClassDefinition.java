@@ -71,8 +71,6 @@ public class ClassDefinition extends TypeDefinition {
         return superClass;
     }
 
-
-
     public EnvironmentExp getMembers() {
         return members;
     }
