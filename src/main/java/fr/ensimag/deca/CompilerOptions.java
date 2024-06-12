@@ -295,7 +295,7 @@ public class CompilerOptions {
             System.out.println(
                     "░▓▓▓▓▒        ▒▒   ▒▒▒▒▒▒ ▒▒▒     ▒▒▒    ▒▒▒ ▒▒▒▒▒▒▒▒  ▒      ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                     *                                                                         *");
             System.out.println(
-                    "░▓▓▓▓▒▒       ▒▒▒      ▒▒ ▒▒▒     ▒▒▒    ▒▒▒     ░▒▒▒ ▒       ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                      *     Hugo, Rôle: Responsable risque humain / médiateur / testeur déca    *");
+                    "░▓▓▓▓▒▒       ▒▒▒      ▒▒ ▒▒▒     ▒▒▒    ▒▒▒     ░▒▒▒ ▒        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                     *     Hugo, Rôle: Responsable risque humain / médiateur / testeur déca    *");
             System.out.println(
                     "░▓▓▓▓▓▒▒       ▒▒▒    ▒▒▒ ▒▒▒     ▒▒▒▒  ░▒▒▒     ░▒▒▒   ▒      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                     *                                                                         *");
             System.out.println(
