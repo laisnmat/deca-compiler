@@ -1,4 +1,4 @@
-protected class Single{
+class Single{
     int a = 1;
     int b;
 }
