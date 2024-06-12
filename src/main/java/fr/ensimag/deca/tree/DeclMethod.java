@@ -13,21 +13,17 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 public class DeclMethod extends AbstractDeclMethod {
     private static final Logger LOG = Logger.getLogger(DeclMethod.class);
 
-    // final private Visibility visibility;
-    // final private AbstractIdentifier type;
-    // final private AbstractIdentifier varName;
-    // final private AbstractInitialization initialization;
+    final private AbstractIdentifier type;
+    final private AbstractIdentifier methodName;
+    final private ListDeclParam params;
+    final private AbstractMethodBody body;
 
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier methodName, ListDeclParam params,
             AbstractMethodBody body) {
-        // Validate.notNull(visibility);
-        // Validate.notNull(type);
-        // Validate.notNull(varName);
-        // Validate.notNull(initialization);
-        // this.type = type;
-        // this.visibility = visibility;
-        // this.varName = varName;
-        // this.initialization = initialization;
+        this.type = type;
+        this.methodName = methodName;
+        this.params = params;
+        this.body = body;
     }
 
     @Override
@@ -43,17 +39,30 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        type.decompile(s);
+        s.print(" ");
+        methodName.decompile(s);
+        s.print("(");
+        params.decompile(s);
+        s.println(") {");
+        body.decompile(s);
+        s.println("}");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        type.prettyPrint(s, prefix, false);
+        methodName.prettyPrint(s, prefix, false);
+        params.prettyPrint(s, prefix, false);
+        body.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        type.iter(f);
+        methodName.iter(f);
+        params.iter(f);
+        body.iter(f);
     }
 
 }

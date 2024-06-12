@@ -32,16 +32,19 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        declVariables.decompile(s);
+        insts.decompile(s);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        declVariables.prettyPrint(s, prefix, false);
+        insts.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        declVariables.iter(f);
+        insts.iter(f);
     }
 }

@@ -15,7 +15,9 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (AbstractDeclMethod m : getList()) {
+            m.decompile(s);
+        }
     }
 
     protected void verifyListMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)

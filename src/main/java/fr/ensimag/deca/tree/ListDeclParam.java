@@ -15,7 +15,9 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (AbstractDeclParam p : getList()) {
+            p.decompile(s);
+        }
     }
 
     protected void verifyListParam(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)

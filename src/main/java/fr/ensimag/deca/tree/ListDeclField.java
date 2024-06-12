@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -16,7 +15,9 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (AbstractDeclField f : getList()) {
+            f.decompile(s);
+        }
     }
 
     protected void verifyListField(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)

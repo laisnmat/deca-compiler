@@ -14,10 +14,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 public class DeclParam extends AbstractDeclParam {
     private static final Logger LOG = Logger.getLogger(DeclParam.class);
 
-    // final private Visibility visibility;
     final private AbstractIdentifier type;
     final private AbstractIdentifier paramName;
-    // final private AbstractInitialization initialization;
 
     public DeclParam(AbstractIdentifier type, AbstractIdentifier paramName) {
         Validate.notNull(type);
@@ -39,17 +37,21 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        type.decompile(s);
+        s.print(" ");
+        paramName.decompile(s);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        type.prettyPrint(s, prefix, false);
+        paramName.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        type.iter(f);
+        paramName.iter(f);
     }
 
 }
