@@ -2,10 +2,7 @@ package fr.ensimag.deca;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.util.List;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 import fr.ensimag.ima.pseudocode.Register;
 import org.apache.log4j.Level;
@@ -58,6 +55,7 @@ public class CompilerOptions {
     private int registerOption = 15;
     private boolean onlyVerif = false;
     private List<File> sourceFiles = new ArrayList<File>();
+    private HashSet<String> decaArg = new HashSet<String>();
 
     public void parseArgs(String[] args) throws CLIException {
 
@@ -80,6 +78,12 @@ public class CompilerOptions {
             }
             if (arg.startsWith("-")) {
                 switch (arg) {
+                    case "-b":
+                        if (args.length > 1) {
+                            throw new CLIException("Option -b does not accept any other option or file");
+                        }
+                        printBanner = true;
+                        break;
                     case "-d":
                         if (debug < TRACE) {
                             debug++;
@@ -123,13 +127,20 @@ public class CompilerOptions {
 
             // parse filename
             if (arg.endsWith(".deca")) {
-                this.sourceFiles.add(new File(arg));
+                decaArg.add(arg);
                 continue;
             }
 
             // else the provided file does not have the right ".deca" extension
             throw new CLIException(
                     "Argument not recognized: the provided file does not have the extension \".deca\": " + arg);
+        }
+
+        if (printBanner) {
+            return;
+        }
+        for (Object decaF : decaArg.toArray()) {
+            sourceFiles.add(new File((String) decaF));
         }
 
         if (parsingR) {
@@ -164,6 +175,7 @@ public class CompilerOptions {
         } else {
             logger.info("Java assertions disabled");
         }
+
     }
 
     protected void displayUsage() {
@@ -180,4 +192,149 @@ public class CompilerOptions {
                 "-P          (parallel)      : if there are multiple source files, parallelize their compilation (to accelerate compilation)");
     }
 
+    public void displayTeamBanner() {
+
+        String columnsEnv = System.getenv("COLUMNS");
+        boolean smallFormat = true;
+
+        if (columnsEnv != null) {
+            if (Integer.parseInt(columnsEnv) >= 200) {
+                smallFormat = false;
+            }
+        }
+
+        if (smallFormat) {
+            System.out.println("***************************************************************************");
+            System.out.println("*                           PROJET GL : GROUPE 03                         *");
+            System.out.println(
+                    "***************************************************************************");
+            System.out.println(
+                    "*                     Jérémy : Code Owner / Responsable GIT               *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "*                    Vincent, Rôle: Code Owner / Responsable              *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "*                 Aster, Rôle: Code Owner / Réferent technique            *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "*       Martha, Rôle: Cheffe de projet / Responsable Jira & documentation *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "*                    Valentin, Rôle: Extension / Médiateur                *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "*              Gaston, Rôle: Chef de réunion / Scrum Master               *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "*     Alexander, Rôle: Responsable technique / testeur déca / extension   *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "*    Matthew, Rôle: Référent Technique / Testeur JUnit / Relecteur docs   *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "*     Hugo, Rôle: Responsable risque humain / médiateur / testeur déca    *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "*    Alexander, Rôle: Responsable technique / testeur déca / extension    *");
+            System.out.println(
+                    "*                                                                         *");
+            System.out.println(
+                    "***************************************************************************");
+        } else {
+
+            System.out.println(
+                    "                                    ░▒▒▒▒▒                                                                              ");
+            System.out.println(
+                    "                              ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒                                               ***************************************************************************");
+            System.out.println(
+                    "                           ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒                                           *                           PROJET GL : GROUPE 03                         *");
+            System.out.println(
+                    "                          ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                      ***************************************************************************");
+            System.out.println(
+                    "                        ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                   *                                                                         *");
+            System.out.println(
+                    "                        ▓▓▓▓▓▓████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                 *                     Jérémy : Code Owner / Responsable GIT               *");
+            System.out.println(
+                    "                      ░▒▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                               *                                                                         *");
+            System.out.println(
+                    "                      ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                             *                    Vincent, Rôle: Code Owner / Responsable              *");
+            System.out.println(
+                    "                      ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                            *                                                                         *");
+            System.out.println(
+                    "                    ▓███▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒          ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                           *                 Aster, Rôle: Code Owner / Réferent technique            *");
+            System.out.println(
+                    "                  ░██████▓▓▓▓▓▓▒▒▒          ░▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                          *                                                                         *");
+            System.out.println(
+                    "                  ░▒████▓▓▒▒            ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                         *       Martha, Rôle: Cheffe de projet / Responsable Jira & documentation *");
+            System.out.println(
+                    "                    ░▒▒▒          ▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                        *                                                                         *");
+            System.out.println(
+                    "                        ▒▒▒▒▒▒▒░▒▒    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                       *                    Valentin, Rôle: Extension / Médiateur                *");
+            System.out.println(
+                    "    ░▒▒▒▒▒                            ▒▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                      *                                                                         *");
+            System.out.println(
+                    "  ░▒▓▓▓▓▓▓▓▓                          ▒▒▒▒▒▒▒▒▒▒▒▒▒▒        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                      *              Gaston, Rôle: Chef de réunion / Scrum Master               *");
+            System.out.println(
+                    "  ▓▓▓▓▒  ▓▓▓▓                                     ▒          ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                     *                                                                         *");
+            System.out.println(
+                    "░▓▓▓▓▓    ▓▓▓  ░▒▒▒▒▒▒▒  ░▒▒▒      ▒▒▒▒▒▒▒▒▒ ▒▒▒▒▒▒░▒       ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                     *     Alexander, Rôle: Responsable technique / testeur déca / extension   *");
+            System.out.println(
+                    "░▓▓▓▓▒  ░▓▓▓   ▒▒        ░▒▒▒     ▒▒▒▒  ░▒▒▒    ░▒▒▒ ▒       ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                     *                                                                         *");
+            System.out.println(
+                    "▒▓▓▓▓▒        ▒▒          ▒▒▒     ▒▒▒    ▒▒▒      ▒▒  ▒       ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                     *    Matthew, Rôle: Référent Technique / Testeur JUnit / Relecteur docs   *");
+            System.out.println(
+                    "░▓▓▓▓▒        ▒▒   ▒▒▒▒▒▒ ▒▒▒     ▒▒▒    ▒▒▒ ▒▒▒▒▒▒▒▒  ▒      ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                     *                                                                         *");
+            System.out.println(
+                    "░▓▓▓▓▒▒       ▒▒▒      ▒▒ ▒▒▒     ▒▒▒    ▒▒▒     ░▒▒▒ ▒       ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                      *     Hugo, Rôle: Responsable risque humain / médiateur / testeur déca    *");
+            System.out.println(
+                    "░▓▓▓▓▓▒▒       ▒▒▒    ▒▒▒ ▒▒▒     ▒▒▒▒  ░▒▒▒     ░▒▒▒   ▒      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                     *                                                                         *");
+            System.out.println(
+                    "░▒▓▓▓▓▓▒▒       ░▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒   ▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒  ▒      ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓                      *    Alexander, Rôle: Responsable technique / testeur déca / extension    *");
+            System.out.println(
+                    "  ▓▓▓▓▓▓▒▒                                            ░▒      ░▓▓▓▓▓▓▓▓▓▓▓▓▓▓                      *                                                                         *");
+            System.out.println(
+                    "  ▒▓▓▓▓▓▓░▒                                          ░▒      ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓                       ***************************************************************************");
+            System.out.println(
+                    "  ░▓▓▓▓▓▓▓░▒▒              ▒▓▓▓▓                    ░▒        ▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                          ");
+            System.out.println(
+                    "    ▓▓▓▓▓▓▓▒░▒▒          ▒▓▓▓▓▓▓▒                  ▒▒        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓   ");
+            System.out.println(
+                    "    ░▓▓▓▓▓▓▓▒  ▒▒▒    ░▒▓▓▓▓▓▓▓▓▒                ▒▒        ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓    ");
+            System.out.println(
+                    "      ▓▓▓▓▓▓▓▓    ▒▒▒▒▓▓▓▓▓▓▓▓▓▓              ░▒▒          ▓▓▓▓▓▓▓▓▓▓▓▓▓▓     ");
+            System.out.println(
+                    "      ░▓▓▓▓▓▓▓▓▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓          ░▒▒▒          ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                                                ");
+            System.out.println(
+                    "        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒░▒▒▒▒▒▒▒          ░▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                                 ");
+            System.out.println(
+                    "          ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                  ▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                                                   ");
+            System.out.println(
+                    "          ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                                    ");
+            System.out.println(
+                    "            ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                                                       ");
+            System.out.println(
+                    "                ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                                         ");
+            System.out.println(
+                    "                  ░▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒                                                            ");
+            System.out.println(
+                    "                      ▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒                                                               ");
+            System.out.println(
+                    "                            ▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒                                                                    ");
+            System.out.println(
+                    "                                    ░▒▒▒▒▒▒                                                                             ");
+
+            System.out.println();
+
+        }
+    }
 }
