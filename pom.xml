@@ -349,6 +349,16 @@
                         </goals>
                     </execution>
                     <execution>
+                        <id>test_renduFinal1</id>
+                        <configuration>
+                            <executable>./src/test/script/renduFinal1.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>summary</id>
                         <configuration>
                             <executable>./src/test/script/summary.sh</executable>

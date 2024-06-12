@@ -14,7 +14,7 @@ if [ -z $COVERAGE] ; then
     # COMPILING
     echo -e "\e[34m### INFO: recompiling java files for $decac ###\e[0m"
     cd "$(dirname "${decac}")/../../.."
-    mvn clean test-compile || exit 1
+    mvn test-compile -Djacoco.skip=true || exit 1
 fi
 
 syntax_passed=0
