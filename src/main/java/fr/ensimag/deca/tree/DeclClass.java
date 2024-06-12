@@ -32,11 +32,6 @@ public class DeclClass extends AbstractDeclClass {
         this.methods = methods;
     }
 
-    // public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass,
-    // ListDeclField fields, ListDeclMethod methods) {
-    // super(name, superClass, fields, methods);
-    // }
-
     @Override
     public void decompile(IndentPrintStream s) {
         s.print("class { ... A FAIRE ... }");
