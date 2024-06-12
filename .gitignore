@@ -26,3 +26,4 @@ src/test/deca/tmp
 
 # Jacoco executions
 *.exec
+.LCK*
