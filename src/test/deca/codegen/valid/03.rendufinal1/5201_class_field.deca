@@ -1,0 +1,4 @@
+Class A{
+    public int x;
+    private boolean x;
+}

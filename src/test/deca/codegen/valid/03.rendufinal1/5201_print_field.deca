@@ -1,0 +1,13 @@
+Class A{
+    public int x = 3;
+    private boolean y = true;
+}
+
+{
+    A oA = new A();
+
+    print(oA.x);
+    if(oA.y){
+        print("true");
+    }
+}
