@@ -13,4 +13,5 @@ class Triple extends Double{
 // On test aussi la déclaration des attributs d'une classe avec une variable ou sans.
 //
 // Resultats :
-// rien (Etape A : OK)
+// Erreur de syntaxe
+// Ligne 1 <Mauvaise usage de protected>

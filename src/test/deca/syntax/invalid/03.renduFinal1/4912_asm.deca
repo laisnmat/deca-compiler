@@ -7,4 +7,5 @@ class Assembleur{
 // test du mot clé asm pour écrire du code assembleur
 //
 // Resultats :
-// rien (Etape A : OK)
+// Erreur de syntaxe
+// Ligne 3: <mauvais usage du mot réservé asm>

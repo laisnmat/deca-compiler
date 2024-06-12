@@ -6,5 +6,4 @@ class Single {
     Single x = null.Single();
 }
 // Resultats :
-// Erreur de syntaxe
-// Ligne 6 : <message d'erreur de votre compilateur>
+// Ok
