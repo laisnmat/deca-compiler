@@ -9,7 +9,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
-public class InstanceOf extends AbstractOpBool {
+public class InstanceOf extends AbstractExpr {
 
     public InstanceOf(AbstractExpr expression, AbstractExpr type) {
         super(expression, type);
