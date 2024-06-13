@@ -92,4 +92,8 @@ public class DeclField extends AbstractDeclField {
         initialization.iter(f);
     }
 
+    protected Visibility getVisibility() {
+        return visibility;
+    }
+
 }

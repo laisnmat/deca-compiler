@@ -101,6 +101,9 @@ public abstract class Tree {
             s.print(" " + getLocation().toString());
         }
         s.print(" ");
+        if (this instanceof DeclField) {
+            s.print("[visibility=" + ((DeclField) this).getVisibility().toString() + "] ");
+        }
         s.print(nodeName);
         s.println();
         String newPrefix;
