@@ -45,103 +45,98 @@ public class CompilerOptions {
                 return Collections.unmodifiableList(sourceFiles);
         }
 
-        public boolean getOnlyVerif() {
-                return onlyVerif;
-        }
+    public boolean getOnlyVerif() {
+        return onlyVerif;
+    }
 
-        public boolean getNoCheck() {
-                return noCheck;
-        }
+    public boolean getNoCheck() {
+        return nocheck;
+    }
 
-        private int debug = 0;
-        private boolean parallel = false;
-        private boolean printBanner = false;
-        private boolean parseDecompile = false;
-        private boolean noCheck = false;
-        private int registerOption = 15;
-        private boolean onlyVerif = false;
-        private List<File> sourceFiles = new ArrayList<File>();
-        private HashSet<String> decaArg = new HashSet<String>();
+    private int debug = 0;
+    private boolean parallel = false;
+    private boolean printBanner = false;
+    private boolean parseDecompile = false;
+    private boolean nocheck = false;
+    private int registerOption = 15;
+    private boolean onlyVerif = false;
+    private List<File> sourceFiles = new ArrayList<File>();
+    private HashSet<String> decaArg = new HashSet<String>();
 
         public void parseArgs(String[] args) throws CLIException {
 
-                boolean parsingR = false; // if -r option is detected, next arg must be an int value
-                List<String> argsList = new ArrayList<String>();
-                for (String arg : args) {
-                        // parse options
-                        if (parsingR) {
-                                if (registerOption <= 16 && registerOption >= 4) {
-                                        registerOption = Integer.parseInt(arg) - 1;
-                                } else if (registerOption < 4) {
-                                        System.out.println(
-                                                        "The number of registers must be at least 3, setting it to 3");
-                                        registerOption = 3;
-                                } else {
-                                        System.out.println(
-                                                        "The number of registers must be maximum at 15, setting it to 15");
-                                        registerOption = 15;
-                                }
-                                parsingR = false;
-                                continue;
+        boolean parsingR = false; // if -r option is detected, next arg must be an int value
+        List<String> argsList = new ArrayList<String>();
+        for (String arg : args) {
+            // parse options
+            if (parsingR) {
+                if (registerOption <= 16 && registerOption >= 4) {
+                    registerOption = Integer.parseInt(arg) - 1;
+                } else if (registerOption < 4) {
+                    System.out.println("The number of registers must be at least 3, setting it to 3");
+                    registerOption = 3;
+                } else {
+                    System.out.println("The number of registers must be maximum at 15, setting it to 15");
+                    registerOption = 15;
+                }
+                parsingR = false;
+                continue;
+            }
+            if (arg.startsWith("-")) {
+                switch (arg) {
+                    case "-b":
+                        if (args.length > 1) {
+                            throw new CLIException("Option -b does not accept any other option or file");
                         }
-                        if (arg.startsWith("-")) {
-                                switch (arg) {
-                                        case "-b":
-                                                if (args.length > 1) {
-                                                        throw new CLIException(
-                                                                        "Option -b does not accept any other option or file");
-                                                }
-                                                printBanner = true;
-                                                break;
-                                        case "-d":
-                                                if (debug < TRACE) {
-                                                        debug++;
-                                                }
-                                                break;
-                                        case "-n":
-                                                if (noCheck) {
-                                                        throw new CLIException("Cannot use the same option twice");
-                                                }
-                                                argsList.add("-n");
-                                                noCheck = true;
-                                                break;
-                                        case "-p":
-                                                if (onlyVerif) {
-                                                        throw new CLIException(
-                                                                        "Cannot use option -v and -p at the same time");
-                                                }
-                                                if (parseDecompile) {
-                                                        throw new CLIException("Cannot use the same option twice");
-                                                }
-                                                argsList.add("-p");
-                                                parseDecompile = true;
-                                                break;
-                                        case "-P":
-                                                parallel = true;
-                                                break;
-                                        case "-r":
-                                                if (argsList.contains("-r")) {
-                                                        throw new CLIException("Cannot use the same option twice");
-                                                }
-                                                argsList.add("-r");
-                                                parsingR = true; // Meaning next arg must be an int
-                                                break;
-                                        case "-v":
-                                                if (parseDecompile) {
-                                                        throw new CLIException(
-                                                                        "Cannot use argument -v and -p at the same time");
-                                                }
-                                                if (onlyVerif) {
-                                                        throw new CLIException("Cannot use argument -v multiple times");
-                                                }
-                                                argsList.add("-v");
-                                                onlyVerif = true;
-                                                break;
-                                        default:
-                                                throw new CLIException("Option not recognized: " + arg);
-                                }
-                                continue;
+                        printBanner = true;
+                        break;
+                    case "-d":
+                        if (debug < TRACE) {
+                            debug++;
                         }
+                        break;
+                    case "-n": 
+                        if (parseDecompile) {
+                            throw new CLIException("Cannot use the same option twice");
+                        }
+                        argsList.add("-n");
+                        nocheck = true;
+                        break;
+                    case "-p":
+                        if (onlyVerif) {
+                            throw new CLIException("Cannot use option -v and -p at the same time");
+                        }
+                        if (parseDecompile) {
+                            throw new CLIException("Cannot use the same option twice");
+                        }
+                        argsList.add("-p");
+                        parseDecompile = true;
+                        break;
+                    case "-P":
+                        parallel = true;
+                        break;
+                    case "-r":
+                        if (argsList.contains("-r")) {
+                            throw new CLIException("Cannot use the same option twice");
+                        }
+                        argsList.add("-r");
+                        parsingR = true; // Meaning next arg must be an int
+                        break;
+                    case "-v":
+                        if (parseDecompile) {
+                            throw new CLIException("Cannot use argument -v and -p at the same time");
+                        }
+                        if (onlyVerif) {
+                            throw new CLIException("Cannot use argument -v multiple times");
+                        }
+                        argsList.add("-v");
+                        onlyVerif = true;
+                        break;
+                    default:
+                        throw new CLIException("Option not recognized: " + arg);
+                }
+                continue;
+            }
 
                         // parse filename
                         if (arg.endsWith(".deca")) {
