@@ -84,6 +84,9 @@ public class Divide extends AbstractOpArith {
             compiler.addInstruction(
                     new CMP(this.getType().isInt() ? new ImmediateInteger(0) : new ImmediateFloat(0), nextRegister));
             compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
+            compiler.addInstruction(
+                    this.getType().isInt() ? new QUO(nextRegister, register) : new DIV(nextRegister, register));
+            super.codeGenOperror(compiler);
         }
         compiler.addInstruction(
                 this.getType().isInt() ? new QUO(nextRegister, register) : new DIV(nextRegister, register));

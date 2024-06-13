@@ -53,6 +53,8 @@ public class ErrorManager {
         containsDivZeroError = true;
     }
 
+    
+
     /**
      * creates a new IOError, if there's already one, skips the method
      */

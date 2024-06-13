@@ -12,10 +12,12 @@ public class TSTOError extends AbstractError {
 
     @Override
     public void generateError(DecacCompiler compiler) {
-        compiler.addLabel(compiler.labelManager.getStackOverflowError());
-        compiler.addInstruction(new WSTR("Error: Stack overflow"));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
+        if (!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.addLabel(compiler.labelManager.getStackOverflowError());
+            compiler.addInstruction(new WSTR("Error: Stack overflow"));
+            compiler.addInstruction(new WNL());
+            compiler.addInstruction(new ERROR());
+        }
     }
 
 }
