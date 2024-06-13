@@ -37,12 +37,18 @@ public class ErrorManager {
         this.errors.add(new TSTOError());
     }
 
+    public void addOverflowError() {
+        this.errors.add(new ArithmeticOverflowError());
+    }
+
     public void addDivZeroError() {
         if (!this.containsDivZeroError) {
             this.errors.add(new DivZeroError());
         }
         containsDivZeroError = true;
     }
+
+    
 
     /**
      * creates a new IOError, if there's already one, skips the method

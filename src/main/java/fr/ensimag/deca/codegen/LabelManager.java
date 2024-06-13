@@ -118,7 +118,7 @@ public class LabelManager {
      * being too long
      *
      * @param addPrefix
-     *            the new prefix
+     *                  the new prefix
      */
     public void addPrefix(String addPrefix) {
         if (this.prefix1 == null) {
@@ -185,6 +185,10 @@ public class LabelManager {
 
     public Label getStackOverflowError() {
         return new Label("stack_overflow_error");
+    }
+
+    public Label getArithmeticOverflowError() {
+        return new Label("arithmetic_overflow_error");
     }
 
     /**

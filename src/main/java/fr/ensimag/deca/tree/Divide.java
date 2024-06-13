@@ -55,6 +55,7 @@ public class Divide extends AbstractOpArith {
                 compiler.addInstruction(new QUO(dvalRightOp, register));
             else
                 compiler.addInstruction(new DIV(dvalRightOp, register));
+            super.codeGenOperror(compiler);
         } else {
             if (register.getNumber() == DecacCompiler.MAXREGISTER) {
                 compiler.addInstruction(new PUSH(register), "sauvegarde ");
@@ -77,6 +78,7 @@ public class Divide extends AbstractOpArith {
             compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
             compiler.addInstruction(
                     this.getType().isInt() ? new QUO(nextRegister, register) : new DIV(nextRegister, register));
+            super.codeGenOperror(compiler);
         }
     }
 }
