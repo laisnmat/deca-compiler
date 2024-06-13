@@ -1,0 +1,6 @@
+{
+    x instanceof x+5;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : instance of whith an espace 

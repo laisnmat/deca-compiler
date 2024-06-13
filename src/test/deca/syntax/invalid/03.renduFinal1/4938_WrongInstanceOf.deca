@@ -1,0 +1,6 @@
+{
+    i instanceof x = 0;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : instanceof is not a LValue 

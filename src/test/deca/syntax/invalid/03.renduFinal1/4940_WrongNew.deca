@@ -1,0 +1,6 @@
+{
+    new int() = 1;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : New is not a LValue
