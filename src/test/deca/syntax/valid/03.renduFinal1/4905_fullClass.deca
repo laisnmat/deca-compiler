@@ -1,0 +1,22 @@
+class Single {
+
+    int a = 1;
+    int methodInt(int b) {
+        return this.a + b;
+    }
+
+    float c = 0.5;
+    float methodFloat(float d) {
+        return this.c + d;
+    }
+
+    boolean e = true;
+    boolean methodBool(boolean f) {
+        return this.e && f;
+    }
+}
+// Description :
+// test de la création d'une classe des attributs et des méthodes non organisés
+//
+// Resultats :
+// rien (Etape A : OK)

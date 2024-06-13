@@ -12,27 +12,8 @@ import org.apache.commons.lang.Validate;
  * @date 14/04/2024
  */
 public class ClassType extends Type {
-    
+
     protected ClassDefinition definition;
-    
-    public ClassDefinition getDefinition() {
-        return this.definition;
-    }
-            
-    @Override
-    public ClassType asClassType(String errorMessage, Location l) {
-        return this;
-    }
-
-    @Override
-    public boolean isClass() {
-        return true;
-    }
-
-    @Override
-    public boolean isClassOrNull() {
-        return true;
-    }
 
     /**
      * Standard creation of a type class.
@@ -49,7 +30,25 @@ public class ClassType extends Type {
     protected ClassType(Symbol className) {
         super(className);
     }
-    
+
+    public ClassDefinition getDefinition() {
+        return this.definition;
+    }
+
+    @Override
+    public ClassType asClassType(String errorMessage, Location l) {
+        return this;
+    }
+
+    @Override
+    public boolean isClass() {
+        return true;
+    }
+
+    @Override
+    public boolean isClassOrNull() {
+        return true;
+    }
 
     @Override
     public boolean sameType(Type otherType) {
@@ -60,8 +59,7 @@ public class ClassType extends Type {
      * Return true if potentialSuperClass is a superclass of this class.
      */
     public boolean isSubClassOf(ClassType potentialSuperClass) {
-        throw new UnsupportedOperationException("not yet implemented"); 
+        throw new UnsupportedOperationException("not yet implemented");
     }
-
 
 }

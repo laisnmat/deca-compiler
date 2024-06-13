@@ -1,0 +1,13 @@
+class Single {
+    int a = 1;
+    int b;
+}
+{
+    Single x = new Single(){
+        a = 1;
+        b = 2;
+    };
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 6 : no viable alternative at input '{'

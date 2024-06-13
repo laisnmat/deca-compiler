@@ -91,5 +91,4 @@ COMMENT: '//' ~[\r\n]* { skip(); };
 MULTI_LINE_COMMENT: '/*' .*? '*/' { skip(); };
 
 // File inclusion
-FILENAME: (LETTER | DIGIT | DOT | MINUS | '_')+;
-INCLUDE: '#include' (' ')* '"' FILENAME '"';
+INCLUDE: '#include' (' ')* '"' (LETTER | DIGIT | DOT | MINUS | '_')+ '"';

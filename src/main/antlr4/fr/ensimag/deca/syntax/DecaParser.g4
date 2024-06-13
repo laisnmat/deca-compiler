@@ -139,7 +139,7 @@ inst returns[AbstractInst tree]
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
-            $tree = new Println(true, $list_expr.tree);
+            $tree = new Print(true, $list_expr.tree);
             setLocation($tree, $PRINTX);
         }
     | PRINTLNX OPARENT list_expr CPARENT SEMI {
@@ -159,6 +159,8 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
+            $tree = new Return($expr.tree);
+            setLocation($tree, $RETURN);
         }
     ;
 
@@ -317,6 +319,8 @@ inequality_expr returns[AbstractExpr tree]
     | e1=inequality_expr INSTANCEOF type {
             assert($e1.tree != null);
             assert($type.tree != null);
+            $tree = new InstanceOf($e1.tree, $type.tree);
+            setLocation($tree, $INSTANCEOF);
         }
     ;
 
@@ -390,10 +394,13 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert($e1.tree != null);
             assert($i.tree != null);
+            $tree = new Selection($e1.tree, $i.tree);
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert($args.tree != null);
+            $tree = new MethodCall($e1.tree, $i.tree, $args.tree);
+            setLocation($tree, $e1.start);
         }
         | /* epsilon */ {
             // we matched "e.i"
@@ -409,6 +416,7 @@ primary_expr returns[AbstractExpr tree]
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
+            //Todo
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
@@ -424,10 +432,14 @@ primary_expr returns[AbstractExpr tree]
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
+            $tree = new New($ident.tree);
+            setLocation($tree, $NEW);
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
             assert($expr.tree != null);
+            $tree = new Cast($type.tree, $expr.tree);
+            setLocation($tree, $cast);
         }
     | literal {
             assert($literal.tree != null);
@@ -465,8 +477,12 @@ literal returns[AbstractExpr tree]
             setLocation($tree, $FALSE);
         }
     | THIS {
+            $tree = new ThisLiteral();
+            setLocation($tree, $THIS);
         }
     | NULL {
+            $tree = new NullLiteral();
+            setLocation($tree, $NULL);
         }
     ;
 
@@ -487,70 +503,112 @@ list_classes returns[ListDeclClass tree]
         }
     :
       (c1=class_decl {
+            $tree.add($c1.tree);
         }
       )*
     ;
 
-class_decl
+class_decl returns[AbstractDeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
+            assert($name.tree != null);
+            assert($class_body.fields != null);
+            assert($class_body.methods != null);
+            $tree = new DeclClass($name.tree, $superclass.tree, $class_body.fields, $class_body.methods);
+            setLocation($tree, $CLASS);
         }
     ;
 
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
+            assert($ident.tree != null);
+            $tree = $ident.tree;
         }
     | /* epsilon */ {
+            $tree = null;
         }
     ;
 
-class_body
+class_body returns[ListDeclField fields, ListDeclMethod methods]
+@init {
+    $fields = new ListDeclField();
+    $methods = new ListDeclMethod();
+}
     : (m=decl_method {
+            $methods.add($m.tree);
         }
-      | decl_field_set
+      | decl_field_set[$fields]
       )*
     ;
 
-decl_field_set
-    : v=visibility t=type list_decl_field
+decl_field_set[ListDeclField l]
+    : v=visibility t=type list_decl_field[$l, $t.tree, $v.tree]
       SEMI
     ;
 
-visibility
+visibility returns[Visibility tree]
     : /* epsilon */ {
+            $tree = Visibility.PUBLIC;
         }
     | PROTECTED {
+            $tree = Visibility.PROTECTED;
         }
     ;
 
-list_decl_field
-    : dv1=decl_field
-        (COMMA dv2=decl_field
+list_decl_field[ListDeclField l, AbstractIdentifier t, Visibility v]
+    : dv1=decl_field[$t, $v] {
+            $l.add($dv1.tree);
+        }
+        (COMMA dv2=decl_field[$t, $v] {
+            $l.add($dv2.tree);
+        }
       )*
     ;
 
-decl_field
+decl_field[AbstractIdentifier t, Visibility v] returns[AbstractDeclField tree]
     : i=ident {
+            assert($i.tree != null);
+            $tree = new DeclField($v, $t, $i.tree, new NoInitialization());
         }
       (EQUALS e=expr {
+            assert($e.tree != null);
+            $tree = new DeclField($v, $t, $i.tree, new Initialization($e.tree));
         }
       )? {
+        setLocation($tree, $i.start);
         }
     ;
 
-decl_method
+decl_method returns[DeclMethod tree]
 @init {
+    AbstractMethodBody method;
 }
     : type ident OPARENT params=list_params CPARENT (block {
+            method = new MethodBody($block.decls, $block.insts);
+            setLocation(method, $type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+            method = new MethodAsmBody(new StringLiteral($code.text));
+            setLocation(method, $ASM);
         }
       ) {
+            assert($type.tree != null);
+            assert($ident.tree != null);
+            assert($params.tree != null);
+            $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, method);
+            setLocation($tree, $type.start);
         }
     ;
 
-list_params
+list_params returns[ListDeclParam tree]
+@init {
+    $tree = new ListDeclParam();
+}
     : (p1=param {
+            assert($p1.tree != null);
+            $tree.add($p1.tree);
         } (COMMA p2=param {
+            assert($p2.tree != null);
+            $tree.add($p2.tree);
         }
       )*)?
     ;
@@ -566,7 +624,11 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-param
+param returns[DeclParam tree]
     : type ident {
+            assert($type.tree != null);
+            assert($ident.tree != null);
+            $tree = new DeclParam($type.tree, $ident.tree);
+            setLocation($tree, $type.start);
         }
     ;

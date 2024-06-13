@@ -1,0 +1,15 @@
+class Single {
+    int a = 1;
+    int b;
+
+    void init(int a, int b) {
+        this.a = a;
+        this.b = b;
+    }
+}
+// Description :
+// test du mot clé this (dans une méthode qui agit comme un constructeur)
+// On test aussi la déclaration des attributs d'une classe avec une variable ou sans. 
+//
+// Resultats :
+// rien (Etape A : OK)

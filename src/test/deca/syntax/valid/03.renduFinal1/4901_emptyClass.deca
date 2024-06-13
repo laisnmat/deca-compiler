@@ -1,0 +1,8 @@
+class Empty {
+        
+}
+// Description :
+// test de la création d'une classe vide
+//
+// Resultats :
+// rien (Etape A : OK)
