@@ -42,12 +42,14 @@ public class Divide extends AbstractOpArith {
         this.getLeftOperand().codeGenExp(compiler, register);
         DVal dvalRightOp = this.getRightOperand().getDVal();
         if (dvalRightOp != null) {
-            if (this.getType().isInt())
-                compiler.addInstruction(new LOAD(0, GPRegister.R1));
-            else
-                compiler.addInstruction(new LOAD(new ImmediateFloat(0), GPRegister.R1));
-            compiler.addInstruction(new CMP(dvalRightOp, GPRegister.R1));
-            compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
+            if (!compiler.getCompilerOptions().getNoCheck()) {
+                if (this.getType().isInt())
+                    compiler.addInstruction(new LOAD(0, GPRegister.R1));
+                else
+                    compiler.addInstruction(new LOAD(new ImmediateFloat(0), GPRegister.R1));
+                compiler.addInstruction(new CMP(dvalRightOp, GPRegister.R1));
+                compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
+            }
 
             if (this.getType().isInt())
                 compiler.addInstruction(new QUO(dvalRightOp, register));
@@ -59,31 +61,22 @@ public class Divide extends AbstractOpArith {
                 this.getRightOperand().codeGenExp(compiler, register);
                 compiler.addInstruction(new LOAD(register, GPRegister.R1));
                 compiler.addInstruction(new POP(register), "restauration ");
-
-                if (this.getType().isInt()) {
-                    compiler.addInstruction(new CMP(new ImmediateInteger(0), GPRegister.R1));
-                    compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
-                    compiler.addInstruction(new QUO(GPRegister.R1, register));
-                } else {
-                    compiler.addInstruction(new CMP(new ImmediateFloat(0), GPRegister.R1));
-                    compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
-                    compiler.addInstruction(new DIV(GPRegister.R1, register));
-                }
+                codeGenExpSecond(compiler, register, GPRegister.R1);
             } else {
                 GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
                 this.getRightOperand().codeGenExp(compiler, nextRegister);
-
-                if (this.getType().isInt()) {
-                    compiler.addInstruction(new CMP(new ImmediateInteger(0), nextRegister));
-                    compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
-                    compiler.addInstruction(new QUO(nextRegister, register));
-                } else {
-                    compiler.addInstruction(new CMP(new ImmediateFloat(0), nextRegister));
-                    compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
-                    compiler.addInstruction(new DIV(nextRegister, register));
-                }
+                codeGenExpSecond(compiler, register, nextRegister);
             }
         }
     }
 
+    void codeGenExpSecond(DecacCompiler compiler, GPRegister register, GPRegister nextRegister) {
+        if (!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.addInstruction(
+                    new CMP(this.getType().isInt() ? new ImmediateInteger(0) : new ImmediateFloat(0), nextRegister));
+            compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
+            compiler.addInstruction(
+                    this.getType().isInt() ? new QUO(nextRegister, register) : new DIV(nextRegister, register));
+        }
+    }
 }

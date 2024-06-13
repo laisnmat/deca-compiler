@@ -49,10 +49,15 @@ public class CompilerOptions {
         return onlyVerif;
     }
 
+    public boolean getNoCheck() {
+        return nocheck;
+    }
+
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
     private boolean parseDecompile = false;
+    private boolean nocheck = false;
     private int registerOption = 15;
     private boolean onlyVerif = false;
     private List<File> sourceFiles = new ArrayList<File>();
@@ -89,6 +94,13 @@ public class CompilerOptions {
                         if (debug < TRACE) {
                             debug++;
                         }
+                        break;
+                    case "-n": 
+                        if (parseDecompile) {
+                            throw new CLIException("Cannot use the same option twice");
+                        }
+                        argsList.add("-n");
+                        nocheck = true;
                         break;
                     case "-p":
                         if (onlyVerif) {
