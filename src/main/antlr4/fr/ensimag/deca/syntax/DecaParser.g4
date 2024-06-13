@@ -524,7 +524,8 @@ class_extension returns[AbstractIdentifier tree]
             $tree = $ident.tree;
         }
     | /* epsilon */ {
-            $tree = null;
+            $tree = new Identifier(getDecacCompiler().environmentType.OBJECT.getName());
+            $tree.setLocation(Location.BUILTIN);
         }
     ;
 
@@ -584,7 +585,7 @@ decl_method returns[DeclMethod tree]
 }
     : type ident OPARENT params=list_params CPARENT (block {
             method = new MethodBody($block.decls, $block.insts);
-            setLocation(method, $type.start);
+            setLocation(method, $block.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
             method = new MethodAsmBody(new StringLiteral($code.text));
