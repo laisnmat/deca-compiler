@@ -1,0 +1,9 @@
+class Single {
+    void assembler() asm("WSTR 'hello world'
+                          WNL");    
+}
+// Description :
+// test du mot clé asm 
+//
+// Resultats :
+// rien (Etape A : OK)
