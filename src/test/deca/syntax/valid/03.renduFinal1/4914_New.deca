@@ -1,0 +1,8 @@
+{
+    new x();
+    x = new y();
+}
+// Description :
+// test du New
+// Resultats :
+// rien (Etape A : OK)
