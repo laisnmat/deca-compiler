@@ -15,13 +15,25 @@ public class Signature {
     public void add(Type t) {
         args.add(t);
     }
-    
+
     public Type paramNumber(int n) {
         return args.get(n);
     }
-    
+
     public int size() {
         return args.size();
+    }
+
+    public boolean sameSignature(Signature other) {
+        if (this.args.size() != other.args.size()) {
+            return false;
+        }
+        for (int i = 0; i < this.args.size(); i++) {
+            if (!this.args.get(i).sameType(other.args.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

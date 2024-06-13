@@ -9,6 +9,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ParamDefinition;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class DeclParam extends AbstractDeclParam {
@@ -25,9 +27,21 @@ public class DeclParam extends AbstractDeclParam {
     }
 
     @Override
-    protected void verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected Type verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LOG.debug("verify DeclParam: start");
+        Type t = this.type.verifyType(compiler);
+        if (t.isVoid()) {
+            throw new ContextualError(
+                    "Illegal declaration: Param " + this.paramName + " is of type void.", getLocation());
+        }
+        try {
+            currentClass.getMembers().declare(paramName.getName(), new ParamDefinition(t, getLocation()));
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Param " + paramName.getName() + " is already defined in this method.",
+                    getLocation());
+        }
+        return t;
     }
 
     @Override

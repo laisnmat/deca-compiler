@@ -15,7 +15,7 @@ public class FieldDefinition extends ExpDefinition {
     }
 
     private int index;
-    
+
     @Override
     public boolean isField() {
         return true;
@@ -23,7 +23,7 @@ public class FieldDefinition extends ExpDefinition {
 
     private final Visibility visibility;
     private final ClassDefinition containingClass;
-    
+
     public FieldDefinition(Type type, Location location, Visibility visibility,
             ClassDefinition memberOf, int index) {
         super(type, location);
@@ -31,7 +31,7 @@ public class FieldDefinition extends ExpDefinition {
         this.containingClass = memberOf;
         this.index = index;
     }
-    
+
     @Override
     public FieldDefinition asFieldDefinition(String errorMessage, Location l)
             throws ContextualError {
@@ -49,6 +49,11 @@ public class FieldDefinition extends ExpDefinition {
     @Override
     public String getNature() {
         return "field";
+    }
+    
+    @Override
+    public ClassType getType() {
+        return (ClassType) super.getType();
     }
 
     @Override

@@ -10,6 +10,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.FieldDefinition;
+import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
@@ -40,10 +41,9 @@ public class DeclField extends AbstractDeclField {
         // type verification
         Type t = this.type.verifyType(compiler);
         if (t.isVoid()) {
-            throw new ContextualError(
-                    "Illegal declaration: Variable "
-                            + this.varName
-                            + " is of type void.",
+            throw new ContextualError("Illegal declaration: Variable "
+                    + this.varName
+                    + " is of type void.",
                     getLocation());
         }
 
@@ -58,9 +58,19 @@ public class DeclField extends AbstractDeclField {
             throw new ContextualError("Field " + this.varName.getName() + " is already defined in this class.",
                     getLocation());
         }
-
         // initialization verification
         initialization.verifyInitialization(compiler, t, localEnv, currentClass);
+        if (localEnv != null && localEnv.get(this.varName.getName()) != null) {
+            if (localEnv.get(this.varName.getName()) instanceof MethodDefinition) {
+                throw new ContextualError("Variable "
+                        + this.varName.getName()
+                        + " is already defined in class "
+                        + currentClass.getSuperClass().getType().toString()
+                        + " as a method", getLocation());
+            } else if (!(localEnv.get(this.varName.getName()) instanceof FieldDefinition)) {
+                throw new ContextualError("Invalid field definition", getLocation());
+            }
+        }
     }
 
     @Override

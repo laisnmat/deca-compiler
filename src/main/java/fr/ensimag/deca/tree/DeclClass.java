@@ -8,6 +8,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -40,13 +41,10 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         ClassDefinition classDefinition;
-        TypeDefinition typeDefinitionSuper = null;
-        if (superClass != null) {
-            typeDefinitionSuper = compiler.environmentType.defOfType(superClass.getName());
-            if (typeDefinitionSuper == null)
-                throw new ContextualError("Super class " + superClass.getName() + " not defined", getLocation());
-        }
-        if (typeDefinitionSuper != null && !(typeDefinitionSuper instanceof ClassDefinition)) {
+        TypeDefinition typeDefinitionSuper = compiler.environmentType.defOfType(superClass.getName());
+        if (typeDefinitionSuper == null)
+            throw new ContextualError("Super class " + superClass.getName() + " not defined", getLocation());
+        if (!(typeDefinitionSuper instanceof ClassDefinition)) {
             throw new ContextualError("Super class " + superClass.getName() + " is not a ClassDefinition",
                     getLocation());
         }
@@ -68,7 +66,14 @@ public class DeclClass extends AbstractDeclClass {
         if (def == null) {
             throw new ContextualError("Class " + name.getName() + " not defined", getLocation());
         }
-
+        superClass.verifyType(compiler);
+        name.verifyType(compiler);
+        EnvironmentExp localEnv = superClass.getClassDefinition().getMembers();
+        name.setDefinition(new ClassDefinition(
+                name.getClassDefinition().getType(),
+                name.getLocation(), superClass.getClassDefinition()));
+        fields.verifyListField(compiler, localEnv, def);
+        methods.verifyListMethod(compiler, localEnv, def);
     }
 
     @Override

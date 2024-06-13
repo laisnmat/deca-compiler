@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 
 /**
  *
@@ -26,7 +27,7 @@ public abstract class AbstractDeclParam extends Tree {
      *                     corresponds to the "class" attribute (null in the main
      *                     bloc).
      */
-    protected abstract void verifyDeclParam(DecacCompiler compiler,
+    protected abstract Type verifyDeclParam(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 

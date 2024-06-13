@@ -6,8 +6,12 @@ import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.Signature;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class DeclMethod extends AbstractDeclMethod {
@@ -29,7 +33,41 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LOG.debug("verify DeclField: start");
+        MethodDefinition defSuper;
+        // type verification
+        Type t = this.type.verifyType(compiler);
+        Signature sig = params.verifyListParam(compiler, localEnv, currentClass);
+        // create the definition of this field
+        currentClass.incNumberOfMethods();
+        MethodDefinition methodDef = new MethodDefinition(t, getLocation(), sig, currentClass.getNumberOfMethods());
+        try {
+            currentClass.getMembers().declare(this.methodName.getName(), methodDef);
+        } catch (EnvironmentExp.DoubleDefException dde) {
+            throw new ContextualError("Field "
+                    + this.methodName.getName()
+                    + " is already defined in this class.",
+                    getLocation());
+        }
+        if (localEnv != null && localEnv.get(methodName.getName()) != null) {
+            defSuper = localEnv.get(methodName.getName())
+                    .asMethodDefinition(
+                            "ContextualError: expected a methodDefinition",
+                            getLocation());
+            if (!sig.sameSignature(defSuper.getSignature())) {
+                throw new ContextualError("Method "
+                        + this.methodName.getName()
+                        + " is already defined in the superClass with a different signature.",
+                        getLocation());
+            }
+            if (!t.sameType(defSuper.getType()) && (!t.isClass() || !defSuper.getType().isClass()
+                    || !((ClassType) t).isSubClassOf((ClassType) defSuper.getType()))) {
+                throw new ContextualError("Method "
+                        + this.methodName.getName()
+                        + " is already defined in the superClass with a different return type.",
+                        getLocation());
+            }
+        }
     }
 
     @Override

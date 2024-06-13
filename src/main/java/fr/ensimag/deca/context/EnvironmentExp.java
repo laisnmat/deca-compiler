@@ -2,19 +2,21 @@ package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.util.Hashtable;
+
 /**
  * Dictionary associating identifier's ExpDefinition to their names.
  * 
  * This is actually a linked list of dictionaries: each EnvironmentExp has a
  * pointer to a parentEnvironment, corresponding to superblock (eg superclass).
  * 
- * The dictionary at the head of this list thus corresponds to the "current" 
+ * The dictionary at the head of this list thus corresponds to the "current"
  * block (eg class).
  * 
- * Searching a definition (through method get) is done in the "current" 
- * dictionary and in the parentEnvironment if it fails. 
+ * Searching a definition (through method get) is done in the "current"
+ * dictionary and in the parentEnvironment if it fails.
  * 
- * Insertion (through method declare) is always done in the "current" dictionary.
+ * Insertion (through method declare) is always done in the "current"
+ * dictionary.
  * 
  * @author gl03
  * @date 14/04/2024
@@ -24,11 +26,12 @@ public class EnvironmentExp {
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
 
-    //nils: pour l'instant j'ai mis juste une table de hashage basique, à complexifier pour gérer l'empilement
+    // nils: pour l'instant j'ai mis juste une table de hashage basique, à
+    // complexifier pour gérer l'empilement
     private Hashtable<Symbol, ExpDefinition> env;
 
     EnvironmentExp parentEnvironment;
-    
+
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
         this.env = new Hashtable<Symbol, ExpDefinition>();
@@ -62,7 +65,6 @@ public class EnvironmentExp {
      *
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-        //throw new UnsupportedOperationException("not yet implemented");
         if (env.containsKey(name) )
             throw new DoubleDefException();
         env.put(name, def);
