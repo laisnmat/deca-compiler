@@ -7,4 +7,4 @@ class Double extends class Single{
 }
 // Resultats :
 // Erreur de syntaxe
-// Ligne 5 : <message d'erreur de votre compilateur>
+// Ligne 5 : extraneous input 'class' expecting IDENT

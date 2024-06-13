@@ -3,4 +3,4 @@ class this{
 }
 // Resultats :
 // Erreur de syntaxe
-// Ligne 1 : <message d'erreur de votre compilateur>
+// Ligne 1 : mismatched input 'this' expecting IDENT

@@ -5,4 +5,4 @@ class Hello{
 }
 // Resultats :
 // Erreur de syntaxe
-// Ligne 2 : <message d'erreur de votre compilateur>
+// Ligne 2 : no viable alternative at input 'method('

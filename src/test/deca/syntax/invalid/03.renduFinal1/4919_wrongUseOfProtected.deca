@@ -3,4 +3,4 @@ class protected Hello{
 }
 // Resultats :
 // Erreur de syntaxe
-// Ligne 1 : <message d'erreur de votre compilateur>
+// Ligne 1 : extraneous input 'protected' expecting IDENT

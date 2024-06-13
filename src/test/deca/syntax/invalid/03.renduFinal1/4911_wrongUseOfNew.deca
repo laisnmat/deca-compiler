@@ -7,4 +7,4 @@ class Single {
 }
 // Resultats :
 // Erreur de syntaxe
-// Ligne 6 : <message d'erreur de votre compilateur>
+// Ligne 6 : extraneous input '.' expecting IDENT
