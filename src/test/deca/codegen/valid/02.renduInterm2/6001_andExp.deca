@@ -13,3 +13,8 @@
         println("We shouldn't be there");
     }
 }
+// Description :
+// test du not and
+// 
+// Resultats :
+// Si tout fonctionne correctement on devrait passer dans le if et donc avoir : We should be there

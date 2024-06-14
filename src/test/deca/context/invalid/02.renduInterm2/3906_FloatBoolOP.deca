@@ -4,3 +4,6 @@
 
     float c = a + b;
 }
+// Resultats :
+// Erreur contextuelle
+// Ligne 5 : Incompatible types 'boolean' with 'float'
