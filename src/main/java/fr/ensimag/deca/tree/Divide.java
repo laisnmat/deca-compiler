@@ -71,14 +71,22 @@ public class Divide extends AbstractOpArith {
         }
     }
 
+    /**
+     * Generate assembly code for the expression (Divide) only when we use -n flag
+     * 
+     * @param compiler     The compiler
+     * @param register     The register to store the result
+     * @param nextRegister The register to store the right opérande
+     */
+
     void codeGenExpSecond(DecacCompiler compiler, GPRegister register, GPRegister nextRegister) {
         if (!compiler.getCompilerOptions().getNoCheck()) {
             compiler.addInstruction(
                     new CMP(this.getType().isInt() ? new ImmediateInteger(0) : new ImmediateFloat(0), nextRegister));
             compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
-            compiler.addInstruction(
-                    this.getType().isInt() ? new QUO(nextRegister, register) : new DIV(nextRegister, register));
-            super.codeGenOperror(compiler);
         }
+        compiler.addInstruction(
+                this.getType().isInt() ? new QUO(nextRegister, register) : new DIV(nextRegister, register));
+        super.codeGenOperror(compiler);
     }
 }

@@ -91,6 +91,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         }
     }
 
+    /**
+     * Generate assembly code for the expression (Modulo) only when we use -n flag
+     * 
+     * @param compiler The compiler
+     */
+
     public void codeGenOperror(DecacCompiler compiler) {
         if (!compiler.getCompilerOptions().getNoCheck()) {
             compiler.addInstruction(new BOV(compiler.labelManager.getStackOverflowError()));

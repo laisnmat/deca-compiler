@@ -12,10 +12,8 @@ import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.MUL;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.QUO;
 import fr.ensimag.ima.pseudocode.instructions.REM;
 
 /**
@@ -82,13 +80,20 @@ public class Modulo extends AbstractOpArith {
         }
     }
 
+    /**
+     * Generate assembly code for the expression (Modulo) only when we use -n flag
+     * 
+     * @param compiler     The compiler
+     * @param register     The register to store the result
+     * @param nextRegister The register to store the right opérande
+     */
     void codeGenExpSecond(DecacCompiler compiler, GPRegister register, GPRegister nextRegister) {
         if (!compiler.getCompilerOptions().getNoCheck()) {
             compiler.addInstruction(
                     new CMP(this.getType().isInt() ? new ImmediateInteger(0) : new ImmediateFloat(0), nextRegister));
             compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
-            compiler.addInstruction(new REM(nextRegister, register));
-            super.codeGenOperror(compiler);
         }
+        compiler.addInstruction(new REM(nextRegister, register));
+        super.codeGenOperror(compiler);
     }
 }

@@ -7,6 +7,11 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 public class ArithmeticOverflowError extends AbstractError {
 
+    /**
+     * Generation of error code when we use -n flag
+     * 
+     * @param compiler The compiler
+     */
     @Override
     public void generateError(DecacCompiler compiler) {
         if (!compiler.getCompilerOptions().getNoCheck()) {
