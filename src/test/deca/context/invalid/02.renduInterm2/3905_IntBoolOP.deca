@@ -1,0 +1,6 @@
+{
+    int a = 1;
+    boolean b = true;
+
+    float c = a + b;
+}

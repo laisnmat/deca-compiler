@@ -1,0 +1,15 @@
+{
+    boolean a = true;
+    boolean b = false;
+
+    boolean c = a && b;
+    boolean d = a || b;
+    boolean e = !a;
+    
+    if (!(a && b)){
+        println("We should be there");
+    }
+    else{
+        println("We shouldn't be there");
+    }
+}

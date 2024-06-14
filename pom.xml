@@ -138,6 +138,7 @@
                     <excludes>
                         <exclude>fr/ensimag/deca/tools/DecacInternalError.class</exclude>
                         <exclude>fr/ensimag/deca/ima/pseudocode/IMAInternalError.class</exclude>
+                        <exclude>fr/ensimag/deca/syntax/*</exclude>
                     </excludes>
                     <outputDirectory>${jacoco.report_dir}/</outputDirectory>
                 </configuration>
@@ -203,7 +204,7 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0</minimum>
+                                            <minimum>0.2</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
