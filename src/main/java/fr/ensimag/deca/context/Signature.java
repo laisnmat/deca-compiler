@@ -36,4 +36,8 @@ public class Signature {
         return true;
     }
 
+    public List<Type> getArgs() {
+        return args;
+    }
+
 }

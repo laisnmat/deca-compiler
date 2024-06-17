@@ -27,15 +27,13 @@ public class EnvironmentExp {
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
 
-    // nils: pour l'instant j'ai mis juste une table de hashage basique, à
-    // complexifier pour gérer l'empilement
-    private Hashtable<Symbol, ExpDefinition> env;
+    private final HashMap<Symbol, ExpDefinition> env;
 
     EnvironmentExp parentEnvironment;
 
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
-        this.env = new Hashtable<Symbol, ExpDefinition>();
+        this.env = new HashMap<>();
     }
 
     public static class DoubleDefException extends Exception {
@@ -47,28 +45,43 @@ public class EnvironmentExp {
      * symbol is undefined.
      */
     public ExpDefinition get(Symbol key) {
-        return env.get(key);
+        if (env.containsKey(key))
+            return env.get(key);
+        if (parentEnvironment == null)
+            return null;
+        if (parentEnvironment.get(key) != null)
+            return parentEnvironment.get(key);
+        return null;
     }
 
     /**
      * Add the definition def associated to the symbol name in the environment.
      * 
      * Adding a symbol which is already defined in the environment,
-     * - throws DoubleDefException if the symbol is in the "current" dictionary 
+     * - throws DoubleDefException if the symbol is in the "current" dictionary
      * - or, hides the previous declaration otherwise.
      * 
      * @param name
-     *            Name of the symbol to define
+     *             Name of the symbol to define
      * @param def
-     *            Definition of the symbol
+     *             Definition of the symbol
      * @throws DoubleDefException
-     *             if the symbol is already defined at the "current" dictionary
+     *                            if the symbol is already defined at the "current"
+     *                            dictionary
      *
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-        if (env.containsKey(name) )
+        if (env.containsKey(name))
             throw new DoubleDefException();
         env.put(name, def);
     }
 
+    @Override
+    public String toString() {
+        String res = "Env = ";
+        for (Symbol key : env.keySet()) {
+            res += "(" + key + " -> " + env.get(key) + "), ";
+        }
+        return res;
+    }
 }

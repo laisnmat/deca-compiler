@@ -12,31 +12,38 @@ import fr.ensimag.deca.context.Type;
  * @date 11/06/2024
  */
 public abstract class AbstractDeclParam extends Tree {
-    /**
-     * Implements non-terminal "decl_var" of [SyntaxeContextuelle] in pass 3
-     * 
-     * @param compiler     contains "env_types" attribute
-     * @param localEnv
-     *                     its "parentEnvironment" corresponds to the "env_exp_sup"
-     *                     attribute
-     *                     in precondition, its "current" dictionary corresponds to
-     *                     the "env_exp" attribute
-     *                     in postcondition, its "current" dictionary corresponds to
-     *                     the synthetized attribute
-     * @param currentClass
-     *                     corresponds to the "class" attribute (null in the main
-     *                     bloc).
-     */
-    protected abstract Type verifyDeclParam(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError;
+        /**
+         * Implements non-terminal "decl_param" of [SyntaxeContextuelle] in pass 2
+         * 
+         * @param compiler     contains "env_types" attribute
+         * @param localEnv
+         *                     its "parentEnvironment" corresponds to the "env_exp_sup"
+         *                     attribute
+         *                     in precondition, its "current" dictionary corresponds to
+         *                     the "env_exp" attribute
+         *                     in postcondition, its "current" dictionary corresponds to
+         *                     the synthetized attribute
+         * @param currentClass
+         *                     corresponds to the "class" attribute (null in the main
+         *                     bloc).
+         */
+        protected abstract Type verifyDeclParam(DecacCompiler compiler, ClassDefinition currentClass)
+                        throws ContextualError;
 
-    /**
-     * Generate assembly code for the variable declaration.
-     * 
-     * @param compiler
-     *
-     * @param localBaseOffset
-     */
-    protected abstract int codeGenDeclParam(DecacCompiler compiler, int localBaseOffset);
+        /**
+         * Implements non-terminal "decl_param" of [SyntaxeContextuelle] in pass 3
+         * 
+         * @param compiler contains "env_types" attribute
+         */
+        protected abstract void verifyDeclParamInit(DecacCompiler compiler, EnvironmentExp localEnv)
+                        throws ContextualError;
+
+        /**
+         * Generate assembly code for the variable declaration.
+         * 
+         * @param compiler
+         *
+         * @param localBaseOffset
+         */
+        protected abstract int codeGenDeclParam(DecacCompiler compiler, int localBaseOffset);
 }

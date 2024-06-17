@@ -23,11 +23,12 @@ public class NoOperation extends AbstractInst {
      * Verify rule (3.23)
      */
     @Override
-    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
+    protected boolean verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         // nothing to verify
         LOG.debug("verify NoOperation: nothing to be done");
+        return false;
     }
 
     @Override

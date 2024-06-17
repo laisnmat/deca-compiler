@@ -72,4 +72,8 @@ public class MethodDefinition extends ExpDefinition {
         return false;
     }
 
+    public EnvironmentExp getLocalEnv() {
+        return localEnv;
+    }
+
 }

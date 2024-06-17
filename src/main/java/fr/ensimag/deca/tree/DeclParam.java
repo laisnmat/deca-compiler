@@ -27,21 +27,33 @@ public class DeclParam extends AbstractDeclParam {
     }
 
     @Override
-    protected Type verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected Type verifyDeclParam(DecacCompiler compiler, ClassDefinition currentClass)
             throws ContextualError {
-        LOG.debug("verify DeclParam: start");
-        Type t = this.type.verifyType(compiler);
+        // (2.9)
+        // type ↓env_types ↑type
+        Type t = type.verifyType(compiler);
+        // condition type ̸= void
         if (t.isVoid()) {
-            throw new ContextualError(
-                    "Illegal declaration: Param " + this.paramName + " is of type void.", getLocation());
-        }
-        try {
-            currentClass.getMembers().declare(paramName.getName(), new ParamDefinition(t, getLocation()));
-        } catch (EnvironmentExp.DoubleDefException e) {
-            throw new ContextualError("Param " + paramName.getName() + " is already defined in this method.",
-                    getLocation());
+            throw new ContextualError("Param `" + paramName.getName() + "` is a void type", getLocation());
         }
         return t;
+    }
+
+    @Override
+    protected void verifyDeclParamInit(DecacCompiler compiler,
+            EnvironmentExp localEnv)
+            throws ContextualError {
+        // (3.13)
+        // decl_param ↓env_types ↑{name → (param, type)}
+        // type ↓env_types ↑type
+        ParamDefinition paramDef = new ParamDefinition(type.getType(), getLocation());
+        try {
+            localEnv.declare(paramName.getName(), paramDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Param `" + paramName.getName() + "` is already declared", getLocation());
+        }
+        paramName.setType(paramDef.getType());
+        paramName.setDefinition(paramDef);
     }
 
     @Override

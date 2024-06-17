@@ -87,22 +87,21 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
 
 decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
+    AbstractInitialization initialization;
         }
     : i=ident {
-        $tree = new DeclVar(
-            $t,
-            $i.tree,
-            new NoInitialization()
-        );
+        initialization = new NoInitialization();
         }
       (EQUALS e=expr {
-            $tree = new DeclVar(
-                $t,
-                $i.tree,
-                new Initialization($e.tree)
-            );
+            initialization = new Initialization($e.tree);
+            setLocation(initialization, $EQUALS);
         }
       )? {
+        $tree = new DeclVar(
+                $t,
+                $i.tree,
+                initialization
+            );
         // location of the variable declaration is the name of the variable (Initialized or not)
         setLocation($tree, $i.start);
         }
@@ -395,13 +394,13 @@ select_expr returns[AbstractExpr tree]
             assert($e1.tree != null);
             assert($i.tree != null);
             $tree = new Selection($e1.tree, $i.tree);
-            setLocation($tree, $e1.start);
+            setLocation($tree, $DOT);
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert($args.tree != null);
             $tree = new MethodCall($e1.tree, $i.tree, $args.tree);
-            setLocation($tree, $e1.start);
+            setLocation($tree, $o);
         }
         | /* epsilon */ {
             // we matched "e.i"
@@ -418,7 +417,7 @@ primary_expr returns[AbstractExpr tree]
             assert($args.tree != null);
             assert($m.tree != null);
             $tree = new MethodCall(new ThisLiteral(), $m.tree, $args.tree);
-            setLocation($tree, $m.start);
+            setLocation($tree, $OPARENT);
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
@@ -568,15 +567,20 @@ list_decl_field[ListDeclField l, AbstractIdentifier t, Visibility v]
     ;
 
 decl_field[AbstractIdentifier t, Visibility v] returns[AbstractDeclField tree]
+@init{
+    AbstractInitialization initialization;
+}
     : i=ident {
             assert($i.tree != null);
-            $tree = new DeclField($v, $t, $i.tree, new NoInitialization());
+            initialization = new NoInitialization();
         }
       (EQUALS e=expr {
             assert($e.tree != null);
-            $tree = new DeclField($v, $t, $i.tree, new Initialization($e.tree));
+            initialization = new Initialization($e.tree);
+            setLocation(initialization, $EQUALS);
         }
       )? {
+        $tree = new DeclField($v, $t, $i.tree, initialization);
         setLocation($tree, $i.start);
         }
     ;

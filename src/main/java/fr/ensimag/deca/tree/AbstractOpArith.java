@@ -1,14 +1,15 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -43,21 +44,28 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         Type type1 = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type type2 = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         this.setType(type1);
-        if (!type1.sameType(type2)) {
-            if (type1.isInt() && type2.isFloat()) {
-                ConvFloat conv = new ConvFloat(this.getLeftOperand());
-                conv.verifyExpr(compiler, localEnv, currentClass);
-                this.setLeftOperand(conv);
-                this.setType(type2);
-            } else if (type1.isFloat() && type2.isInt()) {
-                ConvFloat conv = new ConvFloat(this.getRightOperand());
-                conv.verifyExpr(compiler, localEnv, currentClass);
-                this.setRightOperand(conv);
-            } else {
+        if (!(type1.isFloat() || type1.isInt()) || !(type2.isFloat() || type2.isInt())) {
+            if (type1.sameType(type2)) {
                 throw new ContextualError(
-                        "Incompatible types: \'" + type2.getName() + "\' with \'" + type1.getName() + "\'",
+                        "Illegal operand \'" + this.getOperatorName() + "\' between " + type1.getName(),
                         getLocation());
             }
+            throw new ContextualError(
+                    "Illegal operand \'" + this.getOperatorName() + "\' between " + type1.getName() + " and "
+                            + type2.getName(),
+                    getLocation());
+        }
+
+        if (type1.isFloat() && type2.isInt()) {
+            ConvFloat conv = new ConvFloat(this.getRightOperand());
+            conv.verifyExpr(compiler, localEnv, currentClass);
+            this.setRightOperand(conv);
+        }
+        if (type1.isInt() && type2.isFloat()) {
+            ConvFloat conv = new ConvFloat(this.getLeftOperand());
+            conv.verifyExpr(compiler, localEnv, currentClass);
+            this.setLeftOperand(conv);
+            this.setType(type2);
         }
         return type1;
     }

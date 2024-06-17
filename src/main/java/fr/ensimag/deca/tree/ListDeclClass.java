@@ -1,9 +1,10 @@
 package fr.ensimag.deca.tree;
 
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -17,6 +18,8 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      * Pass 1 of [SyntaxeContextuelle]
      */
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
+        // (1.2)
+        // (down) env_types, (up) env_typesr
         LOG.debug("verify listClass: start");
         for (AbstractDeclClass declClass : getList()) {
             declClass.verifyClass(compiler);
@@ -28,6 +31,8 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      * Pass 2 of [SyntaxeContextuelle]
      */
     public void verifyListClassMembers(DecacCompiler compiler) throws ContextualError {
+        // (2.2)
+        // (down) env_types, (up) env_typesr
         LOG.debug("verify listClassMembers: start");
         for (AbstractDeclClass declClass : getList()) {
             declClass.verifyClassMembers(compiler);
@@ -39,7 +44,13 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      * Pass 3 of [SyntaxeContextuelle]
      */
     public void verifyListClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // (3.2)
+        // (down) env_types
+        LOG.debug("verify listClassBody: start");
+        for (AbstractDeclClass declClass : getList()) {
+            declClass.verifyClassBody(compiler);
+        }
+        LOG.debug("verify listClassBody: end");
     }
 
     @Override

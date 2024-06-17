@@ -1,12 +1,12 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
-import fr.ensimag.deca.context.Type;
+
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class Return extends AbstractInst {
@@ -39,12 +39,29 @@ public class Return extends AbstractInst {
     }
 
     @Override
-    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass,
+    protected boolean verifyInst(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass,
             Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // (3.24)
+        // return e; is authorized only if the method is not void
+        if (returnType.isVoid()) {
+            if (currentClass == null)
+                throw new ContextualError("Illegal return statement in main", getLocation());
+            throw new ContextualError("Illegal return statement in void method", getLocation());
+        }
+
+        // (3.24)
+        // rvalue ↓env_types ↓env_exp ↓class ↓return
+        try {
+            expression.verifyRValue(compiler, localEnv, currentClass, returnType);
+        } catch (ContextualError e) {
+            if (e.getMessage().startsWith("Incompatible Types: RValue must have the same type or subtype as LValue:")) {
+                throw new ContextualError("Return statement with wrong type: "
+                        + expression.getType() + " instead of " + returnType, getLocation());
+            }
+            throw e;
+        }
+        return true;
     }
 
 }
-
-    

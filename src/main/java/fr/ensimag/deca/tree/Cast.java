@@ -1,12 +1,12 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
-import fr.ensimag.deca.context.Type;
+
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class Cast extends AbstractExpr {
@@ -48,14 +48,13 @@ public class Cast extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-        // Type type = this.type.verifyType(compiler);
-        // if (!type.isClass()) {
-        // throw new ContextualError("Incompatible Type: " + type.getName() + " is not a
-        // class", getLocation());
-        // }
-        // this.setType(type);
-        // return type;
+        Type type1 = this.type.verifyType(compiler);
+        Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
+        if (!castCompatible(compiler, type2, type1)) {
+            throw new ContextualError("Cannot cast " + type2.getName() + " to " + type1.getName(), getLocation());
+        }
+        setType(type1);
+        return type1;
     }
 
 }

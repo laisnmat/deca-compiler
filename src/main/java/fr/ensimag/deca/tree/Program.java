@@ -1,13 +1,18 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.*;
-import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.*;
-import fr.ensimag.ima.pseudocode.*;
 import java.io.PrintStream;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
+
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Line;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.HALT;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 
 /**
  * Deca complete program (class definition plus main block)
@@ -37,10 +42,19 @@ public class Program extends AbstractProgram {
     private AbstractMain main;
 
     @Override
-    public void verifyProgram(DecacCompiler compiler) throws ContextualError {
+    public void verifyProgram(DecacCompiler compiler)
+            throws ContextualError {
         LOG.debug("verify program: start");
+        // (1.1)
+        // (up) env_types, (down) env_type_predef
         classes.verifyListClass(compiler);
+        // (2.1)
+        // (up) env_types, (down) env_typesr
         classes.verifyListClassMembers(compiler);
+
+        // (3.1)
+        // (down) env_types
+        classes.verifyListClassBody(compiler);
         main.verifyMain(compiler);
         LOG.debug("verify program: end");
     }
@@ -54,9 +68,12 @@ public class Program extends AbstractProgram {
         compiler.errorManager.addTSTOError();
         compiler.errorManager.generateErrors(compiler);
 
-        compiler.addFirst(new Line(new ADDSP(compiler.stackManager.getADDSPValue())));
-        compiler.addFirst(new Line(new BOV(compiler.labelManager.getStackOverflowError())));
-        compiler.addFirst(new Line(new TSTO(compiler.stackManager.getTSTOValue())));
+        compiler.addFirst(new Line(
+                new ADDSP(compiler.stackManager.getADDSPValue())));
+        compiler.addFirst(new Line(new BOV(
+                compiler.labelManager.getStackOverflowError())));
+        compiler.addFirst(new Line(
+                new TSTO(compiler.stackManager.getTSTOValue())));
         compiler.addFirst(new Line("stack overflow test"));
     }
 

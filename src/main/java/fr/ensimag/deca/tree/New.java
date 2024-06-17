@@ -1,12 +1,12 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
-import fr.ensimag.deca.context.Type;
+
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class New extends AbstractExpr {
@@ -41,14 +41,15 @@ public class New extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-        // Type type = this.type.verifyType(compiler);
-        // if (!type.isClass()) {
-        // throw new ContextualError("Incompatible Type: " + type.getName() + " is not a
-        // class", getLocation());
-        // }
-        // this.setType(type);
-        // return type;
+        type.verifyType(compiler);
+        if (!type.getType().isClass()) {
+            throw new ContextualError(
+                    "New is not possible on a non-class type",
+                    getLocation());
+        }
+        setType(type.getType());
+        return type.getType();
+
     }
 
 }

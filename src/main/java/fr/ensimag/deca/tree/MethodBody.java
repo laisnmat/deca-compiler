@@ -2,8 +2,6 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 
-import org.apache.log4j.Logger;
-
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -21,8 +19,19 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    protected void verifyMethodBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void verifyMethodBody(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass, Type returnType) throws ContextualError {
+        // (3.14)
+        // bloc ↓env_types ↓env_exp ↓env_exp_params ↓class ↓return
+        // (3.18)
+        // list_decl_var ↓env_types ↓env_exp_sup ↓env_exp ↓class ↑env_exp_r
+        declVariables.verifyListDeclVariable(compiler, localEnv, currentClass);
+        // list_inst ↓env_types ↓env_exp_r/env_exp_sup ↓class ↓return
+        boolean returnStatement = insts.verifyListInst(compiler, localEnv, currentClass, returnType);
+
+        if (!returnType.isVoid() && !returnStatement) {
+            throw new ContextualError("Missing return statement in non-void method", getLocation());
+        }
     }
 
     @Override

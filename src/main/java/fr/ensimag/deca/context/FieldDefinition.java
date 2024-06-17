@@ -50,11 +50,6 @@ public class FieldDefinition extends ExpDefinition {
     public String getNature() {
         return "field";
     }
-    
-    @Override
-    public ClassType getType() {
-        return (ClassType) super.getType();
-    }
 
     @Override
     public boolean isExpression() {

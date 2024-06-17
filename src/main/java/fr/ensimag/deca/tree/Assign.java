@@ -1,19 +1,18 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.LabelBoolAssign;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -58,9 +57,7 @@ public class Assign extends AbstractBinaryExpr {
         // store the content of the register into the memory
         if (this.getLeftOperand() instanceof Identifier) {
             compiler.addInstruction(
-                    new STORE(
-                            register,
-                            ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()),
+                    new STORE(register, ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()),
                     "assignment");
         } else {
             throw new DecacInternalError("Unexpected case in Assign.codeGenExp: please report this bug.");

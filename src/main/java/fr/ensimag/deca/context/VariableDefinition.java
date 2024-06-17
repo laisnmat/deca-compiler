@@ -19,6 +19,11 @@ public class VariableDefinition extends ExpDefinition {
     }
 
     @Override
+    public boolean isVar() {
+        return true;
+    }
+
+    @Override
     public boolean isExpression() {
         return true;
     }

@@ -53,8 +53,8 @@ public class EnvironmentType {
         NULL = new NullType(nullSymb);
 
         Symbol objectSymb = compiler.createSymbol("Object");
-        OBJECT = new ClassType(objectSymb,  Location.BUILTIN, null);
-        envTypes.put(objectSymb, new ClassDefinition(OBJECT, Location.BUILTIN, null));
+        OBJECT = new ClassType(objectSymb, Location.BUILTIN, null);
+        envTypes.put(objectSymb, OBJECT.getDefinition());
         // not added to envTypes, it's not visible for the user.
     }
 

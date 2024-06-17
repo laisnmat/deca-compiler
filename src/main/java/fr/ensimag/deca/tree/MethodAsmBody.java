@@ -2,10 +2,11 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 
-import org.apache.log4j.Logger;
-
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class MethodAsmBody extends AbstractMethodBody {
@@ -16,27 +17,37 @@ public class MethodAsmBody extends AbstractMethodBody {
     }
 
     @Override
-    protected void verifyMethodBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void verifyMethodBody(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass,
+            Type returnType) throws ContextualError {
+        asm.verifyExpr(compiler, localEnv, currentClass);
     }
 
     @Override
     protected void codeGenMethodBody(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // List<String> listAsm = new ArrayList<>();
+        // listAsm = Arrays.asList(asm.getValue().split("\n"));
+        // for (String line : listAsm) {
+        // compiler.add(new InlinePortion(line));
+        // }
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        s.print("{\n");
+        s.indent();
+        s.println(asm.getValue());
+        s.unindent();
+        s.println("}");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        asm.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        asm.iter(f);
     }
+
 }

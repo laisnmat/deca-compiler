@@ -9,9 +9,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Signature;
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class DeclMethod extends AbstractDeclMethod {
@@ -31,43 +32,68 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void verifyDeclMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected void verifyDeclMethod(DecacCompiler compiler, ClassDefinition currentClass)
             throws ContextualError {
-        LOG.debug("verify DeclField: start");
-        MethodDefinition defSuper;
-        // type verification
-        Type t = this.type.verifyType(compiler);
-        Signature sig = params.verifyListParam(compiler, localEnv, currentClass);
-        // create the definition of this field
-        currentClass.incNumberOfMethods();
-        MethodDefinition methodDef = new MethodDefinition(t, getLocation(), sig, currentClass.getNumberOfMethods());
-        try {
-            currentClass.getMembers().declare(this.methodName.getName(), methodDef);
-        } catch (EnvironmentExp.DoubleDefException dde) {
-            throw new ContextualError("Field "
-                    + this.methodName.getName()
-                    + " is already defined in this class.",
+        // (2.7)
+        // type ↓env_types ↑type
+        type.verifyType(compiler);
+
+        // list_decl_param ↓env_types ↑sig
+        Signature sig = params.verifyListDeclParam(compiler, currentClass);
+        // si (class(__, env_exp_super), __) ≜ env_types(super)
+        // et env_exp_super(name) est défini
+        // alors (method(sig2), type2) ≜ env_exp_super(name)
+        EnvironmentExp envExp = currentClass.getMembers();
+        EnvironmentExp envExpSuper = currentClass.getSuperClass().getMembers();
+        ExpDefinition extendsDefinitionSuper;
+        if ((extendsDefinitionSuper = envExpSuper.get(methodName.getName())) != null) {
+            MethodDefinition extendMethodDefinitionSuper = extendsDefinitionSuper.asMethodDefinition(
+                    "super method `" + methodName.getName() + "` is not a method",
                     getLocation());
-        }
-        if (localEnv != null && localEnv.get(methodName.getName()) != null) {
-            defSuper = localEnv.get(methodName.getName())
-                    .asMethodDefinition(
-                            "ContextualError: expected a methodDefinition",
-                            getLocation());
-            if (!sig.sameSignature(defSuper.getSignature())) {
-                throw new ContextualError("Method "
-                        + this.methodName.getName()
-                        + " is already defined in the superClass with a different signature.",
-                        getLocation());
+            // et sig = sig2
+            if (!sig.sameSignature(extendMethodDefinitionSuper.getSignature())) {
+                throw new ContextualError(
+                        "Method `" + methodName.getName() + "` as not the same signature as his parent method",
+                        methodName.getLocation());
             }
-            if (!t.sameType(defSuper.getType()) && (!t.isClass() || !defSuper.getType().isClass()
-                    || !((ClassType) t).isSubClassOf((ClassType) defSuper.getType()))) {
-                throw new ContextualError("Method "
-                        + this.methodName.getName()
-                        + " is already defined in the superClass with a different return type.",
-                        getLocation());
+            // et subtype(env_types, type, type2)
+            if (!(type.getType().isClass() && extendMethodDefinitionSuper.getType().isClass()
+                    && ((ClassType) type.getType()).isSubClassOf((ClassType) extendMethodDefinitionSuper.getType()))
+                    && !(type.getType().sameType(extendMethodDefinitionSuper.getType()))) {
+                throw new ContextualError(
+                        "Method `" + methodName.getName() + "` as not the same return type as his parent method",
+                        methodName.getLocation());
             }
         }
+        // ↑{name 7→ (method(sig), type)}
+        MethodDefinition methodDefinition = new MethodDefinition(type.getType(), getLocation(), sig,
+                currentClass.getNumberOfMethods(), new EnvironmentExp(envExp));
+        try {
+            envExp.declare(methodName.getName(), methodDefinition);
+            currentClass.incNumberOfMethods();
+        } catch (DoubleDefException e) {
+            ExpDefinition previous = envExp.get(methodName.getName());
+            throw new ContextualError(
+                    "Method `" + methodName.getName() + "` already declared at " + previous.getLocation(),
+                    methodName.getLocation());
+        }
+        methodName.setType(methodDefinition.getType());
+        methodName.setDefinition(methodDefinition);
+    }
+
+    @Override
+    protected void verifyDeclMethodBody(DecacCompiler compiler, ClassDefinition currentClass)
+            throws ContextualError {
+        // (3.11)
+        // method localenv
+        EnvironmentExp localEnv = currentClass.getMembers().get(this.methodName.getName()).asMethodDefinition(
+                "Method `" + this.methodName.getName() + "` is not a method", this.getLocation()).getLocalEnv();
+        // type ↓env_types ↑return
+        type.verifyType(compiler);
+        // list_decl_param ↓env_types ↑env_exp_params
+        params.verifyListDeclParamInit(compiler, localEnv);
+        // method_body ↓env_types ↓env_exp ↓env_exp_params ↓class ↓return
+        body.verifyMethodBody(compiler, localEnv, currentClass, type.getType());
     }
 
     @Override

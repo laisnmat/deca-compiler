@@ -9,9 +9,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class DeclField extends AbstractDeclField {
@@ -35,42 +34,61 @@ public class DeclField extends AbstractDeclField {
     };
 
     @Override
-    protected void verifyDeclField(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected void verifyDeclField(DecacCompiler compiler, ClassDefinition currentClass)
             throws ContextualError {
-        LOG.debug("verify DeclField: start");
-        // type verification
-        Type t = this.type.verifyType(compiler);
-        if (t.isVoid()) {
-            throw new ContextualError("Illegal declaration: Variable "
-                    + this.varName
-                    + " is of type void.",
+        LOG.debug("verify DeclField `" + currentClass.getType() + "." + varName.getName() + "`: start");
+        // (2.5)
+        // decl_field ↓env_types ↓super ↓class ↑{name → (field(visib, class), type)}
+        EnvironmentExp localEnv = currentClass.getMembers();
+        // type verification type ≠ void
+        this.type.verifyType(compiler);
+        if (this.type.getType().isVoid()) {
+            throw new ContextualError("Illegal declaration: Field " + this.varName.getName() + " is of type void.",
                     getLocation());
         }
-
-        // create the definition of this field
-        currentClass.incNumberOfFields();
-        FieldDefinition fieldDef = new FieldDefinition(t, getLocation(), this.visibility, currentClass,
-                currentClass.getNumberOfFields());
-
-        try {
-            currentClass.getMembers().declare(this.varName.getName(), fieldDef);
-        } catch (EnvironmentExp.DoubleDefException dde) {
-            throw new ContextualError("Field " + this.varName.getName() + " is already defined in this class.",
-                    getLocation());
-        }
-        // initialization verification
-        initialization.verifyInitialization(compiler, t, localEnv, currentClass);
-        if (localEnv != null && localEnv.get(this.varName.getName()) != null) {
-            if (localEnv.get(this.varName.getName()) instanceof MethodDefinition) {
-                throw new ContextualError("Variable "
-                        + this.varName.getName()
-                        + " is already defined in class "
-                        + currentClass.getSuperClass().getType().toString()
-                        + " as a method", getLocation());
-            } else if (!(localEnv.get(this.varName.getName()) instanceof FieldDefinition)) {
-                throw new ContextualError("Invalid field definition", getLocation());
+        // {name → (field(visib, class), type)}
+        FieldDefinition fieldDef = new FieldDefinition(this.type.getType(), getLocation(), this.visibility,
+                currentClass, currentClass.getNumberOfFields());
+        // si (class(__,env_exp_super),__)≜env_types(super) et env_exp_super(name) est
+        // défini
+        // alors env_exp_super(name) = (field(__,__),__)
+        if (currentClass.getSuperClass() != null) {
+            EnvironmentExp envExpSuper = currentClass.getSuperClass().getMembers();
+            ExpDefinition previous = envExpSuper.get(this.varName.getName());
+            if (previous != null && !(previous instanceof FieldDefinition)) {
+                throw new ContextualError(
+                        "Cannot define " + this.varName.getName()
+                                + " as a field because it is already defined as a method at " + previous.getLocation(),
+                        getLocation());
             }
         }
+        try {
+            localEnv.declare(this.varName.getName(), fieldDef);
+            LOG.debug("declField localEnv : " + localEnv);
+            currentClass.incNumberOfFields();
+        } catch (EnvironmentExp.DoubleDefException e) {
+            ExpDefinition previous = localEnv.get(this.varName.getName());
+            throw new ContextualError(
+                    "Field " + this.varName.getName() + " is already defined at " + previous.getLocation(),
+                    getLocation());
+        }
+        LOG.debug("verify DeclField `" + currentClass.getType() + "." + varName.getName() + "`: end");
+
+    }
+
+    @Override
+    protected void verifyDeclFieldInit(DecacCompiler compiler, ClassDefinition currentClass)
+            throws ContextualError {
+        LOG.debug("verify DeclField init`" + currentClass.getType() + "." + varName.getName() + "`: start");
+
+        EnvironmentExp localEnv = currentClass.getMembers();
+        // set the definition of the field
+        this.varName.verifyExpr(compiler, localEnv, currentClass);
+
+        this.initialization.verifyInitialization(compiler, this.type.getType(),
+                localEnv, currentClass);
+        LOG.debug("verify DeclField init`" + currentClass.getType() + "." + varName.getName() + "`: end");
+
     }
 
     @Override
