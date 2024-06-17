@@ -64,7 +64,7 @@ public class Modulo extends AbstractOpArith {
             compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
 
             compiler.addInstruction(new REM(dvalRightOp, register));
-            super.codeGenOperror(compiler);
+            super.codeGenOpError(compiler);
         } else {
             if (register.getNumber() == DecacCompiler.MAXREGISTER) {
                 compiler.addInstruction(new PUSH(register), "sauvegarde ");
@@ -94,6 +94,6 @@ public class Modulo extends AbstractOpArith {
             compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
         }
         compiler.addInstruction(new REM(nextRegister, register));
-        super.codeGenOperror(compiler);
+        super.codeGenOpError(compiler);
     }
 }
