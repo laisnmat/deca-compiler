@@ -1,15 +1,17 @@
 package fr.ensimag.deca.tools;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
 
 /**
  * Example JUnit class. A JUnit class must be named TestXXX or YYYTest. JUnit
  * will run each methods annotated with @Test.
  */
 public class SymbolTest {
-//    @Test    //FIXME: uncomment this line
+    // @Test //FIXME: uncomment this line
     public void testSymbol() {
         SymbolTable t = new SymbolTable();
         Symbol s1 = t.create("foo");
@@ -22,7 +24,7 @@ public class SymbolTest {
         assertNotSame(s1, s3);
     }
 
-//    @Test    //FIXME: uncomment this line
+    // @Test //FIXME: uncomment this line
     public void multipleTables() {
         SymbolTable t1 = new SymbolTable();
         SymbolTable t2 = new SymbolTable();

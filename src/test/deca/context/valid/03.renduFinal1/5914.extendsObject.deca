@@ -1,0 +1,33 @@
+class B{
+    int x = 2;
+    int getX(){
+        return x;
+    }
+}
+class A extends B{
+    int y = 2;
+    int getX1(){
+        return x;
+    }
+    int getY(){
+        return y;
+    }
+    int getX2(){
+        return this.getX();
+    }
+}
+
+class C{
+    A a = new A();
+    int x = a.getX();
+    int y = a.getY();
+    int x1 = a.getX1();
+    int x2 = a.getX2();
+}
+
+
+// Description :
+// Test d'appel de méthode d'un objet déclarée dans un autre objet (avec un extends) 
+//
+// Resultats :
+// Ok

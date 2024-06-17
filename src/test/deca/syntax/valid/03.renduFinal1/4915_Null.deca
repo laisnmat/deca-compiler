@@ -1,0 +1,11 @@
+{
+    int x = null;
+    null;
+    y = null;
+    x == null;
+    x = null + 1;
+}
+// Description :
+// test du selection
+// Resultats :
+// rien (Etape A : OK)

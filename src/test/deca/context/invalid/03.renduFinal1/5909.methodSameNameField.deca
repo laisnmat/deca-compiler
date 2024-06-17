@@ -1,0 +1,12 @@
+class A {
+    int x;
+
+    int x(){
+        return 0;
+    }
+}
+// Description :
+// This test checks if a method and a field can have the same name.
+//
+// Resultats :
+// Erreur de compilation: 

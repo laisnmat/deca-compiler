@@ -1,41 +1,45 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
-import fr.ensimag.deca.context.Type;
+
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class Selection extends AbstractLValue {
+    private static final Logger LOG = Logger.getLogger(Selection.class);
 
-    private AbstractExpr classe;
-    private AbstractIdentifier attribute;
+    private AbstractExpr select;
+    private AbstractIdentifier field;
 
-    public Selection(AbstractExpr classe, AbstractIdentifier attribute) {
-        this.classe = classe;
-        this.attribute = attribute;
+    public Selection(AbstractExpr select, AbstractIdentifier field) {
+        this.select = select;
+        this.field = field;
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        classe.iter(f);
-        attribute.iter(f);
+        select.iter(f);
+        field.iter(f);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        classe.prettyPrint(s, prefix, false);
-        attribute.prettyPrint(s, prefix, true);
+        select.prettyPrint(s, prefix, false);
+        field.prettyPrint(s, prefix, true);
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        classe.decompile(s);
+        select.decompile(s);
         s.print(".");
-        attribute.decompile(s);
+        field.decompile(s);
     }
 
     // @Override
@@ -46,14 +50,30 @@ public class Selection extends AbstractLValue {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-        // Type type = this.type.verifyType(compiler);
-        // if (!type.isClass()) {
-        // throw new ContextualError("Incompatible Type: " + type.getName() + " is not a
-        // class", getLocation());
-        // }
-        // this.setType(type);
-        // return type;
+        LOG.debug("verify Selection: start");
+        select.verifyExpr(compiler, localEnv, currentClass);
+        // (class(__, env_exp2), __) ≜ env_types(class2)
+        if (!select.getType().isClass()) {
+            throw new ContextualError("Selection is not possible on a non-class type", getLocation());
+        }
+        ClassType class1;
+        if (currentClass == null) {
+            class1 = null;
+        } else
+            class1 = currentClass.getType();
+        ClassType class2 = (ClassType) select.getType();
+        Type classField = field.verifyFieldIdent(compiler, class2.getDefinition().getMembers(), currentClass);
+
+        // subtype(env_types,type_class(class2),type_class(class))
+        // subtype(env_types,type_class(class),type_class(class_field))
+        if (field.getFieldDefinition().getVisibility() == Visibility.PROTECTED && (!class2.isSubClassOf(class1)
+                || !class1.isSubClassOf(field.getFieldDefinition().getContainingClass().getType()))) {
+            throw new ContextualError("Protected field " + field.getName() + " is not accessible from class "
+                    + (class1 == null ? "main" : class1.getName()), getLocation());
+        }
+        setType(classField);
+        LOG.debug("verify Selection: end");
+        return classField;
     }
 
 }

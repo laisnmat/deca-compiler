@@ -20,9 +20,20 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
-    protected void verifyListMethod(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected void verifyListDeclMethod(DecacCompiler compiler, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (AbstractDeclMethod declMethod : getList()) {
+            declMethod.verifyDeclMethod(compiler, currentClass);
+        }
     }
 
+    protected void verifyListDeclMethodBody(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass)
+            throws ContextualError {
+        // (3.10)
+        // (decl_method ↓env_types ↓env_exp ↓class)*
+        for (AbstractDeclMethod declMethod : getList()) {
+            declMethod.verifyDeclMethodBody(compiler, currentClass);
+        }
+    }
 }

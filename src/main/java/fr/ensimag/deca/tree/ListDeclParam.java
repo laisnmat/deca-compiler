@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
@@ -20,9 +21,22 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         }
     }
 
-    protected void verifyListParam(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected Signature verifyListDeclParam(DecacCompiler compiler, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Signature sig = new Signature();
+        for (AbstractDeclParam declParam : getList()) {
+            sig.add(declParam.verifyDeclParam(compiler, currentClass));
+        }
+        return sig;
     }
 
+    protected void verifyListDeclParamInit(DecacCompiler compiler, EnvironmentExp localEnv)
+            throws ContextualError {
+        // (3.12)
+        // (decl_param ↓env_types ↑env_exp
+        // {env_expr := env_expr ⊕ env_exp})*
+        for (AbstractDeclParam declParam : getList()) {
+            declParam.verifyDeclParamInit(compiler, localEnv);
+        }
+    }
 }

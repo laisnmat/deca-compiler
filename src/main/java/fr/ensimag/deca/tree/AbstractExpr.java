@@ -1,11 +1,16 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+
+import org.apache.commons.lang.Validate;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.LabelBoolExp;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -14,11 +19,8 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
-
-import java.io.PrintStream;
-import org.apache.commons.lang.Validate;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -108,11 +110,11 @@ public abstract class AbstractExpr extends AbstractInst {
             return convExpr;
         }
 
-        // if the RValue's type is not the same as the LValue's type,
+        // if the RValue's type is not the same or a subtype of the LValue's type,
         // then throw an exception
-        if (!this.getType().sameType(expectedType)) {
+        if (!assignCompatible(compiler, expectedType, this.getType())) {
             throw new ContextualError(
-                    "Incompatible Types: RValue must have the same type as LValue "
+                    "Incompatible Types: RValue must have the same type or subtype as LValue: "
                             + this.getType()
                             + " instead of "
                             + expectedType,
@@ -123,6 +125,26 @@ public abstract class AbstractExpr extends AbstractInst {
         return this;
     }
 
+    protected boolean assignCompatible(DecacCompiler compiler, Type t1, Type t2) {
+        if ((t2.isClass() && t1.isClass()
+                && ((ClassType) t2).isSubClassOf((ClassType) t1))
+                || t2.sameType(t1) || (t1.isFloat() && t2.isInt())) {
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean castCompatible(DecacCompiler compiler, Type t1, Type t2)
+            throws ContextualError {
+        if (t1.isVoid()) {
+            throw new ContextualError("Cannot cast a void type", getLocation());
+        }
+        if (assignCompatible(compiler, t1, t2) || assignCompatible(compiler, t2, t1)) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Verify an AbstractExpr.
      * As this object is an AbstractExpr, this method will execute verifyExpr by
@@ -130,10 +152,11 @@ public abstract class AbstractExpr extends AbstractInst {
      * Can be overidden in subclasses.
      */
     @Override
-    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
+    protected boolean verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         verifyExpr(compiler, localEnv, currentClass);
+        return false;
     }
 
     /**

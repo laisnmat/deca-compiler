@@ -1,18 +1,16 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-
-import java.io.PrintStream;
-import org.apache.log4j.Logger;
 
 /**
  * This literal
@@ -24,16 +22,17 @@ public class ThisLiteral extends AbstractExpr {
 
     private static Logger LOG = Logger.getLogger(ThisLiteral.class);
 
-    private Type type;
-
-    public ThisLiteral() {
-        type = null;
-    }
-
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // (3.43)
+        // verify that the current class is not null (class ̸= 0)
+        if (currentClass == null) {
+            throw new ContextualError("Cannot use 'this' outside of a class", getLocation());
+        }
+        // affectation type := type_class(class)
+        setType(currentClass.getType());
+        return currentClass.getType();
     }
 
     @Override

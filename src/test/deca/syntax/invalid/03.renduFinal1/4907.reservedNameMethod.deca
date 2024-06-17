@@ -5,4 +5,4 @@ class Hello{
 }
 // Resultats :
 // Erreur de syntaxe
-// Ligne 2 : no viable alternative at input 'booleanclass'
+// Ligne 2 : no viable alternative at input 'boolean class'

@@ -1,0 +1,6 @@
+{
+    null = x;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : null is not a LValue

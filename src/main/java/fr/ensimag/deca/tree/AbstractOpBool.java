@@ -1,11 +1,12 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import org.apache.log4j.Logger;
+import fr.ensimag.deca.context.Type;
 
 /**
  *
@@ -31,14 +32,14 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         Type typeLeftOp = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
 
         // verify type_binary_op()
-        if (typeRightOp != compiler.environmentType.BOOLEAN) {
+        if (!typeRightOp.isBoolean()) {
             throw new ContextualError(
                     "Incompatible Types: RightOperand should be of type 'boolean', but is of type '"
                             + typeRightOp + "'.",
                     getLocation());
         }
 
-        if (typeLeftOp != compiler.environmentType.BOOLEAN) {
+        if (!typeLeftOp.isBoolean()) {
             throw new ContextualError(
                     "Incompatible Types: LeftOperand should be of type 'boolean', but is of type '"
                             + typeLeftOp + "'.",

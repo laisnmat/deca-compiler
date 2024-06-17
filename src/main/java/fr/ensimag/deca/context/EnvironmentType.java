@@ -24,6 +24,7 @@ public class EnvironmentType {
     public final StringType STRING;
     public final BooleanType BOOLEAN;
     public final NullType NULL;
+    public final ClassType OBJECT;
     private final Map<Symbol, TypeDefinition> envTypes;
 
     public EnvironmentType(DecacCompiler compiler) {
@@ -51,6 +52,9 @@ public class EnvironmentType {
         Symbol nullSymb = compiler.createSymbol("null");
         NULL = new NullType(nullSymb);
 
+        Symbol objectSymb = compiler.createSymbol("Object");
+        OBJECT = new ClassType(objectSymb, Location.BUILTIN, null);
+        envTypes.put(objectSymb, OBJECT.getDefinition());
         // not added to envTypes, it's not visible for the user.
     }
 

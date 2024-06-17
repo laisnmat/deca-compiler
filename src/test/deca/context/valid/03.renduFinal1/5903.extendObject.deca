@@ -1,0 +1,11 @@
+class A{
+
+}
+class B extends Object{
+
+}
+// Description :
+// Héritage de la classe Object
+//
+// Resultats :
+// OK

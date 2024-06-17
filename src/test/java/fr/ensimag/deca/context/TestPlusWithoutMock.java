@@ -1,20 +1,21 @@
 package fr.ensimag.deca.context;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.PrintStream;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Plus;
 import fr.ensimag.deca.tree.TreeFunction;
-import java.io.PrintStream;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test for the Plus node in a manual way. The same test would be much easier to
  * write using a mock-up framework like Mockito.
  *
  * @see TestPlusPlain to see how the Mockito library can help writing this kind
- * of tests.
+ *      of tests.
  *
  * @author Ensimag
  * @date 14/04/2024
@@ -61,7 +62,7 @@ public class TestPlusWithoutMock {
         }
     }
 
-//    @Test    //FIXME: uncomment this line
+    // @Test //FIXME: uncomment this line
     public void testType() throws ContextualError {
         DecacCompiler compiler = new DecacCompiler(null, null);
         DummyIntExpression left = new DummyIntExpression();

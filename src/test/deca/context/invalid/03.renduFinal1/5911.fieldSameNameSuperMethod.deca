@@ -1,0 +1,13 @@
+class A {
+    int x(){
+        return 0;
+    }
+}
+class B extends A{
+    int x;
+}
+// Description :
+// This test checks if a field can have the same name than the super class method.
+//
+// Resultats :
+// Erreur de compilation: 

@@ -1,0 +1,41 @@
+class A {
+    int x;
+    void exemple1(){
+
+    }
+
+}
+
+class B extends A {
+    int y;
+    void exemple2(){
+
+    }
+}
+
+class C extends B{
+    int z;
+    void exemple3(){
+
+    }
+}
+
+class D extends C {
+    float a;
+    void exemple4(){
+
+    }
+}
+
+class E extends B {
+    int z;
+    void exemple3(){
+
+    }
+}
+
+// Description :
+// Plusieurs classes qui héritent les unes des autres, mais avec des methodes et des fields différents
+//
+// Resultats :
+// Ok

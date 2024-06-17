@@ -1,0 +1,10 @@
+class A extends B {
+}
+class B{
+
+}
+// Description :
+// Classe A hérite de la classe B qui n'est pas déclarée.
+//
+// Resultats :
+// Erreur de compilation : La super classe n'est pas déclarée.

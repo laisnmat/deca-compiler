@@ -1,11 +1,10 @@
 package fr.ensimag.deca.tools;
 
-import fr.ensimag.deca.codegen.LabelManager;
-
 import java.io.UnsupportedEncodingException;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+
+import fr.ensimag.deca.codegen.LabelManager;
 
 public class LabelManagerTest {
     public enum LabelNames {

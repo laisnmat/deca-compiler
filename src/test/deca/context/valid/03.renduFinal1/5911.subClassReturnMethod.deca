@@ -1,0 +1,17 @@
+class A{
+    A x(int x){
+        return new B();
+    }
+}
+
+class B extends A{
+    B x(int y){
+        return new B();
+    }
+}
+
+// Description :
+// Type de retour sous-classe
+//
+// Resultats :
+// Ok

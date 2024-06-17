@@ -1,0 +1,6 @@
+{
+    x = return+y;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : return is a reserved keyword

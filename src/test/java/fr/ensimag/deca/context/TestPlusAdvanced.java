@@ -1,15 +1,18 @@
 package fr.ensimag.deca.context;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.ConvFloat;
 import fr.ensimag.deca.tree.Plus;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
-import static org.mockito.Mockito.*;
-import org.mockito.MockitoAnnotations;
 
 /**
  * Test for the Plus node using mockito, using @Mock and @Before annotations.
@@ -32,7 +35,7 @@ public class TestPlusAdvanced {
     AbstractExpr floatexpr2;
 
     DecacCompiler compiler;
-    
+
     @BeforeEach
     public void setup() throws ContextualError {
         MockitoAnnotations.initMocks(this);
@@ -43,7 +46,7 @@ public class TestPlusAdvanced {
         when(floatexpr2.verifyExpr(compiler, null, null)).thenReturn(FLOAT);
     }
 
-//    @Test    //FIXME: uncomment this line
+    // @Test //FIXME: uncomment this line
     public void testIntInt() throws ContextualError {
         Plus t = new Plus(intexpr1, intexpr2);
         // check the result
@@ -53,7 +56,7 @@ public class TestPlusAdvanced {
         verify(intexpr2).verifyExpr(compiler, null, null);
     }
 
-//    @Test    //FIXME: uncomment this line
+    // @Test //FIXME: uncomment this line
     public void testIntFloat() throws ContextualError {
         Plus t = new Plus(intexpr1, floatexpr1);
         // check the result
@@ -66,7 +69,7 @@ public class TestPlusAdvanced {
         verify(floatexpr1).verifyExpr(compiler, null, null);
     }
 
-//    @Test    //FIXME: uncomment this line
+    // @Test //FIXME: uncomment this line
     public void testFloatInt() throws ContextualError {
         Plus t = new Plus(floatexpr1, intexpr1);
         // check the result

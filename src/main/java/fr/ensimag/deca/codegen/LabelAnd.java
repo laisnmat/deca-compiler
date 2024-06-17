@@ -1,7 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.ima.pseudocode.Label;
-
 public class LabelAnd extends AbstractLabel {
     /**
      * Object used to generate labels for an 'And' structure.
@@ -9,9 +7,9 @@ public class LabelAnd extends AbstractLabel {
      * expression.
      * 
      * @param id
-     *            The id of this structure. Must be unique.
+     *                     The id of this structure. Must be unique.
      * @param labelManager
-     *            The associated labelManager, used to manage prefix.
+     *                     The associated labelManager, used to manage prefix.
      */
     public LabelAnd(int id, LabelManager labelManager) {
         super(id, labelManager);

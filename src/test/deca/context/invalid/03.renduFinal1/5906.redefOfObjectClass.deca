@@ -1,0 +1,8 @@
+class Object {
+
+}
+// Description :
+// Redéfinition de la classe Object.
+//
+// Resultats :
+// Erreur de compilation : Class Object is already declared as [builtin]

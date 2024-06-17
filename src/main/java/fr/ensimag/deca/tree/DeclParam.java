@@ -9,6 +9,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ParamDefinition;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class DeclParam extends AbstractDeclParam {
@@ -25,9 +27,33 @@ public class DeclParam extends AbstractDeclParam {
     }
 
     @Override
-    protected void verifyDeclParam(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+    protected Type verifyDeclParam(DecacCompiler compiler, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // (2.9)
+        // type ↓env_types ↑type
+        Type t = type.verifyType(compiler);
+        // condition type ̸= void
+        if (t.isVoid()) {
+            throw new ContextualError("Param `" + paramName.getName() + "` is a void type", getLocation());
+        }
+        return t;
+    }
+
+    @Override
+    protected void verifyDeclParamInit(DecacCompiler compiler,
+            EnvironmentExp localEnv)
+            throws ContextualError {
+        // (3.13)
+        // decl_param ↓env_types ↑{name → (param, type)}
+        // type ↓env_types ↑type
+        ParamDefinition paramDef = new ParamDefinition(type.getType(), getLocation());
+        try {
+            localEnv.declare(paramName.getName(), paramDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new ContextualError("Param `" + paramName.getName() + "` is already declared", getLocation());
+        }
+        paramName.setType(paramDef.getType());
+        paramName.setDefinition(paramDef);
     }
 
     @Override

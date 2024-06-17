@@ -74,4 +74,11 @@ public class ClassDefinition extends TypeDefinition {
     public EnvironmentExp getMembers() {
         return members;
     }
+
+    @Override
+    public ClassDefinition asClassDefinition(String errorMessage, Location l)
+            throws ContextualError {
+        return this;
+    }
+
 }

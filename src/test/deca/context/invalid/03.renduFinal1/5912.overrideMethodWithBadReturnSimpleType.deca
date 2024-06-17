@@ -1,0 +1,15 @@
+class A {
+    int x(){
+        return 1;
+    }
+}
+class B extends A{
+    float x(){
+        return 3.2;
+    }
+}
+// Description :
+// This test checks if a method can have a different type than the super class method (no subType).
+//
+// Resultats :
+// Erreur de compilation: 

@@ -1,0 +1,20 @@
+class B{
+    int x = 2;
+    int y = 3;
+    int z = 4;
+    int f(){
+        return x + y + z;
+    }
+}
+
+{
+    B b = new B();
+    println(b.f(), b.x);
+}
+
+
+// Description :
+// Appel de méthode et de champs dans le main
+//
+// Resultats :
+// Ok

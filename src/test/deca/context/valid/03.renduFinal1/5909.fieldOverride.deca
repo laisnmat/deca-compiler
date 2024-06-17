@@ -1,0 +1,25 @@
+class A {
+    int x = 2;
+}
+
+class B extends A {
+    int x = 3;
+}
+
+class C extends B{
+    float x = 1.1;
+}
+
+class D extends C {
+    int x = 2;
+}
+
+class E extends B {
+    float x = 4;
+}
+
+// Description :
+// On essaie d'override la déclaration d'attributs de la classe mère
+//
+// Resultats :
+// Ok

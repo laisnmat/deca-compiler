@@ -1,0 +1,6 @@
+{
+    x instanceof;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : instanceof whitout right value

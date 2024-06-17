@@ -1,0 +1,25 @@
+class A {
+    int x;
+}
+
+class B extends A {
+    int y;
+}
+
+class C extends B{
+    int z;
+}
+
+class D extends C {
+    float a;
+}
+
+class E extends B {
+    float b;
+}
+
+// Description :
+// Plusieurs classes avec des attributs de types et de noms différents
+//
+// Resultats :
+// Ok

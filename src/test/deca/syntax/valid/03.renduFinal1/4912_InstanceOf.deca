@@ -1,0 +1,9 @@
+{
+    int b = y instanceof x;
+    y instanceof x;
+    y+d instanceof x;
+}
+// Description :
+// test du instanceof
+// Resultats :
+// rien (Etape A : OK)
