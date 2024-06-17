@@ -1,0 +1,10 @@
+{
+    int a = 1;
+    boolean b = true;
+    
+    int c = a % b;
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 5 : 
