@@ -24,9 +24,10 @@ public class TestPlusPlain {
     final Type INT = new IntType(null);
     final Type FLOAT = new FloatType(null);
 
-    // @Test //FIXME: uncomment this line
+    @Test
     public void testType() throws ContextualError {
-        DecacCompiler compiler = new DecacCompiler(null, null);
+        CompilerOptions co = new CompilerOptions();
+        DecacCompiler compiler = new DecacCompiler(co, null);
         AbstractExpr left = Mockito.mock(AbstractExpr.class);
         when(left.verifyExpr(compiler, null, null)).thenReturn(INT);
         AbstractExpr right = Mockito.mock(AbstractExpr.class);

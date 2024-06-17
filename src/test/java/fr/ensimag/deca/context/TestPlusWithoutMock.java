@@ -62,9 +62,10 @@ public class TestPlusWithoutMock {
         }
     }
 
-    // @Test //FIXME: uncomment this line
+    @Test
     public void testType() throws ContextualError {
-        DecacCompiler compiler = new DecacCompiler(null, null);
+        CompilerOptions co = new CompilerOptions();
+        DecacCompiler compiler = new DecacCompiler(co, null);
         DummyIntExpression left = new DummyIntExpression();
         DummyIntExpression right = new DummyIntExpression();
         Plus t = new Plus(left, right);

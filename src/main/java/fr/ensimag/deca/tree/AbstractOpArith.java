@@ -68,7 +68,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             this.setLeftOperand(conv);
             this.setType(type2);
         }
-        return type1;
+        return this.getType();
     }
 
     public DVal codeGenOp(DecacCompiler compiler, GPRegister register) {

@@ -38,15 +38,16 @@ public class TestPlusAdvanced {
 
     @BeforeEach
     public void setup() throws ContextualError {
+        CompilerOptions co = new CompilerOptions();
         MockitoAnnotations.initMocks(this);
-        compiler = new DecacCompiler(null, null);
+        compiler = new DecacCompiler(co, null);
         when(intexpr1.verifyExpr(compiler, null, null)).thenReturn(INT);
         when(intexpr2.verifyExpr(compiler, null, null)).thenReturn(INT);
         when(floatexpr1.verifyExpr(compiler, null, null)).thenReturn(FLOAT);
         when(floatexpr2.verifyExpr(compiler, null, null)).thenReturn(FLOAT);
     }
 
-    // @Test //FIXME: uncomment this line
+    @Test
     public void testIntInt() throws ContextualError {
         Plus t = new Plus(intexpr1, intexpr2);
         // check the result
@@ -56,7 +57,7 @@ public class TestPlusAdvanced {
         verify(intexpr2).verifyExpr(compiler, null, null);
     }
 
-    // @Test //FIXME: uncomment this line
+    @Test
     public void testIntFloat() throws ContextualError {
         Plus t = new Plus(intexpr1, floatexpr1);
         // check the result
@@ -69,7 +70,7 @@ public class TestPlusAdvanced {
         verify(floatexpr1).verifyExpr(compiler, null, null);
     }
 
-    // @Test //FIXME: uncomment this line
+    @Test
     public void testFloatInt() throws ContextualError {
         Plus t = new Plus(floatexpr1, intexpr1);
         // check the result
