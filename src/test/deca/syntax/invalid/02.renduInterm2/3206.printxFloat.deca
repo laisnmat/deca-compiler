@@ -1,0 +1,8 @@
+{
+    float x = 5.2;
+    printx(.x);
+}
+
+// Resultats :
+// Erreur de syntaxe
+// Ligne 3 : extraneous input '.x'

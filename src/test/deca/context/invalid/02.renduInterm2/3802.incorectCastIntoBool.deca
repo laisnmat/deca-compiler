@@ -1,0 +1,7 @@
+{
+    boolean x = 2 - 1;
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 3802_incorectCastIntoBool.deca:2

@@ -1,0 +1,9 @@
+{
+    printx("加斯頓");
+}
+
+// Description :
+// test du printx avec des caractères non ASCII
+//
+// Resultats :
+// étape A : OK

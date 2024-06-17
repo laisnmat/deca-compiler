@@ -143,7 +143,7 @@ public class Identifier extends AbstractIdentifier {
         // if the current Identifier has no definition associated, that means it has
         // never been defined.
         if (def == null)
-            throw new ContextualError("Identifier not declared", getLocation());
+            throw new ContextualError("NullDefinition: Identifier not declared", getLocation());
         setType(def.getType());
         setDefinition(def);
         return def.getType();

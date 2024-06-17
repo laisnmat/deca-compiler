@@ -1,0 +1,12 @@
+{
+    boolean x = 6 ; 
+    if(x > readFloat()){
+        x = 2;
+    }
+}
+
+// Description :
+// test de l'opérateur > avec un entier et un float
+//
+// Resultats :
+// étape A : OK

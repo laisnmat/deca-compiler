@@ -1,0 +1,15 @@
+// Description : Test de lecture d'un float
+// test du readfloat
+//
+// Resultats : enter a number : 
+//             your number is : 1.22000e+01
+// 
+
+
+{
+    float a;
+    println("enter a number : ");
+    a = readFloat();
+    print("your number is : ");
+    println(a);
+}

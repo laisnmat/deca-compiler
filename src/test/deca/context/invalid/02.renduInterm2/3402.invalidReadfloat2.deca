@@ -1,0 +1,8 @@
+{
+    boolean a = readFloat();
+}
+
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 3402InvalidReadFloat.deca:2:

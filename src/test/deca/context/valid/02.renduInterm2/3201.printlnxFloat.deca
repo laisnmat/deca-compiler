@@ -1,0 +1,12 @@
+// Description : initialisation de deux valeurs entières
+//               plus test plus affection d'une valeur
+// test du greater or equal 
+//
+// Resultats : aucune erreur 
+// 
+
+
+{
+    float x = 5.2;
+    printlnx(x);
+}

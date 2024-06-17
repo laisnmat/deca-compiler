@@ -1,0 +1,11 @@
+{
+  int x = 2;
+
+  if (x != ) {
+    println("This isn't possible");
+  }
+}
+
+// Resultats :
+// Erreur de syntaxe
+// Ligne 4 : mismatched input ')'

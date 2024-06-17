@@ -1,0 +1,7 @@
+{
+    printx(/);
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 32PRINTX_caracte_special.deca:2:

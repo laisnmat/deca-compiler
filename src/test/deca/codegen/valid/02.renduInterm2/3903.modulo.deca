@@ -1,0 +1,15 @@
+// Description : initialisation et affichage d'une valeurs entière
+// test du modulo
+//
+// Resultats : 2
+// 
+
+
+{
+    int i = 5%2;
+    println(i);
+    i = 5%3;
+    println(i);
+    i = 5%4;
+    println(i);
+}

@@ -1,0 +1,11 @@
+ {
+    boolean x = true; 
+    int y = 1;
+    if(0 >= (x*y) || 5>= (x+y)){
+        x = 2;
+    }
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 4: 2901GEQ_int_boolean_expr.deca:4

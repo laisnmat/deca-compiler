@@ -1,0 +1,13 @@
+{
+  int x = 2;
+  boolean y = true;
+
+  if (x != y) {
+    println("This isn't possible");
+  }
+}
+
+
+// Resultats :
+// Erreur de contextuelle 
+// Ligne 5 : This isn't possible 

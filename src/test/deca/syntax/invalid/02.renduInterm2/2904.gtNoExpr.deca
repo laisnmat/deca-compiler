@@ -1,0 +1,11 @@
+{
+    int x = 0; 
+    int y = 1; 
+    if( > ){
+        x = 2;
+    }
+}
+
+// Resultats :
+// Erreur de syntaxe
+// Ligne 4 : mismatched input '>'

@@ -1,0 +1,11 @@
+// Description : initialisation et affichage d'une valeurs entière
+// test du la division
+//
+// Resultats : 2
+// 
+
+
+{
+    int i = 4/2;
+    print(i);
+}

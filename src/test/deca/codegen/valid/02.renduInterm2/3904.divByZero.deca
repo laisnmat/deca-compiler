@@ -1,0 +1,11 @@
+// Description : initialisation d'une variable flotante 
+// test du la division par zéro
+//
+// Resultats : Error: Division by zero
+// 
+
+
+
+{
+    float x = 1.2 / 0.0;
+}

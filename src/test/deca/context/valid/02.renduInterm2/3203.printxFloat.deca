@@ -1,0 +1,13 @@
+// Description : affichage d'une valeurs float
+
+// test du printx
+//
+// Resultats : aucune erreur
+// 
+
+
+
+{
+    float x = 5.2;
+    printx(x);
+}

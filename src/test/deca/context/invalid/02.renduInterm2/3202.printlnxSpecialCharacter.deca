@@ -1,0 +1,7 @@
+{
+    printlnx(/);
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 32PRINTLNX_caracte_special.deca:2:

@@ -1,0 +1,10 @@
+// Description : test avec un nombre flotant
+// test de Printx
+// 
+// Resultats : 0x1.4cccccp+2
+// 
+
+{
+    float x = 5.2;
+    printx(x);
+}

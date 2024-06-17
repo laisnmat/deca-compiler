@@ -1,0 +1,8 @@
+{
+    x = 1 + 1;
+}
+
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 3803_wrongdecl.deca:2

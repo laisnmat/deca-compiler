@@ -32,11 +32,11 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         if (!(type1.isFloat() || type1.isInt()) || !(type2.isFloat() || type2.isInt())) {
             if (type1.sameType(type2)) {
                 throw new ContextualError(
-                        "Illegal operand \'" + this.getOperatorName() + "\' between " + type1.getName(),
+                        "Incompatible Types: \'" + this.getOperatorName() + "\' between " + type1.getName(),
                         getLocation());
             }
             throw new ContextualError(
-                    "Illegal operand \'" + this.getOperatorName() + "\' between " + type1.getName() + " and "
+                    "Incompatible Types:  \'" + this.getOperatorName() + "\' between " + type1.getName() + " and "
                             + type2.getName(),
                     getLocation());
         }

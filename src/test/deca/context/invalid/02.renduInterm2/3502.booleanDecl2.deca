@@ -1,0 +1,8 @@
+{
+    boolean x = "0";
+}
+
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: 3502_booleandecl2.deca:2:

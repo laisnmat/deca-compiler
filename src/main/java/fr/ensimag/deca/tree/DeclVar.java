@@ -44,7 +44,7 @@ public class DeclVar extends AbstractDeclVar {
         Type type = this.type.verifyType(compiler);
         if (type.isVoid()) {
             throw new ContextualError(
-                    "Illegal declaration: Variable "
+                    "Incompatible Types: Variable "
                             + this.varName
                             + " is of type void.",
                     getLocation());
@@ -57,7 +57,9 @@ public class DeclVar extends AbstractDeclVar {
         try {
             localEnv.declare(this.varName.getName(), varDef);
         } catch (DoubleDefException dde) {
-            throw new ContextualError("Variable " + this.varName.getName() + " is already defined in this environment.",
+            throw new ContextualError(
+                    "DoubleDefException: Variable " + this.varName.getName()
+                            + " is already defined in this environment.",
                     getLocation());
         }
 

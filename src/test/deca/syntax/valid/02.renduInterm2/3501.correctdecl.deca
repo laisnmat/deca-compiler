@@ -1,0 +1,16 @@
+{
+    boolean x = false;
+    boolean y = true;
+    if(y){
+        println("true");
+    }
+    if(!x){
+        println("false");
+    }
+}
+
+// Description :
+// test sur les booléens et l'opération de négation (!)
+//
+// Resultats :
+// étape A : OK

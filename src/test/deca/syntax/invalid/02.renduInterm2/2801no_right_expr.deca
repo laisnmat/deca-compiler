@@ -1,7 +1,0 @@
-{
-  int x = 2;
-
-  if (x != ) {
-    println("This isn't possible");
-  }
-}

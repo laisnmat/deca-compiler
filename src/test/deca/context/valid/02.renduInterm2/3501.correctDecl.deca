@@ -1,0 +1,18 @@
+// Description : test du type booléenne
+// test de 
+//
+// Resultats :aucune erreur
+// 
+
+
+
+{
+    boolean x = false;
+    boolean y = true;
+    if(y){
+        println("true");
+    }
+    if(!x){
+        println("false");
+    }
+}
