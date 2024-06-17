@@ -99,7 +99,8 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
     public void codeGenOperror(DecacCompiler compiler) {
         if (!compiler.getCompilerOptions().getNoCheck()) {
-            compiler.addInstruction(new BOV(compiler.labelManager.getStackOverflowError()));
+            compiler.errorManager.addArithmeticOverflowError();
+            compiler.addInstruction(new BOV(compiler.labelManager.getArithmeticOverflowError()));
         }
     }
 }

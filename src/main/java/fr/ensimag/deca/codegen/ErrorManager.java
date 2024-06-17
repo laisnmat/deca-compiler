@@ -12,6 +12,8 @@ public class ErrorManager {
 
     private boolean containsDivZeroError;
 
+    private boolean containsArithmeticOverflowError;
+
     public ErrorManager() {
         containsIOError = false;
         genericCount = 0;
@@ -37,8 +39,11 @@ public class ErrorManager {
         this.errors.add(new TSTOError());
     }
 
-    public void addOverflowError() {
-        this.errors.add(new ArithmeticOverflowError());
+    public void addArithmeticOverflowError() {
+        if (!this.containsArithmeticOverflowError) {
+            this.errors.add(new ArithmeticOverflowError());
+        }
+        containsArithmeticOverflowError = true;
     }
 
     public void addDivZeroError() {
