@@ -5,4 +5,4 @@
 
 // Resultats :
 // Erreur contextuelle
-// Ligne 3: 32PRINTX_boolean.deca:3:
+// Ligne 3: Incompatible Types: Arguments of print must be int, float or string

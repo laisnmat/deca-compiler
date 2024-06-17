@@ -10,4 +10,4 @@
 
 // Resultats :
 // Erreur de contextuelle 
-// Ligne 5 : This isn't possible 
+// Ligne 5 : Incompatible Types:  '!=' between int and boolean
