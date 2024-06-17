@@ -395,6 +395,7 @@ select_expr returns[AbstractExpr tree]
             assert($e1.tree != null);
             assert($i.tree != null);
             $tree = new Selection($e1.tree, $i.tree);
+            setLocation($tree, $e1.start);
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
@@ -417,6 +418,7 @@ primary_expr returns[AbstractExpr tree]
             assert($args.tree != null);
             assert($m.tree != null);
             $tree = new MethodCall(new ThisLiteral(), $m.tree, $args.tree);
+            setLocation($tree, $m.start);
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
