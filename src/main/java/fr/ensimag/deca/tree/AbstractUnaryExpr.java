@@ -23,7 +23,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         this.operand = operand;
     }
 
-    protected abstract String getOperatorName();
+    public abstract String getOperatorName();
 
     @Override
     public void decompile(IndentPrintStream s) {

@@ -1,6 +1,6 @@
 package fr.ensimag.deca.context;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractExpr;
-import fr.ensimag.deca.tree.ConvFloat;
 import fr.ensimag.deca.tree.Multiply;
 
 public class TestOpArithContext {
@@ -57,7 +56,9 @@ public class TestOpArithContext {
                 ContextualError.class, () -> {
                     t.verifyExpr(compiler, null, null);
                 });
-        Assertions.assertEquals("Incompatible types \'" + INT.getName() + "\' with \'" + BOOLEAN.getName() + "\'",
+        Assertions.assertEquals(
+                "Illegal operand \'" + t.getOperatorName() + "\' between " + INT.getName() + " and "
+                        + BOOLEAN.getName(),
                 thrown.getMessage());
         // check that the mocks have been called properly.
         verify(left).verifyExpr(compiler, null, null);
