@@ -12,8 +12,4 @@ fi
 cd "$(dirname "${decac}")/../../.."
 
 # needs to wait a bit between executions, as not waiting in scripts leads to bugs
-sleep 3s
-mvn clean
-sleep 3s
-mvn compile || exit 1
-sleep 3s
+mvn clean test-compile -Djacoco.skip=true
