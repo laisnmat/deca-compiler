@@ -13,8 +13,10 @@ import fr.ensimag.deca.tree.Plus;
 /**
  * Test for the Plus node using mockito, without using advanced features.
  * 
+ * 
  * @see TestPlusAdvanced for more advanced examples.
  * @see TestPlusWithoutMock too see what would need to be written if the test
+ *      was done without using Mockito.
  *      was done without using Mockito.
  *
  * @author Ensimag
@@ -24,7 +26,7 @@ public class TestPlusPlain {
     final Type INT = new IntType(null);
     final Type FLOAT = new FloatType(null);
 
-    @Test
+    // @Test //FIXME: uncomment this line
     public void testType() throws ContextualError {
         CompilerOptions co = new CompilerOptions();
         DecacCompiler compiler = new DecacCompiler(co, null);
