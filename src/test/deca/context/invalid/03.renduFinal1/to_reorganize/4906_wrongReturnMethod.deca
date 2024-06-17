@@ -1,9 +1,0 @@
-class Hello{
-    int method(int a) {
-        a = 2;
-        return true;
-    }
-}
-// Resultats :
-// Erreur de syntaxe
-// Ligne 4 : <message d'erreur de votre compilateur>

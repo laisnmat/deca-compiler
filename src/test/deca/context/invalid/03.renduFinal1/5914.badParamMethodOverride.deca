@@ -1,0 +1,15 @@
+class A {
+    A x(int x, int y){
+        return 1;
+    }
+}
+class B extends A{
+    B x(int x, float y){
+        return 3.2;
+    }
+}
+// Description :
+// This test checks if a method can have a same name but a different type of a parameter than the super Class method
+//
+// Resultats :
+// Erreur de compilation: 

@@ -1,0 +1,11 @@
+class A{
+
+}
+class A{
+
+}
+// Description :
+// Declaration de la classe A deux fois
+//
+// Resultats :
+// Erreur de double définition de la classe A

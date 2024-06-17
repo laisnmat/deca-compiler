@@ -1,0 +1,10 @@
+class A {
+    int x(){
+        
+    }
+}
+// Description :
+// This test checks that a method with return type have a return
+//
+// Resultats :
+// Erreur de compilation: 

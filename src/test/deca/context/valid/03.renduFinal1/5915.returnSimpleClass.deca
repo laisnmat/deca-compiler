@@ -1,0 +1,14 @@
+class A{
+    A m1(){
+        return this;
+    }
+    A m2(){
+        return new A();
+    }
+}
+
+
+// Description :
+// Return d'objet avec this et new A()
+// Resultats :
+// Ok

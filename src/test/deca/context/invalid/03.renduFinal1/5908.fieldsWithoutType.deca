@@ -1,0 +1,9 @@
+class A {
+    x;
+
+}
+// Description :
+// This test checks if a class can have a field without a type.
+//
+// Resultats :
+// Erreur de compilation: 
