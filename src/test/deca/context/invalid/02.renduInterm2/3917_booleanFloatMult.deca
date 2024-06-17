@@ -1,5 +1,5 @@
 {
-    int a = 1;
+    float a = 1.0;
     boolean b = true;
     
     int c = a * b;
@@ -7,4 +7,4 @@
 
 // Resultats :
 // Erreur contextuelle
-// Ligne 5 : 
+// Ligne 5 : Illegal operand '*' between float and boolean

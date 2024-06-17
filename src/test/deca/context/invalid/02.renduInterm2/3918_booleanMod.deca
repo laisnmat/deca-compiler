@@ -1,0 +1,10 @@
+{
+    boolean a = true;
+    boolean b = false;
+    
+    boolean c = a % b;
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 5 : Incompatible Types: Operands must be of type int for operator %

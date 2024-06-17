@@ -1,0 +1,10 @@
+{
+    float a = 1.0;
+    boolean b = true;
+    
+    int c = a % b;
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 5 : Incompatible Types: Operands must be of type int for operator %
