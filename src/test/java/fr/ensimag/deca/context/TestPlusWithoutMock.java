@@ -1,9 +1,6 @@
 package fr.ensimag.deca.context;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.PrintStream;
-
+import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tree.AbstractExpr;
@@ -63,7 +60,7 @@ public class TestPlusWithoutMock {
         }
     }
 
-    // @Test //FIXME: uncomment this line
+    @Test
     public void testType() throws ContextualError {
         CompilerOptions co = new CompilerOptions();
         DecacCompiler compiler = new DecacCompiler(co, null);

@@ -1,11 +1,6 @@
 package fr.ensimag.deca.context;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import org.mockito.Mockito;
-
+import fr.ensimag.deca.CompilerOptions;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.Plus;
@@ -26,7 +21,7 @@ public class TestPlusPlain {
     final Type INT = new IntType(null);
     final Type FLOAT = new FloatType(null);
 
-    // @Test //FIXME: uncomment this line
+    @Test
     public void testType() throws ContextualError {
         CompilerOptions co = new CompilerOptions();
         DecacCompiler compiler = new DecacCompiler(co, null);
