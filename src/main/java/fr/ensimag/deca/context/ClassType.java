@@ -1,10 +1,7 @@
 package fr.ensimag.deca.context;
 
-import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
-import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 
 /**
  * Type defined by a class.
