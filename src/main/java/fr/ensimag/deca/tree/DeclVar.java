@@ -44,7 +44,7 @@ public class DeclVar extends AbstractDeclVar {
         Type type = this.type.verifyType(compiler);
         if (type.isVoid()) {
             throw new ContextualError(
-                    "Incompatible Types: : Variable "
+                    "Incompatible Types: Variable "
                             + this.varName
                             + " is of type void.",
                     getLocation());
