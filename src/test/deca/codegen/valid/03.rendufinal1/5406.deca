@@ -1,0 +1,6 @@
+class A {
+  void m(){}
+  int n(int x){}
+  float o(float x){}
+  boolean p(boolean x){}
+}

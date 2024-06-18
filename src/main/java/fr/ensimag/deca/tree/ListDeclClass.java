@@ -3,7 +3,6 @@ package fr.ensimag.deca.tree;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
@@ -58,13 +57,13 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      * Method to generate code for all Class declarations.
      * 
      * @param compiler
-     *            Decac Compiler
+     *                     Decac Compiler
      * @param currentClass
-     *            Current Class in which the class is declared
+     *                     Current Class in which the class is declared
      */
-    public void codeGenDeclClassList(DecacCompiler compiler, ClassDefinition currentClass) {
+    public void codeGenDeclClassList(DecacCompiler compiler) {
         for (AbstractDeclClass declClass : this.getList()) {
-            declClass.codeGenDeclClass(compiler, currentClass);
+            declClass.codeGenDeclClass(compiler);
         }
     }
 

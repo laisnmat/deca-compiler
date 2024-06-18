@@ -1,0 +1,10 @@
+class A {
+  void p(){}
+}
+
+class B extends A {
+  void n(){}
+  void m(){}
+  void e(){}
+
+}
