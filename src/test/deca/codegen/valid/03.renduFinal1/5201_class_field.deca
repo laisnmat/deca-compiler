@@ -1,4 +1,7 @@
-Class A{
-    public int x;
-    private boolean x;
+class A {
+    int x;
+    protected boolean y;
+}
+
+{
 }

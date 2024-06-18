@@ -53,8 +53,9 @@ public class EnvironmentType {
         NULL = new NullType(nullSymb);
 
         Symbol objectSymb = compiler.createSymbol("Object");
-        OBJECT = new ClassType(objectSymb, Location.BUILTIN, null);
+        OBJECT = new ObjectType(objectSymb);
         envTypes.put(objectSymb, OBJECT.getDefinition());
+
         // not added to envTypes, it's not visible for the user.
     }
 
@@ -70,12 +71,12 @@ public class EnvironmentType {
      * - or, hides the previous declaration otherwise.
      *
      * @param name
-     *             Name of the symbol to define
+     *            Name of the symbol to define
      * @param def
-     *             Definition of the symbol
+     *            Definition of the symbol
      * @throws DoubleDefException
-     *                            if the symbol is already defined at the "current"
-     *                            dictionary
+     *             if the symbol is already defined at the "current"
+     *             dictionary
      *
      */
     public void declare(Symbol name, TypeDefinition def) throws DoubleDefException {

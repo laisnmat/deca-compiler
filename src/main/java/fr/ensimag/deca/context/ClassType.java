@@ -4,7 +4,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.ima.pseudocode.DAddr;
-import org.apache.log4j.Logger;
+import org.apache.commons.lang.Validate;
 
 /**
  * Type defined by a class.
@@ -14,23 +14,28 @@ import org.apache.log4j.Logger;
  */
 public class ClassType extends Type {
 
-    private static final Logger LOG = Logger.getLogger(ClassType.class);
-    protected DAddr addr;
-
     protected ClassDefinition definition;
+    private DAddr addr;
+
+    public DAddr getAddr() {
+        return addr;
+    }
+
+    public void setAddr(DAddr addr) {
+        this.addr = addr;
+    }
 
     /**
      * Standard creation of a type class.
      */
-    public ClassType(Symbol className, Location location,
-            ClassDefinition superClass) {
+    public ClassType(Symbol className, Location location, ClassDefinition superClass) {
         super(className);
         this.definition = new ClassDefinition(this, location, superClass);
     }
 
     /**
-     * Creates a type representing a class className. (To be used by subclasses
-     * only)
+     * Creates a type representing a class className.
+     * (To be used by subclasses only)
      */
     protected ClassType(Symbol className) {
         super(className);
@@ -53,10 +58,6 @@ public class ClassType extends Type {
     @Override
     public boolean isClassOrNull() {
         return true;
-    }
-
-    public DAddr getAddr() {
-        return addr;
     }
 
     @Override

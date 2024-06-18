@@ -159,17 +159,16 @@ public class DeclClass extends AbstractDeclClass {
         baseOffset++;
 
         // code adresse
-        ClassDefinition superClass = this.classType.getDefinition().getSuperClass();
+
         if (superClass == null) {
             compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         } else {
-            compiler.addInstruction(new LEA(superClass.getType().getAddr(), Register.R0));
+            compiler.addInstruction(new LEA(((ClassType) superClass.getType()).getAddr(), Register.R0));
         }
 
         RegisterOffset offset = new RegisterOffset(baseOffset, GPRegister.GB);
         compiler.addInstruction(new STORE(Register.R0, offset));
-        baseOffset++;
-        // code equals
+        ((ClassType) this.name.getType()).setAddr(offset);
 
         // code attributes ?
 
