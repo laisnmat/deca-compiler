@@ -3,11 +3,13 @@ package fr.ensimag.deca.tree;
 import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 public class New extends AbstractExpr {
 
@@ -52,4 +54,21 @@ public class New extends AbstractExpr {
 
     }
 
+    @Override
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        int classMemorySize = ((ClassType) type.getType()).getDefinition().getNumberOfFields() + 1;
+        compiler.addInstruction(
+                new NEW(classMemorySize, register));
+        compiler.addInstruction(new BOV(compiler.labelManager.getStackOverflowError()));
+        compiler.addInstruction(new LEA(((ClassType) type.getType()).getAddr(), Register.R0));
+
+        RegisterOffset offsetR = new RegisterOffset(0, register);
+        compiler.addInstruction(new STORE(Register.R0, offsetR));
+
+        compiler.addInstruction(new PUSH(register));
+        // compiler.addInstruction(new BSR(((ClassType)
+        // type.getType()).getDefinition().getInitLabel()));
+        compiler.addInstruction(new POP(register));
+
+    }
 }

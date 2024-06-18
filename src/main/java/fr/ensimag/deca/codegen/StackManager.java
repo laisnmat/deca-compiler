@@ -59,6 +59,10 @@ public class StackManager {
         this.varGlobalCount++;
     }
 
+    public void incrementVarGlobalCount(int v) {
+        this.varGlobalCount += v;
+    }
+
     /**
      * Adds the specified value to the local var count.
      *

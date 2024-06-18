@@ -1,5 +1,7 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 
 import fr.ensimag.deca.tree.Location;
@@ -65,7 +67,9 @@ public class ClassDefinition extends TypeDefinition {
         // Cast succeeds by construction because the type has been correctly set
         // in the constructor.
         return (ClassType) super.getType();
-    };
+    }
+
+    ;
 
     public ClassDefinition getSuperClass() {
         return superClass;
@@ -81,4 +85,7 @@ public class ClassDefinition extends TypeDefinition {
         return this;
     }
 
+    public Label getInitLabel() {
+        return new Label("ajiiuahdfuazhdioaizdhzohduahdhazuidzh"); // todo get init label
+    }
 }
