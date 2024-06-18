@@ -2,10 +2,6 @@ package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tree.Location;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 public class ObjectType extends ClassType {
 
@@ -15,4 +11,13 @@ public class ObjectType extends ClassType {
 
     }
 
+    @Override
+    public boolean isClassOrNull() {
+        return true;
+    }
+
+    @Override
+    public boolean isObjectType() {
+        return true;
+    }
 }

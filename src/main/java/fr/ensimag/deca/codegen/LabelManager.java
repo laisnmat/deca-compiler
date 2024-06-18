@@ -11,6 +11,8 @@ public class LabelManager {
     private int boolAssignCount = 0;
     private int boolExpCount = 0;
 
+    private int instanceOfCount = 0;
+
     /**
      * True if there is at least one call to an IO function, else False.
      */
@@ -93,6 +95,11 @@ public class LabelManager {
     public LabelBoolExp getBoolExp() {
         boolExpCount++;
         return new LabelBoolExp(boolExpCount, this);
+    }
+
+    public InstanceOfLabel getInstanceOfLabel() {
+        instanceOfCount++;
+        return new InstanceOfLabel(instanceOfCount, this);
     }
 
     /**
@@ -194,4 +201,5 @@ public class LabelManager {
     public Label getDivByZeroError() {
         return new Label("div_zero_error");
     }
+
 }

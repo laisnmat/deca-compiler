@@ -1,0 +1,24 @@
+class A{}
+
+class B extends A{}
+
+class C{}
+
+{
+    B oB = new B();
+    C oC = new C();
+    Object oD;
+
+    if(oB instanceof A){
+        println("true, oB instance of A");
+    }
+    if(oB instanceof Object){
+            println("true, oB instance of Object");
+    }
+    if(!(oC instanceof A)){
+            println("false, oC instance of A");
+    }
+    if((oD instanceof Object)){
+            println("true, oD instance of Object");
+    }
+}
