@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 public class Return extends AbstractInst {
 
@@ -34,8 +35,10 @@ public class Return extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName) {
-        throw new UnsupportedOperationException("not yet implemented");
+    protected void codeGenInst(DecacCompiler compiler) {
+        // throw new UnsupportedOperationException("not yet implemented");
+        this.expression.codeGenExp(compiler, GPRegister.getR(2));
+
     }
 
     @Override
