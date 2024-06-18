@@ -194,4 +194,5 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition currentClass = this.name.getClassDefinition();
         methods.codeGenListDeclMethod(compiler, currentClass);
     }
+
 }
