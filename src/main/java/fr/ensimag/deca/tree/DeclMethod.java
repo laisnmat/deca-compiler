@@ -101,7 +101,8 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass, int classAddress) {
-        // pass
+        // throw new UnsupportedOperationException("Not supported yet.");
+        body.codeGenMethodBody(compiler, currentClass);
     }
 
     @Override

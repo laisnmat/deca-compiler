@@ -187,6 +187,7 @@ public class DeclClass extends AbstractDeclClass {
             }
         });
         compiler.stackManager.setGlobalCount(baseOffset + currentClass.getNumberOfMethods() - 1);
+        methods.codeGenListDeclMethod(compiler, currentClass, baseOffset);
     }
 
 }

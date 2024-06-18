@@ -14,7 +14,7 @@ import fr.ensimag.deca.context.Type;
  */
 public abstract class AbstractMethodBody extends Tree {
 
-    protected abstract void codeGenMethodBody(DecacCompiler compiler);
+    protected abstract void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass);
 
     /**
      * Implements non-terminal "MethodBody" of [SyntaxeContextuelle] in pass 3

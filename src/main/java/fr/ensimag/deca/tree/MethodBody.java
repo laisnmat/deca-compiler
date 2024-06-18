@@ -35,8 +35,9 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    protected void codeGenMethodBody(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass) {
+        // throw new UnsupportedOperationException("Not supported yet.");
+        declVariables.codeGenDeclVarList(compiler, currentClass);
     }
 
     @Override
