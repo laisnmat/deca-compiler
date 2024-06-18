@@ -126,9 +126,10 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     protected boolean assignCompatible(DecacCompiler compiler, Type t1, Type t2) {
-        if ((t2.isClass() && t1.isClass()
-                && ((ClassType) t2).isSubClassOf((ClassType) t1))
-                || t2.sameType(t1) || (t1.isFloat() && t2.isInt())) {
+        if ((t2.isClassOrNull() && t1.isClass()
+                && ((t1.isNull() && t2.isNull()) || (((t1.isClass() && t2.isNull()))
+                        || ((ClassType) t2).isSubClassOf((ClassType) t1)))
+                || t2.sameType(t1) || (t1.isFloat() && t2.isInt()))) {
             return true;
         }
         return false;

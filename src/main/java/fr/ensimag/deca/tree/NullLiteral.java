@@ -11,6 +11,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * Null literal
@@ -28,12 +30,14 @@ public class NullLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        LOG.debug("verify NullLiteral: setting type");
+        this.setType(compiler.environmentType.NULL);
+        return this.getType();
     }
 
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
-        throw new UnsupportedOperationException("not yet implemented");
+        compiler.addInstruction(new LOAD(new NullOperand(), register));
     }
 
     @Override
