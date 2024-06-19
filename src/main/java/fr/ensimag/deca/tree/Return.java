@@ -9,6 +9,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 public class Return extends AbstractInst {
 
@@ -38,7 +40,12 @@ public class Return extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         // throw new UnsupportedOperationException("not yet implemented");
         this.expression.codeGenExp(compiler, GPRegister.getR(2));
-
+        if (this.expression.getDVal() == null) {
+            compiler.addInstruction(new LOAD(GPRegister.getR(2), GPRegister.R0));
+        } else {
+            compiler.addInstruction(new LOAD(this.expression.getDVal(), GPRegister.R0));
+        }
+        compiler.addInstruction(new BRA(compiler.getReturnLabel()));
     }
 
     @Override
