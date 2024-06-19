@@ -28,7 +28,7 @@ public class ThisLiteral extends AbstractExpr {
         // (3.43)
         // verify that the current class is not null (class ̸= 0)
         if (currentClass == null) {
-            throw new ContextualError("Cannot use 'this' outside of a class", getLocation());
+            throw new ContextualError("Illegal operand: Cannot use 'this' outside of a class", getLocation());
         }
         // affectation type := type_class(class)
         setType(currentClass.getType());

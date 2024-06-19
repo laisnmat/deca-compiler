@@ -62,11 +62,13 @@ public class InstanceOf extends AbstractExpr {
     protected void typeInstanceOfOp(Type t1, Type t2)
             throws ContextualError {
         if (!t1.isClassOrNull()) {
-            throw new ContextualError("Cannot apply instanceOf operation because " + t1 + " is not a class or null",
+            throw new ContextualError(
+                    "Incompatible Types: Cannot apply instanceOf operation because " + t1 + " is not a class or null",
                     getLocation());
         }
         if (!t2.isClassOrNull()) {
-            throw new ContextualError("Cannot apply instanceOf operation because " + t2 + " is not a class or null",
+            throw new ContextualError(
+                    "Incompatible Types: Cannot apply instanceOf operation because " + t2 + " is not a class or null",
                     getLocation());
         }
     }

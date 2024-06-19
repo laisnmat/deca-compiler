@@ -56,13 +56,13 @@ public class MethodCall extends AbstractExpr {
             EnvironmentExp localEnv, ClassDefinition currentClass,
             Signature signature) throws ContextualError {
         if (listExpr.getList().size() != signature.size()) {
-            throw new ContextualError("Wrong number of arguments", getLocation());
+            throw new ContextualError("MethodCall: Wrong number of arguments", getLocation());
         }
         for (int i = 0; i < listExpr.getList().size(); i++) {
             try {
                 listExpr.getList().get(i).verifyRValue(compiler, localEnv, currentClass, signature.paramNumber(i));
             } catch (ContextualError e) {
-                throw new ContextualError("Cannot call method " + method.getName() + " with parameters "
+                throw new ContextualError("MethodCall: Cannot call method " + method.getName() + " with parameters "
                         + listExpr.getList() + " instead of " + signature.getArgs(), getLocation());
             }
         }
@@ -74,7 +74,8 @@ public class MethodCall extends AbstractExpr {
             throws ContextualError {
         Type t = classCall.verifyExpr(compiler, localEnv, currentClass);
         if (!t.isClass()) {
-            throw new ContextualError("The expression of the method is not a class", getLocation());
+            throw new ContextualError("Incompatible Types: Try to call a function of a non class variable",
+                    getLocation());
         }
         ClassType classType = (ClassType) t;
         Signature sig = method.verifyMethodIdent(compiler, classType.getDefinition().getMembers(), currentClass);

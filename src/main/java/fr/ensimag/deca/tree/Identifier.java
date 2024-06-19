@@ -143,7 +143,8 @@ public class Identifier extends AbstractIdentifier {
         // identifier ↓env_exp ↑(var, type);
         Definition def = getDefinition();
         if (!def.isVar() && !def.isParam() && !def.isField()) {
-            throw new ContextualError("Identifier " + this.getName() + " is not a variable, a parameter or a field.",
+            throw new ContextualError(
+                    "Incompatible Types: Identifier " + this.getName() + " is not a variable, a parameter or a field.",
                     getLocation());
         }
         return this.getType();
@@ -173,7 +174,8 @@ public class Identifier extends AbstractIdentifier {
         this.verifyLValueIdent(compiler, localEnv, currentClass);
         Definition def = getDefinition();
         if (!def.isField()) {
-            throw new ContextualError("Identifier " + this.getName() + " is not a field.", getLocation());
+            throw new ContextualError("Incompatible Types: Identifier " + this.getName() + " is not a field.",
+                    getLocation());
         }
         return this.getType();
     }
@@ -185,7 +187,8 @@ public class Identifier extends AbstractIdentifier {
         try {
             return this.getMethodDefinition().getSignature();
         } catch (DecacInternalError e) {
-            throw new ContextualError("Identifier " + this.getName() + " is not a method.", getLocation());
+            throw new ContextualError("Incompatible Types: Identifier " + this.getName() + " is not a method.",
+                    getLocation());
         }
     }
 
@@ -199,7 +202,8 @@ public class Identifier extends AbstractIdentifier {
         // if the current Identifier (representing a Type) has no definition associated,
         // that means it has never been defined.
         if (typeDefinition == null) {
-            throw new ContextualError("Type " + this.getName() + " is never defined.", getLocation());
+            throw new ContextualError("Incompatible Types: Type " + this.getName() + " is never defined.",
+                    getLocation());
         }
 
         // setting Definition and Type of this Identifier

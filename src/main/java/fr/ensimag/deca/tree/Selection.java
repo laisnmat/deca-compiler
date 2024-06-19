@@ -54,7 +54,8 @@ public class Selection extends AbstractLValue {
         select.verifyExpr(compiler, localEnv, currentClass);
         // (class(__, env_exp2), __) ≜ env_types(class2)
         if (!select.getType().isClass()) {
-            throw new ContextualError("Selection is not possible on a non-class type", getLocation());
+            throw new ContextualError("Incompatible Types: Selection is not possible on a non-class type",
+                    getLocation());
         }
         ClassType class1;
         if (currentClass == null) {
@@ -68,7 +69,7 @@ public class Selection extends AbstractLValue {
         // subtype(env_types,type_class(class),type_class(class_field))
         if (field.getFieldDefinition().getVisibility() == Visibility.PROTECTED && (!class2.isSubClassOf(class1)
                 || !class1.isSubClassOf(field.getFieldDefinition().getContainingClass().getType()))) {
-            throw new ContextualError("Protected field " + field.getName() + " is not accessible from class "
+            throw new ContextualError("Protected field " + field.getName() + " is not accessible from "
                     + (class1 == null ? "main" : class1.getName()), getLocation());
         }
         setType(classField);
