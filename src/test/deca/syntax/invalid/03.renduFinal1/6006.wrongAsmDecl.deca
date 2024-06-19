@@ -5,4 +5,4 @@ class assembleur{
 
 // Resultats :
 // Erreur de syntaxe
-// Ligne 4: mismatched input 'a' expecting {STRING, MULTI_LINE_STRING}
+// Ligne 3: mismatched input 'a' expecting {STRING, MULTI_LINE_STRING}
