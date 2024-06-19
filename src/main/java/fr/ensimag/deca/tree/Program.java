@@ -14,6 +14,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Line;
 import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.HALT;
 import fr.ensimag.ima.pseudocode.instructions.TSTO;
 
@@ -67,6 +68,8 @@ public class Program extends AbstractProgram {
         compiler.addComment("Class declarations program");
         this.addObjectDeclClass(compiler);
         classes.codeGenDeclClassList(compiler);
+        compiler.addInstruction(new BRA(compiler.startMainLabel));
+        classes.codeGenDeclMethodsList(compiler);
         compiler.addComment("Main program");
 
         main.codeGenMain(compiler);

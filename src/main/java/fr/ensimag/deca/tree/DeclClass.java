@@ -18,6 +18,7 @@ import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -88,7 +89,6 @@ public class DeclClass extends AbstractDeclClass {
         LOG.debug("PASSE 2 : verify class members `" + name.getName() + "`: start");
         ClassDefinition currentClass = (ClassDefinition) compiler.environmentType.defOfType(name.getName());
         // (2.3)
-        // TODO: verify if this is necessary for step C
         currentClass.setNumberOfFields(currentClass.getSuperClass().getNumberOfFields());
         currentClass.setNumberOfMethods(currentClass.getSuperClass().getNumberOfMethods());
         // list_decl_field ↓env_types ↓super ↓name ↑env_expf
@@ -187,7 +187,11 @@ public class DeclClass extends AbstractDeclClass {
             }
         });
         compiler.stackManager.setGlobalCount(baseOffset + currentClass.getNumberOfMethods() - 1);
-        methods.codeGenListDeclMethod(compiler, currentClass, baseOffset);
     }
 
+    @Override
+    protected void codegenMethods(DecacCompiler compiler) {
+        ClassDefinition currentClass = this.name.getClassDefinition();
+        methods.codeGenListDeclMethod(compiler, currentClass);
+    }
 }

@@ -27,7 +27,7 @@ public class MethodAsmBody extends AbstractMethodBody {
     }
 
     @Override
-    protected void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass) {
+    protected void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass, AbstractIdentifier methodName) {
         // List<String> listAsm = new ArrayList<>();
         // listAsm = Arrays.asList(asm.getValue().split("[\n|\t]"));
         // for (String line : listAsm) {

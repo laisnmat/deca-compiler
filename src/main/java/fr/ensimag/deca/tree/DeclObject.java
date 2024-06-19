@@ -127,4 +127,9 @@ public class DeclObject extends AbstractDeclClass {
     // public void initEquals(){
     // this.
     // }
+
+    @Override
+    protected void codegenMethods(DecacCompiler compiler) {
+        System.out.println("todo");// todo
+    }
 }

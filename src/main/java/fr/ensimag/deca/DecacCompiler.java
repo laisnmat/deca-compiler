@@ -50,6 +50,8 @@ public class DecacCompiler {
     public static int MAXREGISTER;// This corresponds to the highest register (RMAX) we can reach while generating
                                   // code
 
+    public Label startMainLabel = new Label("start.main");
+
     /**
      * Portable newline character.
      */
@@ -201,11 +203,11 @@ public class DecacCompiler {
      * tree.
      *
      * @param sourceFile
-     *            name of the source (deca) file
+     *                   name of the source (deca) file
      * @param err
-     *            stream to use to display compilation errors
+     *                   stream to use to display compilation errors
      * @param out
-     *            stream to use for standard output (output of decac -p)
+     *                   stream to use for standard output (output of decac -p)
      * @return true on error
      */
     private boolean doDecompile(String sourceFile, PrintStream err, PrintStream out)
@@ -264,13 +266,13 @@ public class DecacCompiler {
      * verification and code generation).
      *
      * @param sourceName
-     *            name of the source (deca) file
+     *                   name of the source (deca) file
      * @param destName
-     *            name of the destination (assembly) file
+     *                   name of the destination (assembly) file
      * @param out
-     *            stream to use for standard output (output of decac -p)
+     *                   stream to use for standard output (output of decac -p)
      * @param err
-     *            stream to use to display compilation errors
+     *                   stream to use to display compilation errors
      * @return true on error
      */
     private boolean doCompile(String sourceName, String destName,
@@ -312,18 +314,18 @@ public class DecacCompiler {
      * syntax tree.
      *
      * @param sourceName
-     *            Name of the file to parse
+     *                   Name of the file to parse
      * @param err
-     *            Stream to send error messages to
+     *                   Stream to send error messages to
      * @return the abstract syntax tree
      * @throws DecacFatalError
-     *             When an error prevented opening the source file
+     *                            When an error prevented opening the source file
      * @throws DecacInternalError
-     *             When an inconsistency was detected in the
-     *             compiler.
+     *                            When an inconsistency was detected in the
+     *                            compiler.
      * @throws LocationException
-     *             When a compilation error (incorrect program)
-     *             occurs.
+     *                            When a compilation error (incorrect program)
+     *                            occurs.
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
             throws DecacFatalError, DecacInternalError {

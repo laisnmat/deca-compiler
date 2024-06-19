@@ -6,5 +6,4 @@ class B extends A {
   void n(){}
   void m(){}
   void e(){}
-
 }

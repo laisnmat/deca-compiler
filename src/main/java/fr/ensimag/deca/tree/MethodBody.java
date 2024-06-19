@@ -9,9 +9,13 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 
 public class MethodBody extends AbstractMethodBody {
     private ListDeclVar declVariables;
@@ -45,17 +49,28 @@ public class MethodBody extends AbstractMethodBody {
         compiler.addComment("Code de la méthode " + methodName.getName());
         compiler.addLabel(methodName.getMethodDefinition().getLabel());
 
+        // check if method is empty
+        if (insts.isEmpty()) {
+            compiler.addInstruction(new RTS());
+            return;
+        }
+
         // test stack overflow
-        compiler.addInstruction(new TSTO, "Test de débordement de la pile");
+        TSTO methodTSTO = new TSTO(0);
+        compiler.addInstruction(methodTSTO, "Test de débordement de la pile");
 
         // save registers
         compiler.addComment("Sauvegarde des registres");
         int numParams = methodName.getMethodDefinition().getSignature().size();
         for (int i = 0; i < numParams; i++) {
             compiler.addInstruction(new PUSH(Register.getR(i + 2)));
+            compiler.stackManager.incrementPushCount();
         }
 
         declVariables.codeGenDeclVarList(compiler, currentClass, methodName);
+
+        ImmediateInteger tstoVal = new ImmediateInteger(compiler.stackManager.getTSTOValue());
+        methodTSTO.setOperand(tstoVal);
         insts.codeGenListInst(compiler, methodName);
 
         String endMethod = methodName.getMethodDefinition().getLabel().toString().replace("code", "end");
