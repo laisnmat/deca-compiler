@@ -217,10 +217,7 @@ public class DecacCompiler {
             LOG.info("Parsing failed");
             return true;
         }
-        assert (prog.checkAllLocations());
 
-        prog.verifyProgram(this);
-        assert (prog.checkAllDecorations());
         prog.decompile(out);
         return false;
     }
@@ -366,6 +363,16 @@ public class DecacCompiler {
 
         if (prog == null) {
             LOG.info("Parsing failed");
+            return true;
+        }
+
+        try {
+            assert (prog.checkAllLocations());
+            prog.verifyProgram(this);
+            assert (prog.checkAllDecorations());
+
+        } catch (ContextualError e) {
+            e.display(System.out);
             return true;
         }
 
