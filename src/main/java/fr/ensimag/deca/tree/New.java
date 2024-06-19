@@ -46,7 +46,7 @@ public class New extends AbstractExpr {
         type.verifyType(compiler);
         if (!type.getType().isClass()) {
             throw new ContextualError(
-                    "New is not possible on a non-class type",
+                    "Incompatible Types: New is not possible on a non-class type",
                     getLocation());
         }
         setType(type.getType());

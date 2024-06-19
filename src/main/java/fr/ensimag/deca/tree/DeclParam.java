@@ -34,7 +34,8 @@ public class DeclParam extends AbstractDeclParam {
         Type t = type.verifyType(compiler);
         // condition type ̸= void
         if (t.isVoid()) {
-            throw new ContextualError("Param `" + paramName.getName() + "` is a void type", getLocation());
+            throw new ContextualError("Incompatible Types: Param `" + paramName.getName() + "` is a void type",
+                    getLocation());
         }
         return t;
     }
@@ -50,7 +51,8 @@ public class DeclParam extends AbstractDeclParam {
         try {
             localEnv.declare(paramName.getName(), paramDef);
         } catch (EnvironmentExp.DoubleDefException e) {
-            throw new ContextualError("Param `" + paramName.getName() + "` is already declared", getLocation());
+            throw new ContextualError(" DoubleDefException: Param `" + paramName.getName() + "` is already declared",
+                    getLocation());
         }
         paramName.setType(paramDef.getType());
         paramName.setDefinition(paramDef);

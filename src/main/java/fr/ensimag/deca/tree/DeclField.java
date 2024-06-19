@@ -11,6 +11,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.FieldDefinition;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class DeclField extends AbstractDeclField {
@@ -43,7 +44,7 @@ public class DeclField extends AbstractDeclField {
         // type verification type ≠ void
         this.type.verifyType(compiler);
         if (this.type.getType().isVoid()) {
-            throw new ContextualError("Illegal declaration: Field " + this.varName.getName() + " is of type void.",
+            throw new ContextualError("Incompatible Types: Field " + this.varName.getName() + " is of type void.",
                     getLocation());
         }
         // {name → (field(visib, class), type)}
@@ -56,8 +57,8 @@ public class DeclField extends AbstractDeclField {
             EnvironmentExp envExpSuper = currentClass.getSuperClass().getMembers();
             ExpDefinition previous = envExpSuper.get(this.varName.getName());
             if (previous != null && !(previous instanceof FieldDefinition)) {
-                throw new ContextualError(
-                        "Cannot define " + this.varName.getName()
+                throw new DoubleDefException(
+                        "DoubleDefException: Cannot define " + this.varName.getName()
                                 + " as a field because it is already defined as a method at " + previous.getLocation(),
                         getLocation());
             }

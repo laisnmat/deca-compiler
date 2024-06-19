@@ -46,8 +46,8 @@ public class Return extends AbstractInst {
         // return e; is authorized only if the method is not void
         if (returnType.isVoid()) {
             if (currentClass == null)
-                throw new ContextualError("Illegal return statement in main", getLocation());
-            throw new ContextualError("Illegal return statement in void method", getLocation());
+                throw new ContextualError("ReturnError: Illegal return statement in main", getLocation());
+            throw new ContextualError("ReturnError: Illegal return statement in void method", getLocation());
         }
 
         // (3.24)
@@ -56,7 +56,7 @@ public class Return extends AbstractInst {
             expression.verifyRValue(compiler, localEnv, currentClass, returnType);
         } catch (ContextualError e) {
             if (e.getMessage().startsWith("Incompatible Types: RValue must have the same type or subtype as LValue:")) {
-                throw new ContextualError("Return statement with wrong type: "
+                throw new ContextualError("Incompatible Types: Return statement with wrong type: "
                         + expression.getType() + " instead of " + returnType, getLocation());
             }
             throw e;

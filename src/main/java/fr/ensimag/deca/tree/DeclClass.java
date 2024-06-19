@@ -59,7 +59,7 @@ public class DeclClass extends AbstractDeclClass {
         TypeDefinition superClassDef = compiler.environmentType.defOfType(superClass.getName());
         // verify if the super class is declared in the environment
         if (superClassDef == null)
-            throw new ContextualError("Super class `" + superClass.getName() + "` not declared",
+            throw new ContextualError("NullDefinition: Super class `" + superClass.getName() + "` not declared",
                     superClass.getLocation());
         ClassDefinition superClassDefClass = superClassDef.asClassDefinition(
                 "Super class `" + superClass.getName() + "` is not a class", superClass.getLocation());
@@ -73,7 +73,8 @@ public class DeclClass extends AbstractDeclClass {
         } catch (DoubleDefException e) {
             ClassDefinition previous = compiler.environmentType.defOfType(name.getName()).asClassDefinition(
                     "Class `" + name.getName() + "` is not a class", name.getLocation());
-            throw new ContextualError("Class `" + name.getName() + "` already declared at " + previous.getLocation(),
+            throw new ContextualError(
+                    "DoubleDefException: Class `" + name.getName() + "` already declared at " + previous.getLocation(),
                     name.getLocation());
         }
         superClass.verifyType(compiler);

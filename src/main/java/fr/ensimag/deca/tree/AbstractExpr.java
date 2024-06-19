@@ -137,7 +137,7 @@ public abstract class AbstractExpr extends AbstractInst {
     protected boolean castCompatible(DecacCompiler compiler, Type t1, Type t2)
             throws ContextualError {
         if (t1.isVoid()) {
-            throw new ContextualError("Cannot cast a void type", getLocation());
+            throw new ContextualError("Incompatible Types:  Cannot cast a void type", getLocation());
         }
         if (assignCompatible(compiler, t1, t2) || assignCompatible(compiler, t2, t1)) {
             return true;

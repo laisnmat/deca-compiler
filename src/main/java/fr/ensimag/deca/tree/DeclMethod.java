@@ -53,7 +53,8 @@ public class DeclMethod extends AbstractDeclMethod {
             // et sig = sig2
             if (!sig.sameSignature(extendMethodDefinitionSuper.getSignature())) {
                 throw new ContextualError(
-                        "Method `" + methodName.getName() + "` as not the same signature as his parent method",
+                        "DoubleDefException: Method `" + methodName.getName()
+                                + "` as not the same signature as his parent method",
                         methodName.getLocation());
             }
             // et subtype(env_types, type, type2)
@@ -61,7 +62,8 @@ public class DeclMethod extends AbstractDeclMethod {
                     && ((ClassType) type.getType()).isSubClassOf((ClassType) extendMethodDefinitionSuper.getType()))
                     && !(type.getType().sameType(extendMethodDefinitionSuper.getType()))) {
                 throw new ContextualError(
-                        "Method `" + methodName.getName() + "` as not the same return type as his parent method",
+                        "Incompatible Types: Method `" + methodName.getName()
+                                + "` as not the same return type as his parent method",
                         methodName.getLocation());
             }
         }
@@ -74,7 +76,8 @@ public class DeclMethod extends AbstractDeclMethod {
         } catch (DoubleDefException e) {
             ExpDefinition previous = envExp.get(methodName.getName());
             throw new ContextualError(
-                    "Method `" + methodName.getName() + "` already declared at " + previous.getLocation(),
+                    "DoubleDefException: Method `" + methodName.getName() + "` already declared at "
+                            + previous.getLocation(),
                     methodName.getLocation());
         }
         methodName.setType(methodDefinition.getType());
