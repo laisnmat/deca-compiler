@@ -1,17 +1,26 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.context.ClassDefinition;
 import java.io.PrintStream;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ClassType;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.TypeDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
+
 import fr.ensimag.deca.tools.IndentPrintStream;
+
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
+
+import java.io.PrintStream;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -33,6 +42,8 @@ public class DeclClass extends AbstractDeclClass {
         this.fields = fields;
         this.methods = methods;
     }
+
+    private ClassType classType;
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -127,4 +138,46 @@ public class DeclClass extends AbstractDeclClass {
         methods.iter(f);
     }
 
+    /**
+     * Method to generate code for a new Class declaration.
+     * 
+     * @param compiler
+     *            DecacCompiler associated
+     * @param currentClass
+     *            Current Class in which the class is declared
+     */
+    protected void codeGenDeclClass(DecacCompiler compiler, ClassDefinition currentClass) {
+        Register reg;
+        int baseOffset;
+        if (currentClass == null) {
+            reg = Register.GB;
+            baseOffset = compiler.stackManager.getVarGlobalCount();
+        } else {
+            reg = Register.LB;
+            baseOffset = compiler.stackManager.getVarLocalCount();
+        }
+        baseOffset++;
+
+        // code adresse
+
+        if (superClass == null) {
+            compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        } else {
+            compiler.addInstruction(new LEA(((ClassType) superClass.getType()).getAddr(), Register.R0));
+        }
+
+        RegisterOffset offset = new RegisterOffset(baseOffset, GPRegister.GB);
+        compiler.addInstruction(new STORE(Register.R0, offset));
+        ((ClassType) this.name.getType()).setAddr(offset);
+
+        // code attributes ?
+
+        // code methods
+
+        if (currentClass == null) {
+            compiler.stackManager.setGlobalCount(baseOffset);
+        } else {
+            compiler.stackManager.setLocalCount(baseOffset);
+        }
+    }
 }

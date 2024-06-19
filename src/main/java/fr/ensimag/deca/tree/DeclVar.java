@@ -13,7 +13,7 @@ import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 /**
@@ -73,10 +73,28 @@ public class DeclVar extends AbstractDeclVar {
         this.initialization.verifyInitialization(compiler, type, localEnv, currentClass);
     }
 
+    /**
+     * Method to generate code for a new var declaration.
+     * 
+     * @param compiler
+     *            Decac Compiler
+     * @param currentClass
+     *            Current Class in which the the var is declared
+     */
     @Override
-    protected int codeGenDeclVar(DecacCompiler compiler, int localBaseOffset) {
-        compiler.stackManager.incrementVarCount();
-        RegisterOffset offset = new RegisterOffset(localBaseOffset, GPRegister.LB);
+    protected void codeGenDeclVar(DecacCompiler compiler, ClassDefinition currentClass) {
+        Register reg;
+        int baseOffset;
+        if (currentClass == null) {
+            reg = Register.GB;
+            baseOffset = compiler.stackManager.getVarGlobalCount() + 1;
+            compiler.stackManager.incrementVarGlobalCount();
+        } else {
+            reg = Register.LB;
+            baseOffset = compiler.stackManager.getVarLocalCount() + 1;
+            compiler.stackManager.incrementVarLocalCount();
+        }
+        RegisterOffset offset = new RegisterOffset(baseOffset, reg);
 
         // put this variable in the next free space in memory
         this.varName.getExpDefinition().setOperand(offset);
@@ -87,10 +105,6 @@ public class DeclVar extends AbstractDeclVar {
             Initialization i = (Initialization) this.initialization;
             new Assign(this.varName, i.getExpression()).codeGenInst(compiler);
         }
-
-        // increment the offset (could be incremented of more than one depending on the
-        // size of the type)
-        return localBaseOffset + 1;
     }
 
     @Override

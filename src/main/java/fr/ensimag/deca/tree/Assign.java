@@ -10,6 +10,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -59,6 +60,9 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(
                     new STORE(register, ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()),
                     "assignment");
+        } else if (this.getLeftOperand() instanceof Selection) {
+            Selection selec = (Selection) this.getLeftOperand();
+            selec.codeGenAssign(compiler, register);
         } else {
             throw new DecacInternalError("Unexpected case in Assign.codeGenExp: please report this bug.");
         }

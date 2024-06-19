@@ -61,6 +61,10 @@ public abstract class Type {
         return false;
     }
 
+    public boolean isObjectType() {
+        return false;
+    }
+
     public boolean isClassOrNull() {
         return false;
     }

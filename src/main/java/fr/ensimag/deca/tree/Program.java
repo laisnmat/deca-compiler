@@ -2,6 +2,9 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -61,20 +64,34 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+        compiler.addComment("Class declarations program");
+        this.addObjectDeclClass(compiler);
+        classes.codeGenDeclClassList(compiler, null);
         compiler.addComment("Main program");
+
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
 
         compiler.errorManager.addTSTOError();
         compiler.errorManager.generateErrors(compiler);
 
-        compiler.addFirst(new Line(
-                new ADDSP(compiler.stackManager.getADDSPValue())));
-        compiler.addFirst(new Line(new BOV(
-                compiler.labelManager.getStackOverflowError())));
-        compiler.addFirst(new Line(
-                new TSTO(compiler.stackManager.getTSTOValue())));
+        compiler.addFirst(new Line(new ADDSP(compiler.stackManager.getGlobalADDSPValue())));
+        compiler.addFirst(new Line(new BOV(compiler.labelManager.getStackOverflowError())));
+        compiler.addFirst(new Line(new TSTO(compiler.stackManager.getTSTOValue())));
         compiler.addFirst(new Line("stack overflow test"));
+    }
+
+    private void addObjectDeclClass(DecacCompiler compiler) {
+
+        AbstractDeclClass declObj = new DeclObject();
+        ListDeclClass copy = new ListDeclClass();
+        copy.add(declObj);
+        for (AbstractDeclClass declClass : classes.getList()) {
+            copy.add(declClass);
+        }
+        classes = copy;
+        RegisterOffset offset = new RegisterOffset(1, Register.GB);
+        compiler.environmentType.OBJECT.setAddr(offset);
     }
 
     @Override
