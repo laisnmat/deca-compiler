@@ -69,7 +69,7 @@ public class MethodBody extends AbstractMethodBody {
 
         declVariables.codeGenDeclVarList(compiler, currentClass, methodName);
 
-        ImmediateInteger tstoVal = new ImmediateInteger(compiler.stackManager.getTSTOValue());
+        ImmediateInteger tstoVal = new ImmediateInteger(compiler.stackManager.currentPushCount);
         methodTSTO.setOperand(tstoVal);
         insts.codeGenListInst(compiler, methodName);
 
