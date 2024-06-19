@@ -10,4 +10,5 @@ class B extends A {
 // This test checks if a class can have a method with the same name that the superclass field
 //
 // Resultats :
-// Erreur de compilation: 
+// Erreur contextuelle 
+// Ligne 5 : super method `x` is not a method

@@ -8,4 +8,5 @@ class A{
 // Declaration de la classe A deux fois
 //
 // Resultats :
-// Erreur de double définition de la classe A
+// Erreur contextuelle 
+// Ligne 4 : Class `A` already declared at [1, 0

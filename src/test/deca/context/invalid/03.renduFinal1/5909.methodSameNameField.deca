@@ -9,4 +9,5 @@ class A {
 // This test checks if a method and a field can have the same name.
 //
 // Resultats :
-// Erreur de compilation: 
+// Erreur contextuelle 
+// Ligne 4 : Method `x` already declared at [2, 8]

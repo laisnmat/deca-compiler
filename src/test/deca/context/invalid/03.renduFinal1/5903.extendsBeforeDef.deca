@@ -7,4 +7,5 @@ class B{
 // Classe A hérite de la classe B qui n'est pas déclarée.
 //
 // Resultats :
-// Erreur de compilation : La super classe n'est pas déclarée.
+// Erreur contextuelle 
+// Ligne 1 : Super class `B` not declared

@@ -12,4 +12,5 @@ class B extends A{
 // This test checks if a method can have a same name but a different type of a parameter than the super Class method.
 //
 // Resultats :
-// Erreur de compilation: 
+// Erreur contextuelle 
+// Ligne 7 : Method `x` as not the same signature as his parent method

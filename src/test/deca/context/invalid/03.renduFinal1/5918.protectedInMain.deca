@@ -9,4 +9,5 @@ class A {
 // This test checks if a main class can access a protected variable from another class.
 //
 // Resultats :
-// Erreur de compilation: 
+// Erreur contextuelle 
+// Ligne 6 : Protected field x is not accessible from class main

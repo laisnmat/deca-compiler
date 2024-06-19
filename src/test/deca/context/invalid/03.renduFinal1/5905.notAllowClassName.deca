@@ -5,4 +5,5 @@ class int{
 // On crée une classe int qui est un mot clé réservé.
 //
 // Resultats :
-// Erreur de compilation : Declaration of class int already declared as something else.
+// Erreur contextuelle 
+// Ligne 1 : Class `int` is not a class
