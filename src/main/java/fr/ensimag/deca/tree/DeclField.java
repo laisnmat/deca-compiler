@@ -57,7 +57,7 @@ public class DeclField extends AbstractDeclField {
             EnvironmentExp envExpSuper = currentClass.getSuperClass().getMembers();
             ExpDefinition previous = envExpSuper.get(this.varName.getName());
             if (previous != null && !(previous instanceof FieldDefinition)) {
-                throw new DoubleDefException(
+                throw new ContextualError(
                         "DoubleDefException: Cannot define " + this.varName.getName()
                                 + " as a field because it is already defined as a method at " + previous.getLocation(),
                         getLocation());
