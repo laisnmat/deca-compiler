@@ -66,7 +66,7 @@ public class Program extends AbstractProgram {
     public void codeGenProgram(DecacCompiler compiler) {
         compiler.addComment("Class declarations program");
         this.addObjectDeclClass(compiler);
-        classes.codeGenDeclClassList(compiler, null);
+        classes.codeGenDeclClassList(compiler);
         compiler.addComment("Main program");
 
         main.codeGenMain(compiler);

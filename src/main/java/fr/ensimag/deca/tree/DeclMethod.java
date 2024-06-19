@@ -18,10 +18,10 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 public class DeclMethod extends AbstractDeclMethod {
     private static final Logger LOG = Logger.getLogger(DeclMethod.class);
 
-    final private AbstractIdentifier type;
-    final private AbstractIdentifier methodName;
-    final private ListDeclParam params;
-    final private AbstractMethodBody body;
+    private final AbstractIdentifier type;
+    private final AbstractIdentifier methodName;
+    private final ListDeclParam params;
+    private final AbstractMethodBody body;
 
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier methodName, ListDeclParam params,
             AbstractMethodBody body) {
@@ -68,7 +68,7 @@ public class DeclMethod extends AbstractDeclMethod {
             }
         }
         // ↑{name 7→ (method(sig), type)}
-        MethodDefinition methodDefinition = new MethodDefinition(type.getType(), getLocation(), sig,
+        MethodDefinition methodDefinition = new MethodDefinition(type.getType(), getLocation(), sig, currentClass,
                 currentClass.getNumberOfMethods(), new EnvironmentExp(envExp));
         try {
             envExp.declare(methodName.getName(), methodDefinition);
@@ -100,8 +100,8 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected int codeGenDeclMethod(DecacCompiler compiler, int localBaseOffset) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass, int classAddress) {
+        // pass
     }
 
     @Override
@@ -113,7 +113,6 @@ public class DeclMethod extends AbstractDeclMethod {
         params.decompile(s);
         s.println(") {");
         body.decompile(s);
-        s.println("}");
     }
 
     @Override

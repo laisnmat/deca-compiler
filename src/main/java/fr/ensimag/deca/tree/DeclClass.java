@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.ClassDefinition;
 import java.io.PrintStream;
+import java.util.HashMap;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -10,17 +10,17 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 
 import fr.ensimag.deca.tools.IndentPrintStream;
-
+import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
-
-import java.io.PrintStream;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -30,9 +30,12 @@ import java.io.PrintStream;
  */
 public class DeclClass extends AbstractDeclClass {
     private final Logger LOG = Logger.getLogger(DeclClass.class);
-    AbstractIdentifier name, superClass;
+    private ClassType classType;
+    AbstractIdentifier name;
+    AbstractIdentifier superClass;
     ListDeclField fields;
     ListDeclMethod methods;
+    HashMap<DeclMethod, Label> methodLabels = new HashMap<>();
 
     public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, ListDeclField fields,
             ListDeclMethod methods) {
@@ -42,8 +45,6 @@ public class DeclClass extends AbstractDeclClass {
         this.fields = fields;
         this.methods = methods;
     }
-
-    private ClassType classType;
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -94,7 +95,6 @@ public class DeclClass extends AbstractDeclClass {
         fields.verifyListDeclField(compiler, currentClass);
         // list_decl_method ↓env_types ↓super ↑env_expm
         methods.verifyListDeclMethod(compiler, currentClass);
-
         // condition : (class(__, env_exp_super), __) ≜ env_types(super)
         // Verify that the super class is declared in the environment
 
@@ -143,29 +143,20 @@ public class DeclClass extends AbstractDeclClass {
      * Method to generate code for a new Class declaration.
      * 
      * @param compiler
-     *            DecacCompiler associated
+     *                     DecacCompiler associated
      * @param currentClass
-     *            Current Class in which the class is declared
+     *                     Current Class in which the class is declared
      */
-    protected void codeGenDeclClass(DecacCompiler compiler, ClassDefinition currentClass) {
-        Register reg;
+    protected void codeGenDeclClass(DecacCompiler compiler) {
         int baseOffset;
-        if (currentClass == null) {
-            reg = Register.GB;
-            baseOffset = compiler.stackManager.getVarGlobalCount();
-        } else {
-            reg = Register.LB;
-            baseOffset = compiler.stackManager.getVarLocalCount();
-        }
+        ClassDefinition currentClass = this.name.getClassDefinition();
+        baseOffset = compiler.stackManager.getVarGlobalCount();
         baseOffset++;
 
-        // code adresse
+        compiler.addComment("Code de la table des méthodes de " + currentClass.getType().getName().getName());
 
-        if (superClass == null) {
-            compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
-        } else {
-            compiler.addInstruction(new LEA(((ClassType) superClass.getType()).getAddr(), Register.R0));
-        }
+        // code adresse
+        compiler.addInstruction(new LEA(((ClassType) superClass.getType()).getAddr(), Register.R0));
 
         RegisterOffset offset = new RegisterOffset(baseOffset, GPRegister.GB);
         compiler.addInstruction(new STORE(Register.R0, offset));
@@ -174,11 +165,28 @@ public class DeclClass extends AbstractDeclClass {
         // code attributes ?
 
         // code methods
+        HashMap<Symbol, ExpDefinition> methodDefinitions = (HashMap) currentClass.getMembers().getAllMethods();
+        methodDefinitions.forEach((sym, def) -> {
+            if (def.isMethod()) {
+                // set method label as code.class.method
+                Label methodLabel = new Label(
+                        "code." + ((MethodDefinition) def).getContainingClass().getType() + "." + sym);
+                ((MethodDefinition) def).setLabel(methodLabel);
 
-        if (currentClass == null) {
-            compiler.stackManager.setGlobalCount(baseOffset);
-        } else {
-            compiler.stackManager.setLocalCount(baseOffset);
-        }
+                // LOAD code.class.method, R0
+                compiler.addInstruction(new LOAD(new LabelOperand(methodLabel), Register.R0));
+
+                // calculate address of method from address of class + method index
+                int methodAddress = compiler.stackManager.getVarGlobalCount() + 1 + ((MethodDefinition) def).getIndex();
+
+                // calculate offset for GB
+                RegisterOffset methodOffset = new RegisterOffset(methodAddress, GPRegister.GB);
+
+                // STORE R0, x(GB)
+                compiler.addInstruction(new STORE(Register.R0, methodOffset));
+            }
+        });
+        compiler.stackManager.setGlobalCount(baseOffset + currentClass.getNumberOfMethods() - 1);
     }
+
 }

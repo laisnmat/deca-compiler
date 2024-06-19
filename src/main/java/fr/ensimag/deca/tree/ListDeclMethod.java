@@ -36,4 +36,8 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
             declMethod.verifyDeclMethodBody(compiler, currentClass);
         }
     }
+
+    protected int codeGenListDeclMethod(DecacCompiler compiler, ClassDefinition currentClass, int classAddress) {
+        return 0;
+    }
 }

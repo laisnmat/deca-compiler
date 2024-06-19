@@ -42,11 +42,12 @@ public abstract class AbstractDeclMethod extends Tree {
                         throws ContextualError;
 
         /**
-         * Generate assembly code for the variable declaration.
+         * Generate assembly code for the method declaration. ***Unused so far.***
          *
          * @param compiler
-         *
-         * @param localBaseOffset
+         * @param currentClass
+         * @param classAddress
          */
-        protected abstract int codeGenDeclMethod(DecacCompiler compiler, int localBaseOffset);
+        protected abstract void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass,
+                        int classAddress);
 }

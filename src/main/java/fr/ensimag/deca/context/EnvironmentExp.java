@@ -1,6 +1,7 @@
 package fr.ensimag.deca.context;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
@@ -52,6 +53,22 @@ public class EnvironmentExp {
         if (parentEnvironment.get(key) != null)
             return parentEnvironment.get(key);
         return null;
+    }
+
+    /**
+     * Calculate recursively the "lowest" class every method and attribute is
+     * defined in
+     * 
+     * @return Map<Symbol, ExpDefinition> of all methods and attributes of the class
+     *         and its superclasses
+     */
+    public Map<Symbol, ExpDefinition> getAllMethods() {
+        HashMap<Symbol, ExpDefinition> methods = new HashMap<>();
+        if (this.parentEnvironment != null) {
+            methods.putAll(this.parentEnvironment.getAllMethods());
+        }
+        methods.putAll(this.env);
+        return methods;
     }
 
     /**

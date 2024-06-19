@@ -1,0 +1,3 @@
+class A {
+  void m(int i, float f, boolean b, String s){}
+}
