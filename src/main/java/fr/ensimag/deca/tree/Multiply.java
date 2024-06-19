@@ -31,5 +31,6 @@ public class Multiply extends AbstractOpArith {
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         DVal rDval = this.codeGenOp(compiler, register);
         compiler.addInstruction(new MUL(rDval, register));
+        super.codeGenOpError(compiler);
     }
 }

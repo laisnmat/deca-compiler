@@ -50,10 +50,9 @@ public class Cast extends AbstractExpr {
             throws ContextualError {
         Type type1 = this.type.verifyType(compiler);
         Type type2 = expr.verifyExpr(compiler, localEnv, currentClass);
-        if (!castCompatible(compiler, type2, type1)) {
-            throw new ContextualError("Incompatible Types: Cannot cast " + type2.getName() + " to " + type1.getName(),
-                    getLocation());
-        }
+        if (!compiler.getCompilerOptions().getNoCheck())
+            if (!castCompatible(compiler, type2, type1))
+                throw new ContextualError("Cannot cast " + type2.getName() + " to " + type1.getName(), getLocation());
         setType(type1);
         return type1;
     }

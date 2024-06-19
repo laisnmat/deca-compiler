@@ -31,5 +31,6 @@ public class Minus extends AbstractOpArith {
     public void codeGenExp(DecacCompiler compiler, GPRegister registerName) {
         DVal rDval = this.codeGenOp(compiler, registerName);
         compiler.addInstruction(new SUB(rDval, registerName));
+        super.codeGenOpError(compiler);
     }
 }
