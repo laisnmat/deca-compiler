@@ -51,7 +51,8 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
-            throw new DecacInternalError("Identifier " + this.getName() + " has no attached Definition");
+            throw new DecacInternalError(
+                    "NullDefinition: Identifier " + this.getName() + " has no attached Definition");
         }
     }
 
