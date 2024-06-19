@@ -50,7 +50,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return "-";
     }
 

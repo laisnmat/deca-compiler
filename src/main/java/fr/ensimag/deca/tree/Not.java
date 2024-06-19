@@ -46,7 +46,7 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return "!";
     }
 

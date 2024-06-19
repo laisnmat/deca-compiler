@@ -1,0 +1,6 @@
+{
+    x. ;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : missing IDENT at ';'

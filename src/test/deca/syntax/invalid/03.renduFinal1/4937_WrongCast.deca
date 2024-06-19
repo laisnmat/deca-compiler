@@ -1,6 +1,0 @@
-{
-    (int)(x) = 0;
-}
-// Resultats :
-// Erreur de syntaxe
-// Ligne 2 : Cast is not a Lvalue

@@ -41,7 +41,7 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return "%";
     }
 

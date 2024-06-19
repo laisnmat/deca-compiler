@@ -4,4 +4,5 @@ class A extends A {
 // Classe A qui hérite de la classe A
 //
 // Resultats :
-// Erreur de compilation : La super classe A n'est pas déclarée
+// Erreur contextuelle 
+// Ligne 1 : Super class `A` not declared

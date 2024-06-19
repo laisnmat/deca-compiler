@@ -1,0 +1,12 @@
+{
+    boolean x = true; 
+    boolean y = false;
+    if(0 > (x*y) || 5> (x+y)){
+        x = 2;
+    }
+}
+
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 4: Illegal operand '+' between boolean

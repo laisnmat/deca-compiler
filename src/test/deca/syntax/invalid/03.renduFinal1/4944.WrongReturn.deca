@@ -1,0 +1,6 @@
+{
+    return;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : mismatched input ';' expecting {'false', 'new', 'null', 'readInt', 'readFloat', 'this', 'true', '-', '(', '!', INT, IDENT, FLOAT, STRING}

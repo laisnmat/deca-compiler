@@ -1,0 +1,8 @@
+class assembleur{
+    int a = 2;
+    void ass() asm(a);
+}
+
+// Resultats :
+// Erreur de syntaxe
+// Ligne 3: mismatched input 'a' expecting {STRING, MULTI_LINE_STRING}

@@ -1,6 +1,0 @@
-{
-     instanceof x;
-}
-// Resultats :
-// Erreur de syntaxe
-// Ligne 2 : instanceof whitout left value

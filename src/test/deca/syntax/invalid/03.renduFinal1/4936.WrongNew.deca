@@ -1,0 +1,6 @@
+{
+    new int(no);
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : extraneous input 'no' expecting ')'

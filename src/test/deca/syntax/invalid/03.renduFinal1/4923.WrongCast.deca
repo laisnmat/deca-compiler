@@ -1,0 +1,6 @@
+{
+    (int)(class);
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : mismatched input 'class' expecting {'false', 'new', 'null', 'readInt', 'readFloat', 'this', 'true', '-', '(', '!', INT, IDENT, FLOAT, STRING}

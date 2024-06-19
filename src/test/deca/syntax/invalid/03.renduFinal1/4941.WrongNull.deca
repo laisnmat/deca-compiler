@@ -1,0 +1,6 @@
+{
+    null null;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : no viable alternative at input 'null'

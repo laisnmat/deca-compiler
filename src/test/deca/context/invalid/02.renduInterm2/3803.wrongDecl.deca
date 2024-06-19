@@ -5,4 +5,4 @@
 
 // Resultats :
 // Erreur contextuelle
-// Ligne 2: 3803_wrongdecl.deca:2
+// Ligne 2: NullDefinition: Identifier x is never defined.

@@ -1,0 +1,6 @@
+{
+    x.hiu(no comma);
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : no viable alternative at input 'comma'

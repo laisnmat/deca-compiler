@@ -5,4 +5,5 @@ class Object {
 // Redéfinition de la classe Object.
 //
 // Resultats :
-// Erreur de compilation : Class Object is already declared as [builtin]
+// Erreur contextuelle 
+// Ligne 1 : Class `Object` already declared at [builtin]

@@ -10,4 +10,5 @@ class B extends A{
 // This test checks if a field can have the same name than the super class method.
 //
 // Resultats :
-// Erreur de compilation: 
+// Erreur contextuelle 
+// Ligne 7 : Cannot define x as a field because it is already defined as a method at [2, 4]

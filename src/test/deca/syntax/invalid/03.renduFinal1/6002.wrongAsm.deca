@@ -1,0 +1,5 @@
+asm("LOAD #0, r1");
+
+// Resultats :
+// Erreur de syntaxe
+// Ligne 1: no viable alternative at input 'asm'

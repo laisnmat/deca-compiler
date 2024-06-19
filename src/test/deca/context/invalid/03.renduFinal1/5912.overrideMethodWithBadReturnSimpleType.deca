@@ -12,4 +12,5 @@ class B extends A{
 // This test checks if a method can have a different type than the super class method (no subType).
 //
 // Resultats :
-// Erreur de compilation: 
+// Erreur contextuelle 
+// Ligne 7 : Method `x` as not the same return type as his parent method

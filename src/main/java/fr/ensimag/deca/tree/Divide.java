@@ -24,7 +24,7 @@ public class Divide extends AbstractOpArith {
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return "/";
     }
 

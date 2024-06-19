@@ -11,4 +11,5 @@ class A {
 // This test checks that a method with return type have the good return type
 //
 // Resultats :
-// Erreur de compilation: 
+// Erreur contextuelle 
+// Ligne 8 : Incompatible Types: RValue must have the same type or subtype as LValue: int instead of boolean

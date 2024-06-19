@@ -1,0 +1,10 @@
+{
+    float a = 1.0;
+    int b = 2;
+    
+    float z = b % a;
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 5 : Operands must be of type int for operator %

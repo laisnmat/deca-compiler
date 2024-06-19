@@ -9,4 +9,5 @@ class A {
 // This test checks that a method with return type have a return
 //
 // Resultats :
-// Erreur de compilation: 
+// Erreur contextuelle 
+// Ligne 2 : Missing return statement in non-void method

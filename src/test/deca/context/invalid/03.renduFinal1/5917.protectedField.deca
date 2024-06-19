@@ -11,4 +11,5 @@ class B {
 // This test checks if a method can call a protected field from another class.
 //
 // Resultats :
-// Erreur de compilation: 
+// Erreur contextuelle 
+// Ligne 7 : Protected field x is not accessible from class B

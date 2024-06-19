@@ -1,6 +1,0 @@
-{
-    hiu(no) = 1;
-}
-// Resultats :
-// Erreur de syntaxe
-// Ligne 2 : MethodCall is not a Lvalue 

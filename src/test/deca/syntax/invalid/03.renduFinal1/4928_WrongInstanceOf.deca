@@ -1,6 +1,0 @@
-{
-    i instance of x;
-}
-// Resultats :
-// Erreur de syntaxe
-// Ligne 2 : instanceof white a not ident 

@@ -1,6 +1,0 @@
-{
-    new int(no);
-}
-// Resultats :
-// Erreur de syntaxe
-// Ligne 2 : New with parameters is not allowed

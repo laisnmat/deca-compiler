@@ -1,6 +1,0 @@
-{
-    (int)(class);
-}
-// Resultats :
-// Erreur de syntaxe
-// Ligne 2 : use of a reserved word 'class' as an identifier

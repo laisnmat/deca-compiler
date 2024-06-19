@@ -1,6 +1,0 @@
-{
-    (int)x;
-}
-// Resultats :
-// Erreur de syntaxe
-// Ligne 2 : no parenthesis around the expr

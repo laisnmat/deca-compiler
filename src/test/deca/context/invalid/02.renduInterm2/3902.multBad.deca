@@ -5,4 +5,4 @@
 
 // Resultats :
 // Erreur contextuelle
-// Ligne 2: 3902multBad.deca:2:
+// Ligne 2: Incompatible Types: RValue must have the same type or subtype as LValue: float instead of int
