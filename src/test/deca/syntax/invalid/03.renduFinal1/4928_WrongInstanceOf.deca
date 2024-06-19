@@ -3,4 +3,4 @@
 }
 // Resultats :
 // Erreur de syntaxe
-// Ligne 2 : instanceof white a not ident 
+// Ligne 2 : missing ';' at 'of'

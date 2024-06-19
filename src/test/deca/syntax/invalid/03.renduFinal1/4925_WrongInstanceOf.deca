@@ -3,4 +3,4 @@
 }
 // Resultats :
 // Erreur de syntaxe
-// Ligne 2 : instanceof whitout right value
+// Ligne 2 : Missing IDENT at ';

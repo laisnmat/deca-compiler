@@ -3,4 +3,4 @@
 }
 // Resultats :
 // Erreur de syntaxe
-// Ligne 2 : New without good parentheses
+// Ligne 2 : missing ')' at ';'
