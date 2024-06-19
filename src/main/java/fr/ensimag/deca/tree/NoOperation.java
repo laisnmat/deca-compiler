@@ -32,7 +32,7 @@ public class NoOperation extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName) {
         compiler.addComment("nop instruction (;) in source code");
     }
 

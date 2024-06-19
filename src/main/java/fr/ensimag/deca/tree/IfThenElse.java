@@ -47,7 +47,7 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName) {
         LabelIf labelIf = compiler.labelManager.getIf();
         Label endLabel = labelIf.getEndLabel();
         Label elseLabel = labelIf.getElseLabel();
@@ -60,7 +60,7 @@ public class IfThenElse extends AbstractInst {
         this.condition.codeGenCondition(compiler, false, (isElse ? elseLabel : endLabel));
 
         // generate if instructions
-        this.thenBranch.codeGenListInst(compiler);
+        this.thenBranch.codeGenListInst(compiler, methodName);
 
         // generate else instructions if there is one
         if (isElse) {
@@ -68,7 +68,7 @@ public class IfThenElse extends AbstractInst {
             compiler.addInstruction(new BRA(endLabel));
             compiler.addLabel(elseLabel);
 
-            this.elseBranch.codeGenListInst(compiler);
+            this.elseBranch.codeGenListInst(compiler, methodName);
         }
 
         compiler.addLabel(endLabel);

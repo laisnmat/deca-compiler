@@ -6,8 +6,12 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 public class MethodBody extends AbstractMethodBody {
     private ListDeclVar declVariables;
@@ -35,9 +39,35 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    protected void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass) {
-        // throw new UnsupportedOperationException("Not supported yet.");
-        declVariables.codeGenDeclVarList(compiler, currentClass);
+    protected void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass,
+            AbstractIdentifier methodName) {
+        // start method
+        compiler.addComment("Code de la méthode " + methodName.getName());
+        compiler.addLabel(methodName.getMethodDefinition().getLabel());
+
+        // test stack overflow
+        compiler.addInstruction(new TSTO, "Test de débordement de la pile");
+
+        // save registers
+        compiler.addComment("Sauvegarde des registres");
+        int numParams = methodName.getMethodDefinition().getSignature().size();
+        for (int i = 0; i < numParams; i++) {
+            compiler.addInstruction(new PUSH(Register.getR(i + 2)));
+        }
+
+        declVariables.codeGenDeclVarList(compiler, currentClass, methodName);
+        insts.codeGenListInst(compiler, methodName);
+
+        String endMethod = methodName.getMethodDefinition().getLabel().toString().replace("code", "end");
+
+        compiler.addLabel(new Label(endMethod));
+        compiler.addComment("Restauration des registres");
+
+        // restore registers
+        for (int i = numParams; i > 0; i--) {
+            compiler.addInstruction(new POP(Register.getR(i + 2)));
+        }
+        compiler.addInstruction(new RTS());
     }
 
     @Override

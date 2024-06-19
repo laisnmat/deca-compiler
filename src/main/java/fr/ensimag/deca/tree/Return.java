@@ -34,7 +34,7 @@ public class Return extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

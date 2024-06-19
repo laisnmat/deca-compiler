@@ -39,7 +39,7 @@ public class While extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName) {
         LabelWhile labelWhile = compiler.labelManager.getWhile();
         Label labelEnd = labelWhile.getEndLabel();
         Label labelStart = labelWhile.getStartLabel();
@@ -50,7 +50,7 @@ public class While extends AbstractInst {
         condition.codeGenCondition(compiler, false, labelEnd);
 
         // generate body instructions
-        body.codeGenListInst(compiler);
+        body.codeGenListInst(compiler, methodName);
 
         // generate branch to the start label
         compiler.addInstruction(new BRA(labelStart));

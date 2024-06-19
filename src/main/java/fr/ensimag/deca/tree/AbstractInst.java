@@ -34,8 +34,9 @@ public abstract class AbstractInst extends Tree {
      * Generate assembly code for the instruction.
      * 
      * @param compiler
+     * @param methodName
      */
-    protected abstract void codeGenInst(DecacCompiler compiler);
+    protected abstract void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName);
 
     /**
      * Decompile the tree, considering it as an instruction.
