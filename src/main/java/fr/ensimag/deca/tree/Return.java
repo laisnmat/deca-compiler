@@ -9,6 +9,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
@@ -37,7 +38,7 @@ public class Return extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName) {
         // throw new UnsupportedOperationException("not yet implemented");
         this.expression.codeGenExp(compiler, GPRegister.getR(2));
         if (this.expression.getDVal() == null) {
@@ -45,7 +46,8 @@ public class Return extends AbstractInst {
         } else {
             compiler.addInstruction(new LOAD(this.expression.getDVal(), GPRegister.R0));
         }
-        compiler.addInstruction(new BRA(compiler.getReturnLabel()));
+        String endMethod = methodName.getMethodDefinition().getLabel().toString().replace("code", "end");
+        compiler.addInstruction(new BRA(new Label(endMethod)));
     }
 
     @Override
