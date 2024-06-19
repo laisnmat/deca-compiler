@@ -40,4 +40,7 @@ public abstract class AbstractDeclClass extends Tree {
          * @param currentClass
          */
         protected abstract void codeGenDeclClass(DecacCompiler compiler);
+
+        protected abstract void codegenMethods(DecacCompiler compiler);
+
 }

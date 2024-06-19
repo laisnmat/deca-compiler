@@ -234,7 +234,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName) {
         // if this instruction is of type boolean,
         // then generate it as a condition,
         // else generate it as an expression.

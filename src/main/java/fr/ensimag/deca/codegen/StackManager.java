@@ -67,7 +67,7 @@ public class StackManager {
      * Adds the specified value to the local var count.
      *
      * @param value
-     *            the value to add to the count
+     *              the value to add to the count
      */
     public void addToVarLocalCount(int value) {
         this.varLocalCount += value;
@@ -77,7 +77,7 @@ public class StackManager {
      * Adds the specified value to the global var count.
      *
      * @param value
-     *            the value to add to the count
+     *              the value to add to the count
      */
     public void addToVarGlobalCount(int value) {
         this.varGlobalCount += value;
@@ -119,7 +119,7 @@ public class StackManager {
      * Sets the local var count to the specified value.
      *
      * @param count
-     *            the new value for the count
+     *              the new value for the count
      */
     public void setLocalCount(int count) {
         this.varLocalCount = count;
@@ -129,7 +129,7 @@ public class StackManager {
      * Sets the global var count to the specified value.
      *
      * @param count
-     *            the new value for the count
+     *              the new value for the count
      */
     public void setGlobalCount(int count) {
         this.varGlobalCount = count;

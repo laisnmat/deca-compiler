@@ -85,7 +85,4 @@ public class ClassDefinition extends TypeDefinition {
         return this;
     }
 
-    public Label getInitLabel() {
-        return new Label("ajiiuahdfuazhdioaizdhzohduahdhazuidzh"); // todo get init label
-    }
 }

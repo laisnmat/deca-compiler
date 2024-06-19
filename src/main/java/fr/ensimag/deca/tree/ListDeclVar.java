@@ -30,16 +30,16 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      * Implements non-terminal "list_decl_var" of [SyntaxeContextuelle] in pass 3
      * 
      * @param compiler
-     *            contains the "env_types" attribute
+     *                     contains the "env_types" attribute
      * @param localEnv
-     *            its "parentEnvironment" corresponds to "env_exp_sup"
-     *            attribute
-     *            in precondition, its "current" dictionary corresponds to
-     *            the "env_exp" attribute
-     *            in postcondition, its "current" dictionary corresponds to
-     *            the "env_exp_r" attribute
+     *                     its "parentEnvironment" corresponds to "env_exp_sup"
+     *                     attribute
+     *                     in precondition, its "current" dictionary corresponds to
+     *                     the "env_exp" attribute
+     *                     in postcondition, its "current" dictionary corresponds to
+     *                     the "env_exp_r" attribute
      * @param currentClass
-     *            corresponds to "class" attribute (null in the main bloc).
+     *                     corresponds to "class" attribute (null in the main bloc).
      */
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -53,9 +53,10 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         LOG.debug("verify DeclVar: end");
     }
 
-    public void codeGenDeclVarList(DecacCompiler compiler, ClassDefinition currentClass) {
+    public void codeGenDeclVarList(DecacCompiler compiler, ClassDefinition currentClass,
+            AbstractIdentifier methodName) {
         for (AbstractDeclVar declVar : this.getList()) {
-            declVar.codeGenDeclVar(compiler, currentClass);
+            declVar.codeGenDeclVar(compiler, currentClass, methodName);
         }
     }
 }

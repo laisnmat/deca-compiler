@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.MethodDefinition;
 import fr.ensimag.deca.context.Type;
 
 /**
@@ -14,7 +15,8 @@ import fr.ensimag.deca.context.Type;
  */
 public abstract class AbstractMethodBody extends Tree {
 
-    protected abstract void codeGenMethodBody(DecacCompiler compiler);
+    protected abstract void codeGenMethodBody(DecacCompiler compiler, ClassDefinition currentClass,
+            AbstractIdentifier methodName);
 
     /**
      * Implements non-terminal "MethodBody" of [SyntaxeContextuelle] in pass 3

@@ -77,12 +77,12 @@ public class DeclVar extends AbstractDeclVar {
      * Method to generate code for a new var declaration.
      * 
      * @param compiler
-     *            Decac Compiler
+     *                     Decac Compiler
      * @param currentClass
-     *            Current Class in which the the var is declared
+     *                     Current Class in which the the var is declared
      */
     @Override
-    protected void codeGenDeclVar(DecacCompiler compiler, ClassDefinition currentClass) {
+    protected void codeGenDeclVar(DecacCompiler compiler, ClassDefinition currentClass, AbstractIdentifier methodName) {
         Register reg;
         int baseOffset;
         if (currentClass == null) {
@@ -103,7 +103,7 @@ public class DeclVar extends AbstractDeclVar {
         // then initialize variable using an Assign
         if (initialization instanceof Initialization) {
             Initialization i = (Initialization) this.initialization;
-            new Assign(this.varName, i.getExpression()).codeGenInst(compiler);
+            new Assign(this.varName, i.getExpression()).codeGenInst(compiler, methodName);
         }
     }
 

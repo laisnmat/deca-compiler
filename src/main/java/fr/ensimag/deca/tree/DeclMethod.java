@@ -100,8 +100,8 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass, int classAddress) {
-        // pass
+    protected void codeGenDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) {
+        body.codeGenMethodBody(compiler, currentClass, this.methodName);
     }
 
     @Override
