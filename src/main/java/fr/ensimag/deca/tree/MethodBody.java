@@ -31,7 +31,7 @@ public class MethodBody extends AbstractMethodBody {
 
         if (!compiler.getCompilerOptions().getNoCheck())
             if (!returnType.isVoid() && !returnStatement)
-                throw new ContextualError("Missing return statement in non-void method", getLocation());
+                throw new ContextualError("ReturnError: Missing return statement in non-void method", getLocation());
     }
 
     @Override
