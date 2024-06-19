@@ -3,6 +3,7 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
+import fr.ensimag.ima.pseudocode.DAddr;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -12,26 +13,16 @@ import org.apache.commons.lang.Validate;
  * @date 14/04/2024
  */
 public class ClassType extends Type {
-    
+
     protected ClassDefinition definition;
-    
-    public ClassDefinition getDefinition() {
-        return this.definition;
-    }
-            
-    @Override
-    public ClassType asClassType(String errorMessage, Location l) {
-        return this;
+    private DAddr addr;
+
+    public DAddr getAddr() {
+        return addr;
     }
 
-    @Override
-    public boolean isClass() {
-        return true;
-    }
-
-    @Override
-    public boolean isClassOrNull() {
-        return true;
+    public void setAddr(DAddr addr) {
+        this.addr = addr;
     }
 
     /**
@@ -49,19 +40,49 @@ public class ClassType extends Type {
     protected ClassType(Symbol className) {
         super(className);
     }
-    
+
+    public ClassDefinition getDefinition() {
+        return this.definition;
+    }
+
+    @Override
+    public ClassType asClassType(String errorMessage, Location l) {
+        return this;
+    }
+
+    @Override
+    public boolean isClass() {
+        return true;
+    }
+
+    @Override
+    public boolean isClassOrNull() {
+        return true;
+    }
 
     @Override
     public boolean sameType(Type otherType) {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (otherType == null)
+            return false;
+        return otherType.isClass() && this.getName().getName()
+                .equals(otherType.getName().getName());
     }
 
     /**
      * Return true if potentialSuperClass is a superclass of this class.
      */
     public boolean isSubClassOf(ClassType potentialSuperClass) {
-        throw new UnsupportedOperationException("not yet implemented"); 
+        if (this.sameType(potentialSuperClass)) {
+            return true;
+        }
+        ClassDefinition superClassDef = this.definition.getSuperClass();
+        while (superClassDef != null) {
+            if (superClassDef.getType().sameType(potentialSuperClass)) {
+                return true;
+            }
+            superClassDef = superClassDef.getSuperClass();
+        }
+        return false;
     }
-
 
 }

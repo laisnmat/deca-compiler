@@ -1,0 +1,10 @@
+class Single{
+    int a = 1;
+    int b;
+}
+class Double extends class Single{
+    boolean c = true;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 5 : extraneous input 'class' expecting IDENT

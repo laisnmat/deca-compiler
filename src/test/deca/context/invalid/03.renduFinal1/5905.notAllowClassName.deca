@@ -1,0 +1,9 @@
+class int{
+
+}
+// Description :
+// On crée une classe int qui est un mot clé réservé.
+//
+// Resultats :
+// Erreur contextuelle 
+// Ligne 1 : Class `int` is not a class

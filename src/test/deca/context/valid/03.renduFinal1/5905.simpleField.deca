@@ -1,0 +1,9 @@
+class A {
+    int x;
+}
+
+// Description :
+// Classe A avec un simple attribut x de type int
+//
+// Resultats :
+// Ok

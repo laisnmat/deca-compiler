@@ -1,0 +1,14 @@
+// Description : test plus affection d'une valeur
+
+// test du greater or equal 
+//
+// Resultats : aucune erreur
+// 
+
+
+{
+    int x ; 
+    if(readInt() >= readInt()){
+        x = 2;
+    }
+}

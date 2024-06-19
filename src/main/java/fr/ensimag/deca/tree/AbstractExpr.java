@@ -1,11 +1,16 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import java.io.PrintStream;
+
+import org.apache.commons.lang.Validate;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.LabelBoolExp;
 import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -14,11 +19,8 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
-
-import java.io.PrintStream;
-import org.apache.commons.lang.Validate;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -64,14 +66,14 @@ public abstract class AbstractExpr extends AbstractInst {
      * of [SyntaxeContextuelle] in pass 3
      *
      * @param compiler
-     *            (contains the "env_types" attribute)
+     *                     (contains the "env_types" attribute)
      * @param localEnv
-     *            Environment in which the expression should be checked
-     *            (corresponds to the "env_exp" attribute)
+     *                     Environment in which the expression should be checked
+     *                     (corresponds to the "env_exp" attribute)
      * @param currentClass
-     *            Definition of the class containing the expression
-     *            (corresponds to the "class" attribute)
-     *            is null in the main bloc.
+     *                     Definition of the class containing the expression
+     *                     (corresponds to the "class" attribute)
+     *                     is null in the main bloc.
      * @return the Type of the expression
      *         (corresponds to the "type" attribute)
      */
@@ -85,13 +87,13 @@ public abstract class AbstractExpr extends AbstractInst {
      * implements non-terminal "rvalue" of [SyntaxeContextuelle] in pass 3
      *
      * @param compiler
-     *            contains the "env_types" attribute
+     *                     contains the "env_types" attribute
      * @param localEnv
-     *            corresponds to the "env_exp" attribute
+     *                     corresponds to the "env_exp" attribute
      * @param currentClass
-     *            corresponds to the "class" attribute
+     *                     corresponds to the "class" attribute
      * @param expectedType
-     *            corresponds to the "type1" attribute
+     *                     corresponds to the "type1" attribute
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
@@ -108,11 +110,11 @@ public abstract class AbstractExpr extends AbstractInst {
             return convExpr;
         }
 
-        // if the RValue's type is not the same as the LValue's type,
+        // if the RValue's type is not the same or a subtype of the LValue's type,
         // then throw an exception
-        if (!this.getType().sameType(expectedType)) {
+        if (!assignCompatible(compiler, expectedType, this.getType())) {
             throw new ContextualError(
-                    "RValue must have the same type as LValue: "
+                    "Incompatible Types: RValue must have the same type or subtype as LValue: "
                             + this.getType()
                             + " instead of "
                             + expectedType,
@@ -123,6 +125,33 @@ public abstract class AbstractExpr extends AbstractInst {
         return this;
     }
 
+    protected boolean assignCompatible(DecacCompiler compiler, Type t1, Type t2) {
+        if (subtype(t2, t1)
+                || t2.sameType(t1) || (t1.isFloat() && t2.isInt())) {
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean subtype(Type t1, Type t2) {
+        if ((t1.isNull() && t2.isClassOrNull()) || (t1.isClass() && t2.isClass()
+                && ((ClassType) t1).isSubClassOf((ClassType) t2))) {
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean castCompatible(DecacCompiler compiler, Type t1, Type t2)
+            throws ContextualError {
+        if (t1.isVoid()) {
+            throw new ContextualError("Incompatible Types:  Cannot cast a void type", getLocation());
+        }
+        if (assignCompatible(compiler, t1, t2) || assignCompatible(compiler, t2, t1)) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Verify an AbstractExpr.
      * As this object is an AbstractExpr, this method will execute verifyExpr by
@@ -130,10 +159,11 @@ public abstract class AbstractExpr extends AbstractInst {
      * Can be overidden in subclasses.
      */
     @Override
-    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
+    protected boolean verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         verifyExpr(compiler, localEnv, currentClass);
+        return false;
     }
 
     /**
@@ -141,11 +171,11 @@ public abstract class AbstractExpr extends AbstractInst {
      * boolean.
      *
      * @param localEnv
-     *            Environment in which the condition should be checked.
+     *                     Environment in which the condition should be checked.
      * @param currentClass
-     *            Definition of the class containing the expression, or
-     *            null in
-     *            the main program.
+     *                     Definition of the class containing the expression, or
+     *                     null in
+     *                     the main program.
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -153,7 +183,9 @@ public abstract class AbstractExpr extends AbstractInst {
 
         // the expression should be of type boolean as it is a condition
         if (type != compiler.environmentType.BOOLEAN) {
-            throw new ContextualError("The condition should be of type 'boolean' but is of type '" + type + "'.",
+            throw new ContextualError(
+                    "Incompatible Types: The condition should be of type 'boolean' but is of type '" + type + "'.",
+
                     getLocation());
         }
     }
@@ -164,7 +196,7 @@ public abstract class AbstractExpr extends AbstractInst {
      * 
      * @param compiler
      * @param register
-     *            The register where the result is stored.
+     *                 The register where the result is stored.
      */
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         throw new UnsupportedOperationException("not yet implemented");
@@ -189,7 +221,7 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      * @param printHex
-     *            whether to print the value as hexadecimal
+     *                 whether to print the value as hexadecimal
      */
     protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
         this.codeGenExp(compiler, Register.getR(2));
@@ -209,7 +241,7 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName) {
         // if this instruction is of type boolean,
         // then generate it as a condition,
         // else generate it as an expression.

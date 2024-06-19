@@ -1,0 +1,13 @@
+{
+    int x = 0; 
+    boolean y = 1;
+    if((x*y) >= y){
+        x = 2;
+    }
+}
+
+// Description :
+// test de l'opérateur >= avec une * entre un int et un boolean
+//
+// Resultats :
+// étape A : OK (ne passera pas l'étape B)

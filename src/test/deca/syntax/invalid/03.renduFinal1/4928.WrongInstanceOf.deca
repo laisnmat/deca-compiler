@@ -1,0 +1,6 @@
+{
+    i instance of x;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : missing ';' at 'of'

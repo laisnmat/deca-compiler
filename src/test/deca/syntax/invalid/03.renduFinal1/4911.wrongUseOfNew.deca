@@ -1,0 +1,10 @@
+class Single {
+    int a = 1;
+    int b;
+}
+{
+    Single x = new.Single();
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 6 : extraneous input '.' expecting IDENT

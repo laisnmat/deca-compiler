@@ -18,11 +18,10 @@ public class GreaterOrEqual extends AbstractOpIneq {
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return ">=";
     }
 
-   
     protected void codeGenExp(DecacCompiler compiler, int registerName) {
         // nothing is returned
     }

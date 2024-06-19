@@ -1,0 +1,4 @@
+true, oB instance of A
+true, oB instance of Object
+false, oC instance of A
+true, oD instance of Object

@@ -24,7 +24,7 @@ public class LowerOrEqual extends AbstractOpIneq {
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return "<=";
     }
 }

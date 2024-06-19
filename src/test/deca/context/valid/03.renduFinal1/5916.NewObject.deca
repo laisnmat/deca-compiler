@@ -1,0 +1,42 @@
+class B{
+    int x = 2;
+    int getX(){
+        return x;
+    }
+}
+class A{
+    B b = new B();
+    int m1(){
+        return b.getX();
+    }
+    int m2(){
+        return b.x;
+    }
+    int m3(){
+        return this.b.x;
+    }
+    int m4(){
+        return this.b.getX();
+    }
+    int m5(B pb){
+        return pb.getX();
+    }
+    int m6(B pb){
+        return pb.x;
+    }
+    int m7(){
+        B fb = new B();
+        return fb.getX();
+    }
+    int m8(){
+        B fb = new B();
+        return fb.x;
+    }
+}
+
+
+// Description :
+// Test new Object et enchainement de  this.object.etc
+//
+// Resultats :
+// Ok

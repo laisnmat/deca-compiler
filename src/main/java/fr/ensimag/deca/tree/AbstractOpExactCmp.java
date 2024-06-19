@@ -23,7 +23,7 @@ public abstract class AbstractOpExactCmp extends AbstractOpCmp {
         Type type1 = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type type2 = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         // check that the two operands are comparable
-        if (type1.sameType(type2) && !type1.isString()) {
+        if ((type1.sameType(type2) && !type1.isString()) || (type1.isClassOrNull() && type2.isClassOrNull())) {
             setType(compiler.environmentType.BOOLEAN);
             return getType();
         }

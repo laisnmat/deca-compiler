@@ -50,10 +50,20 @@ test:interm2:
     - develop
     - merge_requests
 
+test:final1:
+  stage: test
+  needs: ["test:interm2"]
+  script:
+    - mvn $MAVEN_CLI_OPTS exec:exec@test_renduFinal1
+  only:
+    - master
+    - develop
+    - merge_requests
+
 
 test:summary:
   stage: test
-  needs: ["test:interm2"]
+  needs: ["test:final1"]
   script:
     - mvn $MAVEN_CLI_OPTS exec:exec@summary
   only:

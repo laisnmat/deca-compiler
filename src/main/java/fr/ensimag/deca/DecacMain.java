@@ -1,16 +1,15 @@
 package fr.ensimag.deca;
 
 import java.io.File;
-import java.io.PrintStream;
-import fr.ensimag.deca.tree.AbstractProgram;
-import org.apache.log4j.Logger;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ExecutionException;
-import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
  * Main class for the command-line Deca compiler.
@@ -35,7 +34,8 @@ public class DecacMain {
             System.exit(1);
         }
         if (options.getPrintBanner()) {
-            throw new UnsupportedOperationException("decac -b not yet implemented");
+            options.displayTeamBanner();
+            System.exit(error ? 1 : 0);
         }
         if (options.getSourceFiles().isEmpty()) {
             options.displayUsage();

@@ -1,0 +1,11 @@
+class A extends B {
+}
+class B{
+
+}
+// Description :
+// Classe A hérite de la classe B qui n'est pas déclarée.
+//
+// Resultats :
+// Erreur contextuelle 
+// Ligne 1 : Super class `B` not declared

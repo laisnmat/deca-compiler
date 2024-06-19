@@ -13,9 +13,11 @@ public class DivZeroError extends AbstractError {
 
     @Override
     public void generateError(DecacCompiler compiler) {
-        compiler.addLabel(compiler.labelManager.getDivByZeroError());
-        compiler.addInstruction(new WSTR("Error: Division by zero"));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
+        if (!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.addLabel(compiler.labelManager.getDivByZeroError());
+            compiler.addInstruction(new WSTR("Error: Division by zero"));
+            compiler.addInstruction(new WNL());
+            compiler.addInstruction(new ERROR());
+        }
     }
 }

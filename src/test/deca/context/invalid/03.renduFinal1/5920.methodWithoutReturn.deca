@@ -1,0 +1,13 @@
+class A {
+    int x(){
+        if(true){
+            return 1;
+        }
+    }
+}
+// Description :
+// This test checks that a method with return type have a return
+//
+// Resultats :
+// Erreur contextuelle 
+// Ligne 2 : Missing return statement in non-void method

@@ -1,0 +1,31 @@
+class A{
+    int x = 3;
+    float y = 2;
+
+    int m1(){
+        return x;
+    }
+    boolean m2(boolean x){
+        return x;
+    }
+    int m3(boolean x){
+        return this.x;
+    }
+    float m4(boolean x){
+        return this.y;
+    }
+    float m5(boolean x){
+        return y;
+    }
+    float m6(int z){
+        float a = 3;
+        return a + z + this.x + y;
+    }
+}
+
+
+// Description :
+// Return de champs avec ou sans this et de paramètres
+//
+// Resultats :
+// Ok

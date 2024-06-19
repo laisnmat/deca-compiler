@@ -1,0 +1,7 @@
+class asm{
+    int a;
+}
+
+// Resultats :
+// Erreur de syntaxe
+// Ligne 1: mismatched input 'asm' expecting IDENT

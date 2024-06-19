@@ -1,0 +1,19 @@
+// Description : Test avec deux valeurs entières 
+// test de not equal
+//
+// Resultats : x and y are different
+// 
+
+
+{
+  int x, y;
+  x = 5;
+  y = 4;
+
+  if (x != y) {
+    println("x and y are different");
+  }
+  else {
+    println("x and y are identical");
+  }
+}

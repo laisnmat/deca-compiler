@@ -1,0 +1,7 @@
+{
+    boolean x = 2 - 1;
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: Incompatible Types: RValue must have the same type or subtype as LValue: int instead of boolean

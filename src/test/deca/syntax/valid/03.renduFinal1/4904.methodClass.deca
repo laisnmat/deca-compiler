@@ -1,0 +1,16 @@
+class Single {
+    int methodInt(int a, int b) {
+        return a + b;
+    }
+    float methodFloat(float a, float b) {
+        return a + b;
+    }
+    boolean methodBool(boolean a, boolean b) {
+        return a && b;
+    }
+}
+// Description :
+// test de la création d'une classe avec des méthodes qui prennent des paramètres.
+//
+// Resultats :
+// rien (Etape A : OK)

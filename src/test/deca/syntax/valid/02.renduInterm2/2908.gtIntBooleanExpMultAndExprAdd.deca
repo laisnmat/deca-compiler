@@ -1,0 +1,13 @@
+{
+    boolean x = 0; 
+    int y = 1;
+    if((x*y) > 0 && (x+y) > 0){
+        x = 2;
+    }
+}
+
+// Description :
+// test de plusieurs >= avec un et logique
+//
+// Resultats :
+// étape A : OK (ne passera pas l'étape B à cause du produit entre un boolean et un int)

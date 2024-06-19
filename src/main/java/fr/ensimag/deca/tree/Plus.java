@@ -3,7 +3,6 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
 
 /**
@@ -16,7 +15,7 @@ public class Plus extends AbstractOpArith {
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return "+";
     }
 
@@ -24,13 +23,14 @@ public class Plus extends AbstractOpArith {
      * Generate assembly code for the expression of a plus
      * 
      * @param compiler
-     *            The compiler
+     *                     The compiler
      * @param registerName
-     *            The register to store the result of the operation
+     *                     The register to store the result of the operation
      */
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister registerName) {
         DVal rDval = this.codeGenOp(compiler, registerName);
         compiler.addInstruction(new ADD(rDval, registerName));
+        super.codeGenOpError(compiler);
     }
 }

@@ -17,7 +17,7 @@ public class NotEquals extends AbstractOpExactCmp {
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return "!=";
     }
 

@@ -1,0 +1,17 @@
+class B{
+    protected int x = 2;
+    int f(){
+        return x;
+    }
+}
+
+{
+    B b = new B();
+    b.f();
+}
+
+// Description :
+// Test de l'accès à un protected de l'extérieur via une méthode (getters)
+//
+// Resultats :
+// Ok

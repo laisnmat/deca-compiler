@@ -1,0 +1,19 @@
+// Description : initialisation d'une valeur entière 
+//               en faisant un cast implicite  
+// test du plus 
+//
+// Resultats :a = 4.00000e+00
+//            b = 4.50000e+00
+//            c = 4.50000e+00
+// 
+
+
+{
+    float a = 2 + 2;
+    float b = 2.5 + 2;
+    float c = 2 + 2.5;
+
+    println("a = ",a);    
+    println("b = ",b);
+    println("c = ",c);
+}

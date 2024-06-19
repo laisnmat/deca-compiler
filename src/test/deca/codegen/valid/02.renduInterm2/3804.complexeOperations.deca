@@ -1,0 +1,11 @@
+// Description : initialisation d'une valeur entière 
+// test du minus et du plus 
+//
+// Resultats : x = 0
+// 
+
+
+{
+    int x = - (3 + 1 - 5) + 2 - (4 - 1);
+    println("x = ",x);
+}

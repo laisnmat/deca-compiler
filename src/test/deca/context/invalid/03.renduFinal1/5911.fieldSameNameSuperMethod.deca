@@ -1,0 +1,14 @@
+class A {
+    int x(){
+        return 0;
+    }
+}
+class B extends A{
+    int x;
+}
+// Description :
+// This test checks if a field can have the same name than the super class method.
+//
+// Resultats :
+// Erreur contextuelle 
+// Ligne 7 : Cannot define x as a field because it is already defined as a method at [2, 4]

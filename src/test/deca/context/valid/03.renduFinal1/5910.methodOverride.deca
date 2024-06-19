@@ -1,0 +1,41 @@
+class A {
+    int method1(int x, int y){
+        return x + y;
+    }
+}
+
+class B extends A {
+    int method1(int x, int y){
+        return x - y;
+    }
+}
+
+class C extends B{
+    int method1(int x, int y){
+        return x * y;
+    }
+    int method2(int x, int y){
+        return x / y;
+    }
+}
+
+class D extends C {
+    int method1(int x, int y){
+        return x / y;
+    }
+    int method2(int x, int y){
+        return x % y;
+    }
+}
+
+class E extends B {
+    int method1(int x, int y){
+        return x % y;
+    }
+}
+
+// Description :
+// On test l'override des methodes en gardant la même signature
+//
+// Resultats :
+// Ok

@@ -1,0 +1,8 @@
+class Single {
+    int a = 1;
+}
+// Description :
+// test de la création d'une classe avec un attribut
+//
+// Resultats :
+// rien (Etape A : OK)

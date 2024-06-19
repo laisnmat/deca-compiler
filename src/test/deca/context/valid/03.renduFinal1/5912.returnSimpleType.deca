@@ -1,0 +1,21 @@
+class A{
+    int m1(){
+        return 1;
+    }
+    boolean m2(){
+        return false;
+    }
+    float m3(){
+        return 1.0;
+    }
+    float m4(){
+        return 1;
+    }
+}
+
+
+// Description :
+// Return de type simple
+//
+// Resultats :
+// Ok

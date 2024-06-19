@@ -1,0 +1,9 @@
+// Description : Affichage d'une chaine de caractère
+// test de Printlnx
+//
+// Resultats :ahah
+// 
+
+{
+    printlnx("ahah");
+}

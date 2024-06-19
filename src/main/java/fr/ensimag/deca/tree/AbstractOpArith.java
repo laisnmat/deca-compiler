@@ -1,16 +1,16 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.MUL;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -29,15 +29,15 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
      * operands if necessary or throws an error if the types are not compatible
      * 
      * @param compiler
-     *            (type- DecacCompiler) the compiler
+     *                     (type- DecacCompiler) the compiler
      * @param localEnv
-     *            (type- EnvironmentExp) the environment in which the
-     *            expression is checked
+     *                     (type- EnvironmentExp) the environment in which the
+     *                     expression is checked
      * @param currentClass
-     *            (type- ClassDefinition) the current class
+     *                     (type- ClassDefinition) the current class
      * @return (type- Type) the type of the expression (int or float)
      * @throws ContextualError
-     *             if the types are not compatible
+     *                         if the types are not compatible
      */
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
@@ -45,23 +45,30 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         Type type1 = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type type2 = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         this.setType(type1);
-        if (!type1.sameType(type2)) {
-            if (type1.isInt() && type2.isFloat()) {
-                ConvFloat conv = new ConvFloat(this.getLeftOperand());
-                conv.verifyExpr(compiler, localEnv, currentClass);
-                this.setLeftOperand(conv);
-                this.setType(type2);
-            } else if (type1.isFloat() && type2.isInt()) {
-                ConvFloat conv = new ConvFloat(this.getRightOperand());
-                conv.verifyExpr(compiler, localEnv, currentClass);
-                this.setRightOperand(conv);
-            } else {
+        if (!(type1.isFloat() || type1.isInt()) || !(type2.isFloat() || type2.isInt())) {
+            if (type1.sameType(type2)) {
                 throw new ContextualError(
-                        "Incompatible types \'" + type2.getName() + "\' with \'" + type1.getName() + "\'",
+                        "Illegal operand \'" + this.getOperatorName() + "\' between " + type1.getName(),
                         getLocation());
             }
+            throw new ContextualError(
+                    "Illegal operand \'" + this.getOperatorName() + "\' between " + type1.getName() + " and "
+                            + type2.getName(),
+                    getLocation());
         }
-        return type1;
+
+        if (type1.isFloat() && type2.isInt()) {
+            ConvFloat conv = new ConvFloat(this.getRightOperand());
+            conv.verifyExpr(compiler, localEnv, currentClass);
+            this.setRightOperand(conv);
+        }
+        if (type1.isInt() && type2.isFloat()) {
+            ConvFloat conv = new ConvFloat(this.getLeftOperand());
+            conv.verifyExpr(compiler, localEnv, currentClass);
+            this.setLeftOperand(conv);
+            this.setType(type2);
+        }
+        return this.getType();
     }
 
     public DVal codeGenOp(DecacCompiler compiler, GPRegister register) {
@@ -81,6 +88,19 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
                 this.getRightOperand().codeGenExp(compiler, nextRegister);
                 return nextRegister;
             }
+        }
+    }
+
+    /**
+     * Generate assembly code for the expression (Modulo) only when we use -n flag
+     * 
+     * @param compiler The compiler
+     */
+
+    public void codeGenOpError(DecacCompiler compiler) {
+        if (!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.errorManager.addArithmeticOverflowError();
+            compiler.addInstruction(new BOV(compiler.labelManager.getArithmeticOverflowError()));
         }
     }
 }

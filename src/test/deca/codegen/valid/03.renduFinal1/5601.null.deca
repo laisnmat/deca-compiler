@@ -1,0 +1,8 @@
+class A {
+
+}
+
+{
+    A a = null;
+    println("Hello world");
+}

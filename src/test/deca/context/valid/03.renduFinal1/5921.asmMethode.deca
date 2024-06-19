@@ -1,0 +1,15 @@
+class B{
+    protected int x = 2;
+    void f() asm("Bon la faut balancer de l'assembleur");
+}
+
+{
+    B b = new B();
+    b.f();
+}
+
+// Description :
+// Test d'une méthode asm
+//
+// Resultats :
+// Ok

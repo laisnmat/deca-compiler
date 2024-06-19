@@ -1,0 +1,16 @@
+// Description : initialisation et afficher des variables de différents types
+// test du unary minus
+//
+// Resultats :a = 3
+//            b = 1.50000e+00
+// 
+
+
+
+
+{
+    int a = - 2;
+    float b = - 2.4;
+    int c = - (2+2);
+    float d = 0.2 - 1.4;
+}

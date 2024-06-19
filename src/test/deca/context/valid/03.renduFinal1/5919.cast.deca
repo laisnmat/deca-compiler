@@ -1,0 +1,27 @@
+class B{
+    int x = 2;
+    int y = 3;
+    int z = 4;
+    int f(){
+        return x + y + z;
+    }
+}
+
+class A extends B{
+    int a = 2;
+}
+
+{
+    int x = (int) (1);
+    A a = (A) (new A());
+    float y = (float) (2);
+    B b = (B) (a);
+    A aa = (A) (new B());
+    println("a: ", aa.a);
+}
+
+// Description :
+// Test du cast
+//
+// Resultats :
+// Ok

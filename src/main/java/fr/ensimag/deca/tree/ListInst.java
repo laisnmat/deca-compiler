@@ -1,13 +1,13 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
-import org.apache.log4j.Logger;
 
 /**
  * 
@@ -28,24 +28,28 @@ public class ListInst extends TreeList<AbstractInst> {
      *                     corresponds to "return" attribute (void in the main
      *                     bloc).
      */
-    public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
+    public boolean verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         LOG.debug("verify ListInst: start");
 
         // verify each Inst in this List of Inst
         // verify rule (3.19)
+        boolean returnStatement = false;
         for (AbstractInst inst : this.getList()) {
             // verify rules from (3.20) to (3.27), depending on what kind of AbstractInst is
-            // inst
-            inst.verifyInst(compiler, localEnv, currentClass, returnType);
+            // (inst ↓env_types ↓env_exp ↓class ↓return)*
+
+            returnStatement = inst.verifyInst(compiler, localEnv, currentClass, returnType) || returnStatement;
         }
+
         LOG.debug("verify ListInst: end");
+        return returnStatement;
     }
 
-    public void codeGenListInst(DecacCompiler compiler) {
+    public void codeGenListInst(DecacCompiler compiler, AbstractIdentifier methodName) {
         for (AbstractInst i : getList()) {
-            i.codeGenInst(compiler);
+            i.codeGenInst(compiler, methodName);
         }
     }
 

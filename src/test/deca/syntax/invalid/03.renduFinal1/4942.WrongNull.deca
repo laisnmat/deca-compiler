@@ -1,0 +1,6 @@
+{
+    null = x;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : left-hand side of assignment is not an lvalue

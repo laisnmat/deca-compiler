@@ -1,0 +1,9 @@
+class A extends int {
+
+}
+// Description :
+// This test checks if a class can extend a primitive type.
+//
+// Resultats :
+// Erreur contextuelle 
+// Ligne 1 : Super class `int` is not a class

@@ -1,10 +1,9 @@
 package fr.ensimag.deca.codegen;
 
+import java.util.ArrayList;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class ErrorManager {
     ArrayList<AbstractError> errors = new ArrayList<>();
@@ -12,6 +11,8 @@ public class ErrorManager {
     private int genericCount;
 
     private boolean containsDivZeroError;
+
+    private boolean containsArithmeticOverflowError;
 
     public ErrorManager() {
         containsIOError = false;
@@ -36,6 +37,13 @@ public class ErrorManager {
      */
     public void addTSTOError() {
         this.errors.add(new TSTOError());
+    }
+
+    public void addArithmeticOverflowError() {
+        if (!this.containsArithmeticOverflowError) {
+            this.errors.add(new ArithmeticOverflowError());
+        }
+        containsArithmeticOverflowError = true;
     }
 
     public void addDivZeroError() {

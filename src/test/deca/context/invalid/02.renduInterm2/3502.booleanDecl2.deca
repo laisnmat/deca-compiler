@@ -1,0 +1,8 @@
+{
+    boolean x = "0";
+}
+
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: Incompatible Types: RValue must have the same type or subtype as LValue: string instead of boolean

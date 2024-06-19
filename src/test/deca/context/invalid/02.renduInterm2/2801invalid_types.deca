@@ -1,8 +1,0 @@
-{
-  int x = 2;
-  boolean y = true;
-
-  if (x != y) {
-    println("This isn't possible");
-  }
-}

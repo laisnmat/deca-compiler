@@ -1,0 +1,25 @@
+class A {
+
+}
+
+class B extends A {
+
+}
+
+class C extends B{
+
+}
+
+class D extends C {
+
+}
+
+class E extends B {
+
+}
+
+// Description :
+// Declaration de 5 classes A, B, C, D et E et encapsulation d'héritage
+//
+// Resultats :
+// Ok

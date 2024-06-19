@@ -1,13 +1,14 @@
 package fr.ensimag.deca.tree;
 
+import java.io.PrintStream;
+
+import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import java.io.PrintStream;
-import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
-import fr.ensimag.deca.context.EnvironmentExp;
 
 /**
  * @author gl03
@@ -45,8 +46,9 @@ public class Main extends AbstractMain {
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
         compiler.addComment("Beginning of main instructions");
-        declVariables.codeGenDeclVarList(compiler);
-        insts.codeGenListInst(compiler);
+        compiler.addLabel(compiler.startMainLabel);
+        declVariables.codeGenDeclVarList(compiler, null, null);
+        insts.codeGenListInst(compiler, null);
         compiler.addComment("End of main instructions");
     }
 

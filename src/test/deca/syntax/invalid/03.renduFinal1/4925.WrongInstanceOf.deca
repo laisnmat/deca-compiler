@@ -1,0 +1,6 @@
+{
+    x instanceof;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : Missing IDENT at ';

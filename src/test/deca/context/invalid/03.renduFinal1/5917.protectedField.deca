@@ -1,0 +1,15 @@
+class A {
+    protected int x = 0;
+}
+class B {
+    A obj = new A();
+    int a(){
+        return obj.x;
+    }
+}
+// Description :
+// This test checks if a method can call a protected field from another class.
+//
+// Resultats :
+// Erreur contextuelle 
+// Ligne 7 : Protected field x is not accessible from class B

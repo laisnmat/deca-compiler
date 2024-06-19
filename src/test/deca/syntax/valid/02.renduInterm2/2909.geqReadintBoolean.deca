@@ -1,0 +1,12 @@
+{
+    boolean x ; 
+    if(x >= readInt()){
+        x = 2;
+    }
+}
+
+// Description :
+// test de >= avec un boolean et un int
+//
+// Resultats :
+// étape A : OK (ne passera pas l'étape B)

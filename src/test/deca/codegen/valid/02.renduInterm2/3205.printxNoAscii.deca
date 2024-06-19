@@ -1,0 +1,10 @@
+// Description : Test avec des caractères non ascii 
+// test de Printx
+//
+// Resultats : 加斯頓
+// 
+
+
+{
+    printx("加斯頓");
+}

@@ -1,0 +1,7 @@
+class A {
+    void ass() asm("	
+	LOAD #1, R1
+	WINT
+	WNL
+code.a.ass:");
+}

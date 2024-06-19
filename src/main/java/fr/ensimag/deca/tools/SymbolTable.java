@@ -25,7 +25,7 @@ public class SymbolTable {
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
     public Symbol create(String name) {
-        //throw new UnsupportedOperationException("Symbol creation");
+        // throw new UnsupportedOperationException("Symbol creation");
         if (map.containsKey(name))
             return map.get(name);
         map.put(name, new Symbol(name));
@@ -48,6 +48,19 @@ public class SymbolTable {
         @Override
         public String toString() {
             return name;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof Symbol)) {
+                return super.equals(obj);
+            }
+            return this.getName().equals(((Symbol) obj).getName());
+        }
+
+        @Override
+        public int hashCode() {
+            return this.getName().hashCode();
         }
 
         private String name;

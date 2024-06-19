@@ -1,7 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.WNL;
 
 /**
@@ -20,8 +19,8 @@ public class Println extends AbstractPrint {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        super.codeGenInst(compiler);
+    protected void codeGenInst(DecacCompiler compiler, AbstractIdentifier methodName) {
+        super.codeGenInst(compiler, methodName);
         compiler.addInstruction(new WNL());
     }
 

@@ -1,0 +1,9 @@
+{
+    bolean x = true;
+}
+
+// Description :
+// test de la déclaration d'une variable de type booleen
+//
+// Resultats :
+// étape A : OK

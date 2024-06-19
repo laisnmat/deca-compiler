@@ -1,0 +1,9 @@
+// Description : Test avec des caractères non ascii 
+// test de Printlnx
+//
+// Resultats : 加斯頓
+// 
+
+{
+    println("加斯頓");
+}

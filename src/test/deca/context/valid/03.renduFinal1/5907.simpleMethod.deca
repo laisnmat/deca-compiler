@@ -1,0 +1,12 @@
+class A {
+    void exemple1(){
+
+    }
+}
+
+
+// Description :
+// Classe A avec une méthode exemple1 vide
+//
+// Resultats :
+// Ok

@@ -1,0 +1,9 @@
+class Object {
+
+}
+// Description :
+// Redéfinition de la classe Object.
+//
+// Resultats :
+// Erreur contextuelle 
+// Ligne 1 : Class `Object` already declared at [builtin]

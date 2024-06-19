@@ -1,0 +1,9 @@
+{
+    int a = 1;
+    boolean b = true;
+
+    float c = a + b;
+}
+// Resultats :
+// Erreur contextuelle
+// Ligne 5 : Incompatible types 'boolean' with 'int'

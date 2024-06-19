@@ -1,0 +1,11 @@
+class A {
+    int x(){
+        return true;
+    }
+}
+// Description :
+// This test checks that a method with return type have the good return type
+//
+// Resultats :
+// Erreur contextuelle 
+// Ligne 3 : Return statement with wrong type: boolean instead of int

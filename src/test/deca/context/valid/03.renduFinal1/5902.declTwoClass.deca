@@ -1,0 +1,11 @@
+class A{
+
+}
+class B{
+
+}
+// Description :
+// Declaration de deux classes A et B
+//
+// Resultats :
+// OK

@@ -1,12 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.MUL;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 /**
  * @author gl03
@@ -18,7 +15,7 @@ public class Multiply extends AbstractOpArith {
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return "*";
     }
 
@@ -26,13 +23,14 @@ public class Multiply extends AbstractOpArith {
      * Generate assembly code for the expression (Multiply)
      * 
      * @param compiler
-     *            the compiler
+     *                 the compiler
      * @param register
-     *            the register to store the result
+     *                 the register to store the result
      */
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         DVal rDval = this.codeGenOp(compiler, register);
         compiler.addInstruction(new MUL(rDval, register));
+        super.codeGenOpError(compiler);
     }
 }

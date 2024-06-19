@@ -1,0 +1,13 @@
+{
+    return 1;
+    return true;
+    return "toto";
+    return 1.0;
+    return x;
+    return x + 1;
+    return (x + y);
+}
+// Description :
+// test du Return
+// Resultats :
+// rien (Etape A : OK)

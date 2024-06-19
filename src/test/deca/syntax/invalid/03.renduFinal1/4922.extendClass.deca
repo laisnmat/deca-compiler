@@ -1,0 +1,17 @@
+protected class Single{
+    int a = 1;
+    int b;
+}
+protected class Double extends Single{
+    boolean c = true;
+}
+class Triple extends Double{
+    String d = "Hello";
+}
+// Description :
+// test du mot clé  extends sur une classe protected et non protected.
+// On test aussi la déclaration des attributs d'une classe avec une variable ou sans.
+//
+// Resultats :
+// Erreur de syntaxe
+// Ligne 1 no viable alternative at input 'protected'

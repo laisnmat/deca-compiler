@@ -1,0 +1,13 @@
+class A {
+    protected int x = 0;
+}
+{
+    A a = new A();
+    println(a.x);
+}
+// Description :
+// This test checks if a main class can access a protected variable from another class.
+//
+// Resultats :
+// Erreur contextuelle 
+// Ligne 6 : Protected field x is not accessible from class main

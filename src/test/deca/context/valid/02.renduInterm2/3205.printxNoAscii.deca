@@ -1,0 +1,12 @@
+// Description : affichage d'une chaine de caractère
+
+// test du printx
+//
+// Resultats : aucune erreur
+// 
+
+
+
+{
+    printx("加斯頓");
+}

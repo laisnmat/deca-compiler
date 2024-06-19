@@ -1,0 +1,20 @@
+{
+    boolean a = true;
+    boolean b = false;
+
+    boolean c = a && b;
+    boolean d = a || b;
+    boolean e = !a;
+    
+    if (!(a && b)){
+        println("We should be there");
+    }
+    else{
+        println("We shouldn't be there");
+    }
+}
+// Description :
+// test du not and
+// 
+// Resultats :
+// Si tout fonctionne correctement on devrait passer dans le if et donc avoir : We should be there

@@ -8,7 +8,7 @@ import org.apache.commons.lang.Validate;
  * Unary expression.
  *
  * @author gl03
- * @date 14/04/2024
+ * @date 14/04/2024instanceof
  */
 public abstract class AbstractUnaryExpr extends AbstractExpr {
 
@@ -23,7 +23,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         this.operand = operand;
     }
 
-    protected abstract String getOperatorName();
+    public abstract String getOperatorName();
 
     @Override
     public void decompile(IndentPrintStream s) {

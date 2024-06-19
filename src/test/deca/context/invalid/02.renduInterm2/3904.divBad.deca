@@ -1,0 +1,7 @@
+{
+    int a = 1.2 / 2;
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: Incompatible Types: RValue must have the same type or subtype as LValue: float instead of int

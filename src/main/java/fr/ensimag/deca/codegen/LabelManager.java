@@ -11,6 +11,8 @@ public class LabelManager {
     private int boolAssignCount = 0;
     private int boolExpCount = 0;
 
+    private int instanceOfCount = 0;
+
     /**
      * True if there is at least one call to an IO function, else False.
      */
@@ -95,6 +97,11 @@ public class LabelManager {
         return new LabelBoolExp(boolExpCount, this);
     }
 
+    public InstanceOfLabel getInstanceOfLabel() {
+        instanceOfCount++;
+        return new InstanceOfLabel(instanceOfCount, this);
+    }
+
     /**
      * Get the current prefix of the labels.
      *
@@ -111,7 +118,7 @@ public class LabelManager {
      * being too long
      *
      * @param addPrefix
-     *            the new prefix
+     *                  the new prefix
      */
     public void addPrefix(String addPrefix) {
         if (this.prefix1 == null) {
@@ -180,6 +187,10 @@ public class LabelManager {
         return new Label("stack_overflow_error");
     }
 
+    public Label getArithmeticOverflowError() {
+        return new Label("arithmetic_overflow_error");
+    }
+
     /**
      * Get if there is a possibility of division by zero in the code.
      *
@@ -194,4 +205,5 @@ public class LabelManager {
     public Label getDivByZeroError() {
         return new Label("div_zero_error");
     }
+
 }

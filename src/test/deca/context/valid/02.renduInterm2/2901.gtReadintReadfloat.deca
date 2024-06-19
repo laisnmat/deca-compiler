@@ -1,0 +1,13 @@
+// Description : récuperation d'une valeur entière et floatante
+// test du greater than
+//
+// Resultats : aucune erreur
+// 
+
+
+{
+    int x ; 
+    if(readInt() > readFloat()){
+        x = 2;
+    }
+}

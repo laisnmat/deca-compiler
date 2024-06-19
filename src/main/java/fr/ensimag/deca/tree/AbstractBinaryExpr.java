@@ -60,10 +60,10 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     public String decompile() {
-        return getLeftOperand().decompile() + " " + getOperatorName()+ " " + getRightOperand().decompile();
+        return getLeftOperand().decompile() + " " + getOperatorName() + " " + getRightOperand().decompile();
     }
 
-    abstract protected String getOperatorName();
+    abstract public String getOperatorName();
 
     @Override
     protected void iterChildren(TreeFunction f) {
@@ -77,12 +77,14 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         rightOperand.prettyPrint(s, prefix, true);
     }
 
-    protected void addComment(DecacCompiler compiler, boolean jumpOnTrue, Label label){
-        compiler.addComment("Code(" + getLeftOperand().decompile() + " " + getOperatorName() + " " + getRightOperand().decompile() + ", "+ jumpOnTrue + ", "+ label + ")");   
+    protected void addComment(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        compiler.addComment("Code(" + getLeftOperand().decompile() + " " + getOperatorName() + " "
+                + getRightOperand().decompile() + ", " + jumpOnTrue + ", " + label + ")");
     }
 
     @Override
     protected void addComment(DecacCompiler compiler, GPRegister register) {
-        compiler.addComment("codeExp(" + getLeftOperand().decompile() + " " + getOperatorName() + " " + getRightOperand().decompile() +  ", " + register + ")");
+        compiler.addComment("codeExp(" + getLeftOperand().decompile() + " " + getOperatorName() + " "
+                + getRightOperand().decompile() + ", " + register + ")");
     }
 }

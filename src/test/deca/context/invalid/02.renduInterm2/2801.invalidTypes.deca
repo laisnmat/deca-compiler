@@ -1,0 +1,13 @@
+{
+  int x = 2;
+  boolean y = true;
+
+  if (x != y) {
+    println("This isn't possible");
+  }
+}
+
+
+// Resultats :
+// Erreur contextuelle 
+// Ligne 5 : Incompatible Types:  '!=' between int and boolean

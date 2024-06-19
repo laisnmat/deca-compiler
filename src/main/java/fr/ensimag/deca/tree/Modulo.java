@@ -1,20 +1,17 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.DIV;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.MUL;
 import fr.ensimag.ima.pseudocode.instructions.POP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.REM;
@@ -36,14 +33,15 @@ public class Modulo extends AbstractOpArith {
         this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         if (!this.getLeftOperand().getType().isInt() || !this.getRightOperand().getType().isInt()) {
-            throw new ContextualError("Operands must be of type int for operator %", this.getLocation());
+            throw new ContextualError("Incompatible Types: Operands must be of type int for operator %",
+                    this.getLocation());
         }
         this.setType(compiler.environmentType.INT);
         return this.getType();
     }
 
     @Override
-    protected String getOperatorName() {
+    public String getOperatorName() {
         return "%";
     }
 
@@ -51,9 +49,9 @@ public class Modulo extends AbstractOpArith {
      * Generate assembly code for the expression (Modulo)
      * 
      * @param compiler
-     *            the compiler
+     *                 the compiler
      * @param register
-     *            the register to store the result
+     *                 the register to store the result
      */
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
@@ -66,27 +64,36 @@ public class Modulo extends AbstractOpArith {
             compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
 
             compiler.addInstruction(new REM(dvalRightOp, register));
+            super.codeGenOpError(compiler);
         } else {
             if (register.getNumber() == DecacCompiler.MAXREGISTER) {
                 compiler.addInstruction(new PUSH(register), "sauvegarde ");
                 this.getRightOperand().codeGenExp(compiler, register);
                 compiler.addInstruction(new LOAD(register, GPRegister.R1));
                 compiler.addInstruction(new POP(register), "restauration ");
-
-                compiler.addInstruction(new CMP(new ImmediateInteger(0), GPRegister.R1));
-                compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
-
-                compiler.addInstruction(new REM(GPRegister.R1, register));
+                codeGenExpSecond(compiler, register, GPRegister.R1);
             } else {
                 GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);
                 this.getRightOperand().codeGenExp(compiler, nextRegister);
-
-                compiler.addInstruction(new CMP(new ImmediateInteger(0), nextRegister));
-                compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
-
-                compiler.addInstruction(new MUL(nextRegister, register));
+                codeGenExpSecond(compiler, register, nextRegister);
             }
         }
     }
 
+    /**
+     * Generate assembly code for the expression (Modulo) only when we use -n flag
+     * 
+     * @param compiler     The compiler
+     * @param register     The register to store the result
+     * @param nextRegister The register to store the right opérande
+     */
+    void codeGenExpSecond(DecacCompiler compiler, GPRegister register, GPRegister nextRegister) {
+        if (!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.addInstruction(
+                    new CMP(this.getType().isInt() ? new ImmediateInteger(0) : new ImmediateFloat(0), nextRegister));
+            compiler.addInstruction(new BEQ(compiler.labelManager.getDivByZeroError()));
+        }
+        compiler.addInstruction(new REM(nextRegister, register));
+        super.codeGenOpError(compiler);
+    }
 }

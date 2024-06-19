@@ -1,11 +1,9 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.ExpDefinition;
 
 /**
  * Variable declaration
@@ -18,7 +16,8 @@ public abstract class AbstractDeclVar extends Tree {
     /**
      * Implements non-terminal "decl_var" of [SyntaxeContextuelle] in pass 3
      * 
-     * @param compiler     contains "env_types" attribute
+     * @param compiler
+     *                     contains "env_types" attribute
      * @param localEnv
      *                     its "parentEnvironment" corresponds to the "env_exp_sup"
      *                     attribute
@@ -38,8 +37,9 @@ public abstract class AbstractDeclVar extends Tree {
      * Generate assembly code for the variable declaration.
      * 
      * @param compiler
-     *
-     * @param localBaseOffset
+     * @param currentClass
+     * @param methodName
      */
-    protected abstract int codeGenDeclVar(DecacCompiler compiler, int localBaseOffset);
+    protected abstract void codeGenDeclVar(DecacCompiler compiler, ClassDefinition currentClass,
+            AbstractIdentifier methodName);
 }

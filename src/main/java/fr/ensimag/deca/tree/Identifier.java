@@ -1,15 +1,21 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.TypeDefinition;
+import java.io.PrintStream;
+
+import org.apache.commons.lang.Validate;
+import org.apache.log4j.Logger;
+
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.FieldDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.Signature;
+import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -24,10 +30,6 @@ import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
-import java.io.PrintStream;
-import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
-
 /**
  * Deca Identifier
  *
@@ -38,6 +40,13 @@ public class Identifier extends AbstractIdentifier {
     private static final Logger LOG = Logger.getLogger(Identifier.class);
 
     private Definition definition;
+
+    private final Symbol name;
+
+    public Identifier(Symbol name) {
+        Validate.notNull(name);
+        this.name = name;
+    }
 
     @Override
     protected void checkDecoration() {
@@ -51,16 +60,6 @@ public class Identifier extends AbstractIdentifier {
         return definition;
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * ClassDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a class definition.
-     */
     @Override
     public ClassDefinition getClassDefinition() {
         try {
@@ -73,16 +72,6 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * MethodDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a method definition.
-     */
     @Override
     public MethodDefinition getMethodDefinition() {
         try {
@@ -95,16 +84,6 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * FieldDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a field definition.
-     */
     @Override
     public FieldDefinition getFieldDefinition() {
         try {
@@ -117,16 +96,6 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * VariableDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a field definition.
-     */
     @Override
     public VariableDefinition getVariableDefinition() {
         try {
@@ -139,16 +108,6 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
-    /**
-     * Like {@link #getDefinition()}, but works only if the definition is a
-     * ExpDefinition.
-     * 
-     * This method essentially performs a cast, but throws an explicit exception
-     * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *                            if the definition is not a field definition.
-     */
     @Override
     public ExpDefinition getExpDefinition() {
         try {
@@ -171,13 +130,6 @@ public class Identifier extends AbstractIdentifier {
         return name;
     }
 
-    private Symbol name;
-
-    public Identifier(Symbol name) {
-        Validate.notNull(name);
-        this.name = name;
-    }
-
     /**
      * Implements terminal "Identifier" of [SyntaxeContextuelle] in the 3 passes.
      * Verify rule (0.2).
@@ -185,27 +137,61 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        LOG.debug("verify Identifier: checking if defined in the current environment");
+        this.verifyLValueIdent(compiler, localEnv, currentClass);
+        // identifier ↓env_exp ↑(field(__, __), type)
+        // identifier ↓env_exp ↑(param, type)
+        // identifier ↓env_exp ↑(var, type);
+        Definition def = getDefinition();
+        if (!def.isVar() && !def.isParam() && !def.isField()) {
+            throw new ContextualError(
+                    "Incompatible Types: Identifier " + this.getName() + " is not a variable, a parameter or a field.",
+                    getLocation());
+        }
+        return this.getType();
+    }
+
+    public Type verifyLValueIdent(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+        LOG.debug("verify Identifier: checking if " + this.name + " is defined in the current environment");
 
         // getting the definition associated with the current Identifier if it exists
         ExpDefinition def = localEnv.get(this.name);
-
         // if the current Identifier has no definition associated, that means it has
         // never been defined.
-        if (def == null)
-            throw new ContextualError("Identifier not declared", getLocation());
+        if (def == null) {
+            throw new ContextualError("NullDefinition: Identifier " + this.getName() + " is never defined.",
+                    getLocation());
+        }
         setType(def.getType());
         setDefinition(def);
         return def.getType();
     }
 
-    /**
-     * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes.
-     * Verify rule (0.2).
-     * 
-     * @param compiler
-     *                 contains "env_types" attribute
-     */
+    @Override
+    public Type verifyFieldIdent(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        // identifier ↓env_exp ↑(field(__, __), type)
+        this.verifyLValueIdent(compiler, localEnv, currentClass);
+        Definition def = getDefinition();
+        if (!def.isField()) {
+            throw new ContextualError("Incompatible Types: Identifier " + this.getName() + " is not a field.",
+                    getLocation());
+        }
+        return this.getType();
+    }
+
+    @Override
+    public Signature verifyMethodIdent(DecacCompiler compiler, EnvironmentExp envExp, ClassDefinition currentClass)
+            throws ContextualError {
+        this.verifyLValueIdent(compiler, envExp, currentClass);
+        try {
+            return this.getMethodDefinition().getSignature();
+        } catch (DecacInternalError e) {
+            throw new ContextualError("Incompatible Types: Identifier " + this.getName() + " is not a method.",
+                    getLocation());
+        }
+    }
+
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Type: setting type");
@@ -216,7 +202,8 @@ public class Identifier extends AbstractIdentifier {
         // if the current Identifier (representing a Type) has no definition associated,
         // that means it has never been defined.
         if (typeDefinition == null) {
-            throw new ContextualError("Type " + this.getName() + " is never defined.", getLocation());
+            throw new ContextualError("Incompatible Types: Type " + this.getName() + " is never defined.",
+                    getLocation());
         }
 
         // setting Definition and Type of this Identifier

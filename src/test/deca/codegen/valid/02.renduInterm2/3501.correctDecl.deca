@@ -1,0 +1,22 @@
+// Description : test du type booléenne
+// test de 
+//
+// Resultats :true
+//            false
+//            We should be here
+// 
+
+{
+    boolean x = false;
+    boolean y = true;
+    boolean z = y;
+    if(y){
+        println("true");
+    }
+    if(!x){
+        println("false");
+    }
+    if(z){
+        println("We should be here");
+    }
+}

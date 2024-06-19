@@ -1,0 +1,9 @@
+{
+    (x)(y);
+    x = (y)(z);
+    (x)(y+z);
+}
+// Description :
+// test du cast
+// Resultats :
+// rien (Etape A : OK)

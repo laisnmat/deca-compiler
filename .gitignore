@@ -23,3 +23,7 @@ src/main/antlr4/fr/ensimag/deca/syntax/.antlr
 src/test/deca/tmp
 
 /gen
+
+# Jacoco executions
+*.exec
+.LCK*

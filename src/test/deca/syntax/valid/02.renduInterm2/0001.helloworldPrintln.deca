@@ -1,0 +1,9 @@
+{
+    println("Hello, world!");
+}
+
+// Description :
+// test du println
+//
+// Resultats :
+//  étape A : OK (Hello, world!)

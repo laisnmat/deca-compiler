@@ -1,0 +1,8 @@
+class Hello{
+    int method(a, b) {
+        return a;
+    }
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 2 : extraneous input ',' expecting IDENT

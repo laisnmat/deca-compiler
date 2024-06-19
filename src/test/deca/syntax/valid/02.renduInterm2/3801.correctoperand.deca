@@ -1,0 +1,12 @@
+{
+    int a = 1 + 1;
+    float b = 2.5 + 3.2;
+
+    int c = 2 - 1;
+    float d = 2.5 - 0.2;
+}
+// Description :
+// test de l'addition et de la soustraction de deux variables de type int et float
+//
+// Resultats :
+// étape A : OK

@@ -1,0 +1,7 @@
+{
+    printlnx(/);
+}
+
+// Resultats :
+// Erreur contextuelle
+// Ligne 2: extraneous input '/' expecting ')'

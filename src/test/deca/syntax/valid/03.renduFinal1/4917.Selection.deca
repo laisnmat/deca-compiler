@@ -1,0 +1,12 @@
+{
+    x.y;
+    a = x.y;
+    x.y = 1;
+    x.y == true;
+    this.x.y;
+    this.x.y.d.i.fautFinirQuandMeme;
+}
+// Description :
+// test du selection
+// Resultats :
+// rien (Etape A : OK)

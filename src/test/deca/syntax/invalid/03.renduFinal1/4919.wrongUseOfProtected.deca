@@ -1,0 +1,6 @@
+class protected Hello{
+    int x;
+}
+// Resultats :
+// Erreur de syntaxe
+// Ligne 1 : extraneous input 'protected' expecting IDENT
