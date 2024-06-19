@@ -72,7 +72,7 @@ public class Program extends AbstractProgram {
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
 
-        compiler.addFirst(new Line(new ADDSP(compiler.stackManager.getADDSPValue())));
+        compiler.addFirst(new Line(new ADDSP(compiler.stackManager.getGlobalADDSPValue())));
         if (!compiler.getCompilerOptions().getNoCheck()) {
             compiler.errorManager.addTSTOError();
             compiler.addFirst(new Line(new BOV(compiler.labelManager.getStackOverflowError())));
