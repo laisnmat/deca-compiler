@@ -1,0 +1,25 @@
+class Point2D {
+    int x;
+    int y;
+
+}
+
+class Point3D extends Point2D {
+    int z;
+}
+
+{
+    Point2D p1;
+    Point3D p3;
+
+    p1 = new Point2D();
+    p1.x = 3;
+    println(p1.x);
+
+    p3 = new Point3D();
+    p3.z = 10;
+    println(p3.z);
+
+
+
+}

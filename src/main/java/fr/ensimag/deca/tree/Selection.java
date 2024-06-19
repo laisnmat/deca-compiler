@@ -2,6 +2,11 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
@@ -42,11 +47,6 @@ public class Selection extends AbstractLValue {
         field.decompile(s);
     }
 
-    // @Override
-    // protected void codeGenExpr(DecacCompiler compiler, GPRegister register) {
-    // throw new UnsupportedOperationException("not yet implemented");
-    // }
-
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
@@ -76,4 +76,18 @@ public class Selection extends AbstractLValue {
         return classField;
     }
 
+    @Override
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new LOAD(this.select.getDVal(), Register.R0));
+        int index = ((Identifier) this.field).getFieldDefinition().getIndex();
+        RegisterOffset offset = new RegisterOffset(index, Register.R0);
+        compiler.addInstruction(new LOAD(offset, register));
+    }
+
+    public void codeGenAssign(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new LOAD(this.select.getDVal(), Register.R0));
+        int index = ((Identifier) this.field).getFieldDefinition().getIndex();
+        RegisterOffset offset = new RegisterOffset(index, Register.R0);
+        compiler.addInstruction(new STORE(register, offset));
+    }
 }
