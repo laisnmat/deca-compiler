@@ -143,9 +143,9 @@ public class DeclClass extends AbstractDeclClass {
      * Method to generate code for a new Class declaration.
      * 
      * @param compiler
-     *                     DecacCompiler associated
+     *            DecacCompiler associated
      * @param currentClass
-     *                     Current Class in which the class is declared
+     *            Current Class in which the class is declared
      */
     protected void codeGenDeclClass(DecacCompiler compiler) {
         int baseOffset;

@@ -10,8 +10,10 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BSR;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 public class MethodCall extends AbstractExpr {
 
@@ -87,5 +89,12 @@ public class MethodCall extends AbstractExpr {
         Type returnType = method.getType();
         setType(returnType);
         return returnType;
+    }
+
+    @Override
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
+        compiler.addInstruction(new CMP(new ImmediateInteger(jumpOnTrue ? 1 : 0), Register.R0));
+        compiler.addInstruction(new BEQ(label));
     }
 }

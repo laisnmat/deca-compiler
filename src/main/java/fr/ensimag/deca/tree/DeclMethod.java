@@ -104,7 +104,6 @@ public class DeclMethod extends AbstractDeclMethod {
         body.codeGenMethodBody(compiler, currentClass, this.methodName);
     }
 
-
     @Override
     public void decompile(IndentPrintStream s) {
         type.decompile(s);
