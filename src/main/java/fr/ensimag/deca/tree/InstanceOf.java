@@ -40,11 +40,6 @@ public class InstanceOf extends AbstractExpr {
         type.decompile(s);
     }
 
-    // @Override
-    // protected void codeGenExpr(DecacCompiler compiler, GPRegister register) {
-    // throw new UnsupportedOperationException("not yet implemented");
-    // }
-
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {

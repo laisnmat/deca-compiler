@@ -40,11 +40,6 @@ public class Cast extends AbstractExpr {
         s.print(")");
     }
 
-    // @Override
-    // protected void codeGenExpr(DecacCompiler compiler, GPRegister register) {
-    // throw new UnsupportedOperationException("not yet implemented");
-    // }
-
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {

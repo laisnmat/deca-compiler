@@ -10,6 +10,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.BSR;
 
 public class MethodCall extends AbstractExpr {
 
@@ -47,10 +49,10 @@ public class MethodCall extends AbstractExpr {
         s.print(")");
     }
 
-    // @Override
-    // protected void codeGenExpr(DecacCompiler compiler, GPRegister register) {
-    // throw new UnsupportedOperationException("not yet implemented");
-    // }
+    @Override
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
+    }
 
     public void verifySignature(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass,
