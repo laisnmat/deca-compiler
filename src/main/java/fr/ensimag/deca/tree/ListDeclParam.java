@@ -35,8 +35,10 @@ public class ListDeclParam extends TreeList<AbstractDeclParam> {
         // (3.12)
         // (decl_param ↓env_types ↑env_exp
         // {env_expr := env_expr ⊕ env_exp})*
+        int i = 3;
         for (AbstractDeclParam declParam : getList()) {
-            declParam.verifyDeclParamInit(compiler, localEnv);
+            declParam.verifyDeclParamInit(compiler, localEnv,i);
+            i++;
         }
     }
 }

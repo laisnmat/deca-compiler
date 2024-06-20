@@ -108,7 +108,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("PASSE 3 : verify class members `" + name.getName() + "`: start");
+        LOG.debug("PASSE 3 : verify class body `" + name.getName() + "`: start");
         // (3.5)
         ClassDefinition currentClass = (ClassDefinition) compiler.environmentType.defOfType(name.getName());
         // list_decl_field ↓env_types ↓env_exp ↓class
@@ -116,7 +116,7 @@ public class DeclClass extends AbstractDeclClass {
         // list_decl_method ↓env_types ↓env_exp ↓class
         methods.verifyListDeclMethodBody(compiler, currentClass.getMembers(), currentClass);
         // condition (class(__, env_exp), __) ≜ env_types(class)
-        LOG.debug("PASSE 3 : verify class members: end");
+        LOG.debug("PASSE 3 : verify class body: end");
     }
 
     @Override

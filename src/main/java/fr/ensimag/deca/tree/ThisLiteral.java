@@ -2,6 +2,10 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.log4j.Logger;
 
 import fr.ensimag.deca.DecacCompiler;
@@ -37,7 +41,8 @@ public class ThisLiteral extends AbstractExpr {
 
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
-        throw new UnsupportedOperationException("not yet implemented");
+        RegisterOffset offset = new RegisterOffset(-2, Register.LB);
+        compiler.addInstruction(new LOAD(this.getDVal(), Register.R0));
     }
 
     @Override
@@ -60,4 +65,8 @@ public class ThisLiteral extends AbstractExpr {
         // leaf node => nothing to do
     }
 
+    @Override
+    public DVal getDVal() {
+        return new RegisterOffset(-2, Register.LB);
+    }
 }

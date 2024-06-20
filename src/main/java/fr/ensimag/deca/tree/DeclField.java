@@ -35,7 +35,7 @@ public class DeclField extends AbstractDeclField {
     };
 
     @Override
-    protected void verifyDeclField(DecacCompiler compiler, ClassDefinition currentClass)
+    protected void verifyDeclField(DecacCompiler compiler, ClassDefinition currentClass, int index)
             throws ContextualError {
         LOG.debug("verify DeclField `" + currentClass.getType() + "." + varName.getName() + "`: start");
         // (2.5)
@@ -49,7 +49,7 @@ public class DeclField extends AbstractDeclField {
         }
         // {name → (field(visib, class), type)}
         FieldDefinition fieldDef = new FieldDefinition(this.type.getType(), getLocation(), this.visibility,
-                currentClass, currentClass.getNumberOfFields());
+                currentClass, index);
         // si (class(__,env_exp_super),__)≜env_types(super) et env_exp_super(name) est
         // défini
         // alors env_exp_super(name) = (field(__,__),__)
