@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
+import java.util.Collection;
+import java.util.Collections;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -14,12 +16,15 @@ import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BSR;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 
 public class MethodCall extends AbstractExpr {
 
     private AbstractExpr classCall;
     private AbstractIdentifier method;
-    private ListExpr listExpr;
+    private ListExpr listExpr; // params list
 
     public MethodCall(AbstractExpr classCall, AbstractIdentifier method, ListExpr listExpr) {
         this.classCall = classCall;
@@ -53,7 +58,17 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        Collections.reverse(listExpr.getListModif());
+        for (AbstractExpr exp : listExpr.getListModif())  {
+            exp.codeGenExp(compiler, register);
+            compiler.addInstruction(new PUSH(register));
+        }
+        classCall.codeGenExp(compiler, register);
+        compiler.addInstruction(new PUSH(register));
+        // voir table 
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
+        // subsp n'oublie le +1
+        compiler.addInstruction(new SUBSP(listExpr.size()+1));
     }
 
     public void verifySignature(DecacCompiler compiler,
@@ -93,7 +108,9 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
-        compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
+        compiler.addInstruction(new PUSH(Register.getR(2)));
+        this.codeGenExp(compiler,GPRegister.getR(2));
+        compiler.addInstruction(new POP(Register.getR(2)));
         compiler.addInstruction(new CMP(new ImmediateInteger(jumpOnTrue ? 1 : 0), Register.R0));
         compiler.addInstruction(new BEQ(label));
     }

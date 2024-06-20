@@ -74,6 +74,7 @@ public class Program extends AbstractProgram {
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new RuntimeException(e);
         }
+        defObj.incNumberOfMethods();
     }
 
     @Override
@@ -82,8 +83,6 @@ public class Program extends AbstractProgram {
         this.addObjectDeclClass(compiler);
         classes.codeGenDeclClassList(compiler);
         compiler.addInstruction(new BRA(compiler.startMainLabel));
-        this.addObjectMethodEquals(compiler);
-        classes.codeGenDeclMethodsList(compiler);
         compiler.addComment("Main program");
 
         main.codeGenMain(compiler);
@@ -97,6 +96,8 @@ public class Program extends AbstractProgram {
         }
         compiler.errorManager.generateErrors(compiler);
         compiler.addFirst(new Line("stack overflow test"));
+        this.addObjectMethodEquals(compiler);
+        classes.codeGenDeclMethodsList(compiler);
     }
 
     private void addObjectMethodEquals(DecacCompiler compiler) {

@@ -186,6 +186,7 @@ public class DeclClass extends AbstractDeclClass {
                 compiler.addInstruction(new STORE(Register.R0, methodOffset));
             }
         });
+        //TODO correct this formule (methods class parent)
         compiler.stackManager.setGlobalCount(baseOffset + currentClass.getNumberOfMethods() - 1);
     }
 
