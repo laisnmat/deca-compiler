@@ -40,9 +40,23 @@ public class DeclObject extends AbstractDeclClass {
 
     @Override
     protected void codeGenDeclClass(DecacCompiler compiler) {
-        RegisterOffset offset = new RegisterOffset(1, GPRegister.GB);
+        RegisterOffset offset = new RegisterOffset(1, Register.GB);
+        compiler.addComment("Code de la table des méthodes de Object");
         compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, offset));
+        compiler.stackManager.incrementVarGlobalCount();
+
+        // LOAD code.Object.Equals, R0
+        compiler.addInstruction(new LOAD(new LabelOperand(new Label("code.Object.Equals")), Register.R0));
+
+        // calculate address of method from address of class + method index
+        int methodAddress = compiler.stackManager.getVarGlobalCount() + 1;
+
+        // calculate offset for GB
+        RegisterOffset methodOffset = new RegisterOffset(methodAddress, Register.GB);
+
+        // STORE R0, x(GB)
+        compiler.addInstruction(new STORE(Register.R0, methodOffset));
         compiler.stackManager.incrementVarGlobalCount();
     }
 
@@ -67,5 +81,11 @@ public class DeclObject extends AbstractDeclClass {
 
     @Override
     protected void codegenMethods(DecacCompiler compiler) {
+        // pass
+    }
+
+    @Override
+    protected void codeGenInit(DecacCompiler compiler) {
+        // pass
     }
 }

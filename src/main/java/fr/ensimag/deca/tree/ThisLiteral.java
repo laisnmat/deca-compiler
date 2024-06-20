@@ -42,7 +42,7 @@ public class ThisLiteral extends AbstractExpr {
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         RegisterOffset offset = new RegisterOffset(-2, Register.LB);
-        compiler.addInstruction(new LOAD(this.getDVal(), Register.R0));
+        compiler.addInstruction(new LOAD(this.getDVal(), register));
     }
 
     @Override

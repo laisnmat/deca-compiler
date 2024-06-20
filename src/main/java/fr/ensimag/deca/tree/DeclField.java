@@ -11,16 +11,20 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 public class DeclField extends AbstractDeclField {
     private static final Logger LOG = Logger.getLogger(DeclField.class);
 
-    final private Visibility visibility;
-    final private AbstractIdentifier type;
-    final private AbstractIdentifier varName;
-    final private AbstractInitialization initialization;
+    private final Visibility visibility;
+    private final AbstractIdentifier type;
+    private final AbstractIdentifier varName;
+    private final AbstractInitialization initialization;
 
     public DeclField(Visibility visibility, AbstractIdentifier type, AbstractIdentifier varName,
             AbstractInitialization initialization) {
@@ -66,7 +70,6 @@ public class DeclField extends AbstractDeclField {
         try {
             localEnv.declare(this.varName.getName(), fieldDef);
             LOG.debug("declField localEnv : " + localEnv);
-            currentClass.incNumberOfFields();
         } catch (EnvironmentExp.DoubleDefException e) {
             ExpDefinition previous = localEnv.get(this.varName.getName());
             throw new ContextualError(
@@ -93,8 +96,52 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    protected int codeGenDeclField(DecacCompiler compiler, int localBaseOffset) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void codeGenDeclField(DecacCompiler compiler, boolean initExplicit) {
+        // explicit initialisation of each field
+        if (initExplicit) {
+            // if the field isn't explicitly initialised, return immediately
+            if (!(this.initialization instanceof Initialization)) {
+                return;
+            }
+            compiler.addComment(
+                    "Initialisation explicite de "
+                            + this.varName.getFieldDefinition().getContainingClass().getType().getName() + "."
+                            + this.varName.getName());
+
+            Initialization init = (Initialization) this.initialization;
+
+            // on génére le code de l'opérande droit de l'initialisation du champ
+            init.getExpression().codeGenExp(compiler, Register.R0);
+
+            // on calcule l'offset où stocker le champ avec son index, sachant que l'objet
+            // est stocké dans R1
+            RegisterOffset fieldOffset = new RegisterOffset(this.varName.getFieldDefinition().getIndex(),
+                    Register.R1);
+            compiler.addInstruction(new STORE(Register.R0, fieldOffset));
+        }
+
+        else {
+            compiler.addComment(
+                    "Initialisation de "
+                            + this.varName.getFieldDefinition().getContainingClass().getType().getName() + "."
+                            + this.varName.getName());
+
+            // on stocke la valeur par défaut correspondant au type du champ
+            if (this.varName.getType().isBoolean() || this.varName.getType().isInt()) {
+                compiler.addInstruction(new LOAD(0, Register.R0));
+            } else if (this.varName.getType().isFloat()) {
+                FloatLiteral f = new FloatLiteral((float) 0.0);
+                compiler.addInstruction(new LOAD(f, Register.R0));
+            } else {
+                compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+            }
+
+            // on calcule l'offset où stocker le champ avec son index, sachant que l'objet
+            // est stocké dans R1
+            RegisterOffset fieldOffset = new RegisterOffset(this.varName.getFieldDefinition().getIndex(),
+                    Register.R1);
+            compiler.addInstruction(new STORE(Register.R0, fieldOffset));
+        }
     }
 
     @Override

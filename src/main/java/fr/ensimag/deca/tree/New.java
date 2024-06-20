@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -61,9 +62,13 @@ public class New extends AbstractExpr {
         compiler.addInstruction(new STORE(Register.R0, offsetR));
 
         compiler.addInstruction(new PUSH(register));
-        // compiler.addInstruction(new BSR(((ClassType)
-        // type.getType()).getDefinition().getInitLabel()));
-        compiler.addInstruction(new POP(register));
+        compiler.stackManager.incrementPushCount();
 
+        Label initLabel = type.getClassDefinition().getLabel();
+
+        compiler.addInstruction(new BSR(initLabel));
+
+        compiler.addInstruction(new POP(register));
+        compiler.stackManager.decrementPushCount();
     }
 }

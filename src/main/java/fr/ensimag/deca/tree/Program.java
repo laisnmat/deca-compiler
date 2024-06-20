@@ -69,6 +69,7 @@ public class Program extends AbstractProgram {
 
         MethodDefinition methDef = new MethodDefinition(compiler.environmentType.BOOLEAN, Location.BUILTIN, equalsSign,
                 defObj, 1, null);
+        methDef.setLabel(new Label("code.Object.Equals"));
         try {
             defObj.getMembers().declare(compiler.symbolTable.create("equals"), methDef);
         } catch (EnvironmentExp.DoubleDefException e) {
@@ -83,6 +84,8 @@ public class Program extends AbstractProgram {
         this.addObjectDeclClass(compiler);
         classes.codeGenDeclClassList(compiler);
         compiler.addInstruction(new BRA(compiler.startMainLabel));
+        classes.codeGenDeclFieldsList(compiler);
+        compiler.addInstruction(new BRA(compiler.startMainLabel));
         compiler.addComment("Main program");
 
         main.codeGenMain(compiler);
@@ -94,10 +97,10 @@ public class Program extends AbstractProgram {
             compiler.addFirst(new Line(new BOV(compiler.labelManager.getStackOverflowError())));
             compiler.addFirst(new Line(new TSTO(compiler.stackManager.getTSTOValue())));
         }
-        compiler.errorManager.generateErrors(compiler);
         compiler.addFirst(new Line("stack overflow test"));
         this.addObjectMethodEquals(compiler);
         classes.codeGenDeclMethodsList(compiler);
+        compiler.errorManager.generateErrors(compiler);
     }
 
     private void addObjectMethodEquals(DecacCompiler compiler) {

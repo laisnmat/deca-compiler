@@ -82,7 +82,7 @@ public class Selection extends AbstractLValue {
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         select.codeGenExp(compiler, register);
         int index = ((Identifier) this.field).getFieldDefinition().getIndex();
-        RegisterOffset offset = new RegisterOffset(index, Register.R0);
+        RegisterOffset offset = new RegisterOffset(index, register);
         compiler.addInstruction(new LOAD(offset, register));
     }
 
