@@ -1,0 +1,12 @@
+class A {
+    void b(int x, int c) {
+
+    }
+}
+
+{
+    A test = new A();
+    int o = 1;
+    boolean c = true;
+    test.b(c, o);
+}
