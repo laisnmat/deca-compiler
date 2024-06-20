@@ -59,16 +59,16 @@ public class MethodCall extends AbstractExpr {
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         Collections.reverse(listExpr.getListModif());
-        for (AbstractExpr exp : listExpr.getListModif())  {
+        for (AbstractExpr exp : listExpr.getListModif()) {
             exp.codeGenExp(compiler, register);
             compiler.addInstruction(new PUSH(register));
         }
         classCall.codeGenExp(compiler, register);
         compiler.addInstruction(new PUSH(register));
-        // voir table 
+        // voir table
         compiler.addInstruction(new BSR(method.getMethodDefinition().getLabel()));
         // subsp n'oublie le +1
-        compiler.addInstruction(new SUBSP(listExpr.size()+1));
+        compiler.addInstruction(new SUBSP(listExpr.size() + 1));
     }
 
     public void verifySignature(DecacCompiler compiler,
@@ -77,13 +77,17 @@ public class MethodCall extends AbstractExpr {
         if (listExpr.getList().size() != signature.size()) {
             throw new ContextualError("MethodCall: Wrong number of arguments", getLocation());
         }
+        boolean flag = false;
         for (int i = 0; i < listExpr.getList().size(); i++) {
             try {
                 listExpr.getList().get(i).verifyRValue(compiler, localEnv, currentClass, signature.paramNumber(i));
             } catch (ContextualError e) {
-                throw new ContextualError("MethodCall: Cannot call method " + method.getName() + " with parameters "
-                        + listExpr.getList() + " instead of " + signature.getArgs(), getLocation());
+                flag = true;
             }
+        }
+        if (flag) {
+            throw new ContextualError("MethodCall: Cannot call method " + method.getName() + " with parameters "
+                    + listExpr + " instead of " + signature.getArgs(), getLocation());
         }
 
     }
@@ -109,7 +113,7 @@ public class MethodCall extends AbstractExpr {
     @Override
     public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
         compiler.addInstruction(new PUSH(Register.getR(2)));
-        this.codeGenExp(compiler,GPRegister.getR(2));
+        this.codeGenExp(compiler, GPRegister.getR(2));
         compiler.addInstruction(new POP(Register.getR(2)));
         compiler.addInstruction(new CMP(new ImmediateInteger(jumpOnTrue ? 1 : 0), Register.R0));
         compiler.addInstruction(new BEQ(label));

@@ -17,4 +17,13 @@ public class ListExpr extends TreeList<AbstractExpr> {
         }
     }
 
+    @Override
+    public String toString() {
+        String s = "[";
+        for (AbstractExpr expr : this.getList()) {
+            s += expr.getType() + ", ";
+        }
+        return s.substring(0, s.length() - 2) + "]";
+    }
+
 }
