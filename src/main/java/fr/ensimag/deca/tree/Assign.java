@@ -5,8 +5,10 @@ import fr.ensimag.deca.codegen.LabelBoolAssign;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
@@ -41,7 +43,7 @@ public class Assign extends AbstractBinaryExpr {
         Type type = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
 
         // verify if right operand can be assigned to left operand, eventually using an
-        // additional ConvFLoat
+        // additional ConvFloat
         setRightOperand(getRightOperand().verifyRValue(compiler, localEnv, currentClass, type));
 
         // set the type of this Assign an returns it

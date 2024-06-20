@@ -140,6 +140,7 @@ public class DeclField extends AbstractDeclField {
             // est stocké dans R1
             RegisterOffset fieldOffset = new RegisterOffset(this.varName.getFieldDefinition().getIndex(),
                     Register.R1);
+            this.varName.getFieldDefinition().setOperand(fieldOffset);
             compiler.addInstruction(new STORE(Register.R0, fieldOffset));
         }
     }

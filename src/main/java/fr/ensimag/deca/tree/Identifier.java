@@ -215,7 +215,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
-        compiler.addInstruction(new LOAD(this.getExpDefinition().getOperand(), register));
+        compiler.addInstruction(new LOAD(this.getDVal(), register));
     }
 
     @Override

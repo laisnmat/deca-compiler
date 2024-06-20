@@ -168,8 +168,6 @@ public class DeclClass extends AbstractDeclClass {
         ((ClassType) this.name.getType()).setAddr(offset);
         compiler.stackManager.incrementVarGlobalCount();
 
-        // code attributes ?
-
         // code method table
         HashMap<Symbol, ExpDefinition> memberDefinitions = (HashMap) currentClass.getMembers().getAllMembers();
         memberDefinitions.forEach((sym, def) -> {
