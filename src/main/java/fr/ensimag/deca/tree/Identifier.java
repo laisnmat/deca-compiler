@@ -203,7 +203,7 @@ public class Identifier extends AbstractIdentifier {
         // if the current Identifier (representing a Type) has no definition associated,
         // that means it has never been defined.
         if (typeDefinition == null) {
-            throw new ContextualError("Incompatible Types: Type " + this.getName() + " is never defined.",
+            throw new ContextualError("Undefinded Types: Type " + this.getName() + " is never defined.",
                     getLocation());
         }
 

@@ -80,7 +80,13 @@ do
         done
         echo -e -n "\033[1;91mChoose a file between \033[34m1 \033[91mand \033[34m$i\033[0m : "
         read index
-        currentFile=$(ls 0$index*.deca)
+        if [ "$index" -lt 10 ]
+        # currentFile=$(ls 0$index*.deca) if empty echo "end" and not display error of ls
+        then
+            currentFile=$(ls 0$index*.deca 2>/dev/null)
+        else
+            currentFile=$(ls $index*.deca 2>/dev/null)
+        fi
         echo
         echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
     elif [ "$key" == "l" ]
@@ -157,7 +163,12 @@ do
         then
             # echo -e "\033[1;91mEnd of files\033[0m"
             index=$((index-1))
-            currentFile=$(ls 0$index*.deca)
+            if [ "$index" -lt 10 ]
+            then
+                currentFile=$(ls 0$index*.deca 2>/dev/null)
+            else
+                currentFile=$(ls $index*.deca 2>/dev/null)
+            fi
         else
             echo
             echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
@@ -175,7 +186,12 @@ do
         if [ "$currentFile" == "" ]
         then
             index=$((index+1))
-            currentFile=$(ls 0$index*.deca)
+            if [ "$index" -lt 10 ]
+            then
+                currentFile=$(ls 0$index*.deca 2>/dev/null)
+            else
+                currentFile=$(ls $index*.deca 2>/dev/null)
+            fi
         else
             echo
             echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
