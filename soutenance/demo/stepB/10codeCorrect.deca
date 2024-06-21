@@ -30,4 +30,5 @@ class PasBonjour extends Bonjour {
     Bonjour bj2 = new PasBonjour();
     bj.init(2,4);
     bj2.init(3,65);
+    println("should display 2 : ", bj.getCount());
 }

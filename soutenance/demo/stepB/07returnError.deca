@@ -1,6 +1,8 @@
 class A {
     int b() {
-
+        if(1 < 2){
+            return 1;
+        }
     }
 }
 

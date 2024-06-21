@@ -234,6 +234,16 @@ do
         fi
         soutenancePath=$projetPath/soutenance/demo/$step
         cd $soutenancePath
+        index=1
+        clear
+        if [ "$index" -lt 10 ]
+        then
+            currentFile=$(ls 0$index*.deca 2>/dev/null)
+        else
+            currentFile=$(ls $index*.deca 2>/dev/null)
+        fi
+        echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
+
 
     else
         echo -n ""
