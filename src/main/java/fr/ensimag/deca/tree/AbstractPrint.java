@@ -81,7 +81,7 @@ public abstract class AbstractPrint extends AbstractInst {
                 size = size - 1;
             }
         }
-        s.print(");");
+        s.print(")");
     }
 
     @Override

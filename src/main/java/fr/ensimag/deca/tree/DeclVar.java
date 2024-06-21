@@ -77,9 +77,9 @@ public class DeclVar extends AbstractDeclVar {
      * Method to generate code for a new var declaration.
      * 
      * @param compiler
-     *                     Decac Compiler
+     *            Decac Compiler
      * @param currentClass
-     *                     Current Class in which the the var is declared
+     *            Current Class in which the the var is declared
      */
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler, ClassDefinition currentClass, AbstractIdentifier methodName) {
@@ -113,6 +113,7 @@ public class DeclVar extends AbstractDeclVar {
         s.print(" ");
         this.varName.decompile(s);
         this.initialization.decompile(s);
+        s.println(";");
     }
 
     @Override

@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.Objects;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -36,7 +37,6 @@ import fr.ensimag.ima.pseudocode.instructions.SUBSP;
  */
 public class DeclClass extends AbstractDeclClass {
     private final Logger LOG = Logger.getLogger(DeclClass.class);
-    private ClassType classType;
     AbstractIdentifier name;
     AbstractIdentifier superClass;
     ListDeclField fields;
@@ -54,7 +54,14 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        s.println("class " + name.getName().getName()
+                + (Objects.equals(superClass.getName().getName(), "Object") ? "{"
+                        : " extends " + superClass.getName().getName() + "{"));
+        s.indent();
+        this.fields.decompile(s);
+        this.methods.decompile(s);
+        s.unindent();
+        s.println("}");
     }
 
     @Override
@@ -148,9 +155,9 @@ public class DeclClass extends AbstractDeclClass {
      * Method to generate code for a new Class declaration.
      * 
      * @param compiler
-     *                     DecacCompiler associated
+     *            DecacCompiler associated
      * @param currentClass
-     *                     Current Class in which the class is declared
+     *            Current Class in which the class is declared
      */
     protected void codeGenDeclClass(DecacCompiler compiler) {
         int baseOffset;

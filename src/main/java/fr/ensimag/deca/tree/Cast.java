@@ -3,11 +3,11 @@ package fr.ensimag.deca.tree;
 import java.io.PrintStream;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.INT;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 public class Cast extends AbstractExpr {
 
@@ -53,4 +53,12 @@ public class Cast extends AbstractExpr {
         return type1;
     }
 
+    @Override
+    public void codeGenExp(DecacCompiler compiler, GPRegister register) {
+        if (this.type.getType().isInt()) {
+            compiler.addInstruction(new INT(this.expr.getDVal(), register));
+        } else {
+            new LOAD(this.expr.getDVal(), register);
+        }
+    }
 }
