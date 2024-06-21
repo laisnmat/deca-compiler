@@ -1,0 +1,6 @@
+{
+    int x = 10;
+    println("Hello World");
+    print("Hello", " World", "\n");
+    println("x = ", x);
+}
