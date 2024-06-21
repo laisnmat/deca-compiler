@@ -73,6 +73,12 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         }
     }
 
+    public void codeGenDeclFieldsList(DecacCompiler compiler) {
+        for (AbstractDeclClass declClass : this.getList()) {
+            declClass.codeGenInit(compiler);
+        }
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclClass c : getList()) {

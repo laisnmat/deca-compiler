@@ -1,0 +1,15 @@
+class A{}
+
+class B extends A{
+    int x = 5;
+}
+
+{
+A b = new B();
+B p = (B) (b);
+float x = 10;
+int y = (int) (x);
+
+println(p.x);
+println(y);
+}

@@ -60,7 +60,7 @@ public class TestIdentifierContext {
                     ident.checkAllDecorations();
                 });
         Assertions.assertEquals(
-                "Identifier x has no attached Definition",
+                "NullDefinition: Identifier x has no attached Definition",
                 thrown.getMessage());
         ident.setDefinition(new FieldDefinition(BOOLEAN, null, null, null, 0));
         DecacInternalError thrown2 = assertThrows(
@@ -97,21 +97,21 @@ public class TestIdentifierContext {
                     ident.verifyExpr(compiler, localEnv, null);
                 });
         Assertions.assertEquals(
-                "Identifier x is not a variable, a parameter or a field.",
+                "Incompatible Types: Identifier x is not a variable, a parameter or a field.",
                 thrown6.getMessage());
         ContextualError thrown7 = assertThrows(
                 ContextualError.class, () -> {
                     ident.verifyFieldIdent(compiler, localEnv, null);
                 });
         Assertions.assertEquals(
-                "Identifier x is not a field.",
+                "Incompatible Types: Identifier x is not a field.",
                 thrown7.getMessage());
         ContextualError thrown8 = assertThrows(
                 ContextualError.class, () -> {
                     ident.verifyMethodIdent(compiler, localEnv, null);
                 });
         Assertions.assertEquals(
-                "Identifier x is not a method.",
+                "Incompatible Types: Identifier x is not a method.",
                 thrown8.getMessage());
     }
 }

@@ -16,6 +16,7 @@ public class ClassDefinition extends TypeDefinition {
 
     private final EnvironmentExp members;
     private final ClassDefinition superClass;
+    protected Label init;
     private int numberOfFields = 0;
     private int numberOfMethods = 0;
 
@@ -29,6 +30,7 @@ public class ClassDefinition extends TypeDefinition {
         }
         members = new EnvironmentExp(parent);
         this.superClass = superClass;
+        this.init = new Label("init." + type.getName());
     }
 
     public void setNumberOfFields(int numberOfFields) {
@@ -85,4 +87,13 @@ public class ClassDefinition extends TypeDefinition {
         return this;
     }
 
+    public void setLabel(Label initLabel) {
+        this.init = initLabel;
+    }
+
+    public Label getLabel() {
+        Validate.isTrue(init != null,
+                "setLabel() should have been called before");
+        return init;
+    }
 }

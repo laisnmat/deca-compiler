@@ -51,7 +51,8 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
-            throw new DecacInternalError("Identifier " + this.getName() + " has no attached Definition");
+            throw new DecacInternalError(
+                    "NullDefinition: Identifier " + this.getName() + " has no attached Definition");
         }
     }
 
@@ -202,7 +203,7 @@ public class Identifier extends AbstractIdentifier {
         // if the current Identifier (representing a Type) has no definition associated,
         // that means it has never been defined.
         if (typeDefinition == null) {
-            throw new ContextualError("Incompatible Types: Type " + this.getName() + " is never defined.",
+            throw new ContextualError("Undefinded Types: Type " + this.getName() + " is never defined.",
                     getLocation());
         }
 
@@ -214,7 +215,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
-        compiler.addInstruction(new LOAD(this.getVariableDefinition().getOperand(), register));
+        compiler.addInstruction(new LOAD(this.getDVal(), register));
     }
 
     @Override

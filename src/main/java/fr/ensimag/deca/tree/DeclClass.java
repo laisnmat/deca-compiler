@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.Objects;
 
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.ExpDefinition;
 import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.ObjectType;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.EnvironmentExp.DoubleDefException;
 
@@ -19,9 +21,13 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.BSR;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -31,7 +37,6 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
  */
 public class DeclClass extends AbstractDeclClass {
     private final Logger LOG = Logger.getLogger(DeclClass.class);
-    private ClassType classType;
     AbstractIdentifier name;
     AbstractIdentifier superClass;
     ListDeclField fields;
@@ -49,7 +54,14 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        s.println("class " + name.getName().getName()
+                + (Objects.equals(superClass.getName().getName(), "Object") ? "{"
+                        : " extends " + superClass.getName().getName() + "{"));
+        s.indent();
+        this.fields.decompile(s);
+        this.methods.decompile(s);
+        s.unindent();
+        s.println("}");
     }
 
     @Override
@@ -108,7 +120,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        LOG.debug("PASSE 3 : verify class members `" + name.getName() + "`: start");
+        LOG.debug("PASSE 3 : verify class body `" + name.getName() + "`: start");
         // (3.5)
         ClassDefinition currentClass = (ClassDefinition) compiler.environmentType.defOfType(name.getName());
         // list_decl_field ↓env_types ↓env_exp ↓class
@@ -116,7 +128,7 @@ public class DeclClass extends AbstractDeclClass {
         // list_decl_method ↓env_types ↓env_exp ↓class
         methods.verifyListDeclMethodBody(compiler, currentClass.getMembers(), currentClass);
         // condition (class(__, env_exp), __) ≜ env_types(class)
-        LOG.debug("PASSE 3 : verify class members: end");
+        LOG.debug("PASSE 3 : verify class body: end");
     }
 
     @Override
@@ -161,12 +173,11 @@ public class DeclClass extends AbstractDeclClass {
         RegisterOffset offset = new RegisterOffset(baseOffset, GPRegister.GB);
         compiler.addInstruction(new STORE(Register.R0, offset));
         ((ClassType) this.name.getType()).setAddr(offset);
+        compiler.stackManager.incrementVarGlobalCount();
 
-        // code attributes ?
-
-        // code methods
-        HashMap<Symbol, ExpDefinition> methodDefinitions = (HashMap) currentClass.getMembers().getAllMethods();
-        methodDefinitions.forEach((sym, def) -> {
+        // code method table
+        HashMap<Symbol, ExpDefinition> memberDefinitions = (HashMap) currentClass.getMembers().getAllMembers();
+        memberDefinitions.forEach((sym, def) -> {
             if (def.isMethod()) {
                 // set method label as code.class.method
                 Label methodLabel = new Label(
@@ -177,16 +188,16 @@ public class DeclClass extends AbstractDeclClass {
                 compiler.addInstruction(new LOAD(new LabelOperand(methodLabel), Register.R0));
 
                 // calculate address of method from address of class + method index
-                int methodAddress = compiler.stackManager.getVarGlobalCount() + 1 + ((MethodDefinition) def).getIndex();
+                int methodAddress = compiler.stackManager.getVarGlobalCount() + ((MethodDefinition) def).getIndex();
 
                 // calculate offset for GB
                 RegisterOffset methodOffset = new RegisterOffset(methodAddress, GPRegister.GB);
 
                 // STORE R0, x(GB)
                 compiler.addInstruction(new STORE(Register.R0, methodOffset));
+                compiler.stackManager.incrementVarGlobalCount();
             }
         });
-        compiler.stackManager.setGlobalCount(baseOffset + currentClass.getNumberOfMethods() - 1);
     }
 
     @Override
@@ -195,4 +206,43 @@ public class DeclClass extends AbstractDeclClass {
         methods.codeGenListDeclMethod(compiler, currentClass);
     }
 
+    @Override
+    protected void codeGenInit(DecacCompiler compiler) {
+        ClassDefinition currentClass = this.name.getClassDefinition();
+        compiler.addComment("Initialisation des champs de " + currentClass.getType().getName());
+        compiler.addLabel(currentClass.getLabel());
+        RegisterOffset thisOffset = new RegisterOffset(-2, Register.LB);
+
+        // on stocke l'objet dans R1
+        compiler.addInstruction(new LOAD(thisOffset, Register.R1), "R1 contient l'adresse de l'objet");
+
+        if (this.fields.size() != 0) {
+            // init all new fields to 0
+            for (AbstractDeclField declField : fields.getList()) {
+                declField.codeGenDeclField(compiler, false);
+            }
+        }
+
+        if (this.superClass != null && !this.superClass.getType().isObjectType()) {
+            compiler.addComment("Appel de l'initialisation des champs hérités de "
+                    + this.superClass.getClassDefinition().getType().getName());
+
+            compiler.addInstruction(new PUSH(Register.R1), "empile l'objet à initialiser");
+            compiler.stackManager.incrementPushCount();
+            compiler.addInstruction(new BSR(this.superClass.getClassDefinition().getLabel()),
+                    "appel de l'initialisation de la super-classe");
+            compiler.addInstruction(new SUBSP(1), "on remet la pile dans l'état initial");
+            compiler.stackManager.decrementPushCount();
+        }
+
+        if (this.fields.size() != 0) {
+            // init any fields that have an explicit initialisation
+            for (AbstractDeclField declField : fields.getList()) {
+                declField.codeGenDeclField(compiler, true);
+            }
+        }
+
+        // return
+        compiler.addInstruction(new RTS());
+    }
 }

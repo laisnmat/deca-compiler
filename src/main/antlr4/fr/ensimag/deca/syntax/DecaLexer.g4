@@ -83,7 +83,7 @@ NUM: DIGIT+;
 // Strings
 EOL: '\n' | '\r' | '\r\n';
 STRING_CAR: ~["\n\r];
-STRING: '"' (STRING_CAR | '\\' | '\\\\')* '"';
+STRING: '"' (STRING_CAR | '\\' | '\\\\' | '\\"')* '"';
 MULTI_LINE_STRING: '"' (STRING_CAR | EOL | '\\' | '\\\\')* '"';
 
 // Comments

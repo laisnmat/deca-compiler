@@ -79,9 +79,11 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         } else {
             if (register.getNumber() == DecacCompiler.MAXREGISTER) {
                 compiler.addInstruction(new PUSH(register), "sauvegarde ");
+                compiler.stackManager.incrementPushCount();
                 this.getRightOperand().codeGenExp(compiler, register);
                 compiler.addInstruction(new LOAD(register, GPRegister.R1));
                 compiler.addInstruction(new POP(register), "restauration ");
+                compiler.stackManager.decrementPushCount();
                 return GPRegister.R1;
             } else {
                 GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);

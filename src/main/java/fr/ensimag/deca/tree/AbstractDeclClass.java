@@ -36,11 +36,21 @@ public abstract class AbstractDeclClass extends Tree {
         /**
          * Generate code to declare new classes
          *
-         * @param compiler     DecacCompiler associated
-         * @param currentClass
+         * @param compiler DecacCompiler associated
          */
         protected abstract void codeGenDeclClass(DecacCompiler compiler);
 
+        /**
+         * Generate code for class methods
+         *
+         * @param compiler DecacCompiler associated
+         */
         protected abstract void codegenMethods(DecacCompiler compiler);
 
+        /**
+         * Generate code to initialise fields
+         *
+         * @param compiler DecacCompiler associated
+         */
+        protected abstract void codeGenInit(DecacCompiler compiler);
 }

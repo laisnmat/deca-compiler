@@ -38,7 +38,8 @@ public abstract class Tree {
     /**
      * Display the tree as a (compilable) source program
      *
-     * @param s Buffer to which the result will be written.
+     * @param s
+     *            Buffer to which the result will be written.
      */
     public abstract void decompile(IndentPrintStream s);
 
@@ -177,11 +178,15 @@ public abstract class Tree {
      * Pretty-print tree (see {@link #prettyPrint()}). This is an internal
      * function that should usually not be called directly.
      *
-     * @param s      Stream to send the output to
-     * @param prefix Prefix (ASCII-art showing hierarchy) to print for this
-     *               node.
-     * @param last   Whether the node being displayed is the last child of a tree.
-     * @param inlist Whether the node is being displayed as part of a list.
+     * @param s
+     *            Stream to send the output to
+     * @param prefix
+     *            Prefix (ASCII-art showing hierarchy) to print for this
+     *            node.
+     * @param last
+     *            Whether the node being displayed is the last child of a tree.
+     * @param inlist
+     *            Whether the node is being displayed as part of a list.
      */
     protected final void prettyPrint(PrintStream s, String prefix,
             boolean last, boolean inlist) {

@@ -68,9 +68,11 @@ public class Modulo extends AbstractOpArith {
         } else {
             if (register.getNumber() == DecacCompiler.MAXREGISTER) {
                 compiler.addInstruction(new PUSH(register), "sauvegarde ");
+                compiler.stackManager.incrementPushCount();
                 this.getRightOperand().codeGenExp(compiler, register);
                 compiler.addInstruction(new LOAD(register, GPRegister.R1));
                 compiler.addInstruction(new POP(register), "restauration ");
+                compiler.stackManager.decrementPushCount();
                 codeGenExpSecond(compiler, register, GPRegister.R1);
             } else {
                 GPRegister nextRegister = GPRegister.getR(register.getNumber() + 1);

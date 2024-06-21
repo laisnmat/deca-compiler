@@ -20,6 +20,9 @@ class Point3D extends Point2D {
     p3.z = 10;
     println(p3.z);
 
+    p3 = new Point3D();
+    p3.x = 20;
+    println(p3.x);
 
 
 }

@@ -62,13 +62,13 @@ public class EnvironmentExp {
      * @return Map<Symbol, ExpDefinition> of all methods and attributes of the class
      *         and its superclasses
      */
-    public Map<Symbol, ExpDefinition> getAllMethods() {
-        HashMap<Symbol, ExpDefinition> methods = new HashMap<>();
+    public Map<Symbol, ExpDefinition> getAllMembers() {
+        HashMap<Symbol, ExpDefinition> members = new HashMap<>();
         if (this.parentEnvironment != null) {
-            methods.putAll(this.parentEnvironment.getAllMethods());
+            members.putAll(this.parentEnvironment.getAllMembers());
         }
-        methods.putAll(this.env);
-        return methods;
+        members.putAll(this.env);
+        return members;
     }
 
     /**

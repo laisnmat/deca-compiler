@@ -20,4 +20,6 @@ public class ObjectType extends ClassType {
     public boolean isObjectType() {
         return true;
     }
+
+
 }

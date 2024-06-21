@@ -1,0 +1,75 @@
+class Galaxy {
+  Earth e;
+  Mars m;
+  Sun s;
+  NorthernStar n;
+
+  void initPlanets() {
+    this.e = new Earth();
+    this.m = new Mars();
+    this.s = new Sun();
+    this.n = new NorthernStar();
+  }
+
+  boolean isItOurHome(Planet p) {
+    return p.isOurHome;
+  }
+
+  void printSizes() {
+    println("Earth size : ", this.e.size);
+    println("Mars size : ", this.m.size);
+    println("Sun size : ", this.s.size);
+    println("Northern Star size : ", this.n.size);
+  }
+}
+
+class CelestialBody {
+  int size;
+}
+
+class Planet extends CelestialBody {
+  int people;
+  boolean isOurHome = false;
+}
+
+class Star extends CelestialBody {
+  boolean isHot = false;
+  boolean isOurSun = false;
+}
+
+class Earth extends Planet {
+  int size = 10000;
+  int people = 9;
+  boolean isOurHome = true;
+}
+
+class Mars extends Planet {
+  int size = 5000;
+  int people = 0;
+}
+
+class Sun extends Star {
+  boolean isHot = true;
+  boolean isOurSun = true;
+}
+
+class NorthernStar extends Star {
+
+}
+
+{
+  Galaxy g = new Galaxy();
+  g.initPlanets();
+  println("Number of people on Earth : ", g.e.people);
+  if(!g.isItOurHome(g.m)) {
+    println("Mars isn't our home");
+  }
+  if(g.isItOurHome(g.e)) {
+    println("Earth is our home");
+  }
+
+  g.printSizes();
+  
+}
+
+// options to use : -p

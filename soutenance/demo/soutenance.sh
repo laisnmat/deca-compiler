@@ -1,0 +1,257 @@
+#!/bin/bash
+
+# deca -v doubleDefException.deca
+# wait for input to continue 
+# store the key pressed in $key
+
+projetPath="$HOME/Documents/ProjetGL/gl03"
+step="stepB"
+soutenancePath=$projetPath/soutenance/demo/$step
+cd $soutenancePath
+
+bat2="$soutenancePath/../bat --language java --pager=never"
+
+index=1
+currentFile=$(ls 0$index*.deca)
+options=""
+com=""
+coloredCom=""
+
+
+
+header="Command : 
+    Enter : execute the command
+    p : step
+    n : pass to next file
+    f : choose file
+    a : display
+    l : test_lex
+    s : test_syntax
+    c : test_context
+    d : decac
+    i : ima
+    o : add options
+    r : recompile
+    t : test
+    del : clear the terminal
+    q : quit"
+
+
+decac -b --big
+echo
+echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
+escape_char=$(printf "\u1b")
+read -rsn1 key # get 1 character
+if [[ $key == $escape_char ]]; then
+    read -rsn2 key # read 2 more chars
+fi
+# while key not q
+
+while [ "$key" != "q" ]
+do
+    if [ "$key" == "n" ]
+    then
+        clear
+        index=$((index+1))
+        if [ "$index" -lt 10 ]
+        # currentFile=$(ls 0$index*.deca) if empty echo "end" and not display error of ls
+        then
+            currentFile=$(ls 0$index*.deca 2>/dev/null)
+        else
+            currentFile=$(ls $index*.deca 2>/dev/null)
+        fi
+        if [ "$currentFile" == "" ]
+        then
+            echo -e "\033[1;91mEnd of files\033[0m"
+            index=$((index-1))
+            currentFile=$(ls 0$index*.deca)
+        else
+            echo
+            echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
+        fi
+    elif [ "$key" == "f" ]
+    then
+        clear
+        i=0
+        for file in $(ls [0-9]*.deca)
+        do
+            i=$((i+1))
+            echo -e "\033[1;96m$i\033[0;33m : $file\033[0m"
+        done
+        echo -e -n "\033[1;91mChoose a file between \033[34m1 \033[91mand \033[34m$i\033[0m : "
+        read index
+        if [ "$index" -lt 10 ]
+        # currentFile=$(ls 0$index*.deca) if empty echo "end" and not display error of ls
+        then
+            currentFile=$(ls 0$index*.deca 2>/dev/null)
+        else
+            currentFile=$(ls $index*.deca 2>/dev/null)
+        fi
+        echo
+        echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
+    elif [ "$key" == "l" ]
+    then
+        com="test_lex $currentFile"
+        coloredCom="\033[1;96mtest_lex \033[0;33m$currentFile\033[0m"
+        echo
+        echo -e $coloredCom
+    elif [ "$key" == "s" ]
+    then
+        com="test_synt $currentFile"
+        coloredCom="\033[1;96mtest_synt \033[0;33m$currentFile\033[0m"
+        echo
+        echo -e $coloredCom
+    elif [ "$key" == "c" ]
+    then
+        com="test_context $currentFile"
+        coloredCom="\033[1;96mtest_context \033[0;33m$currentFile\033[0m"
+        echo
+        echo -e $coloredCom
+    elif [ "$key" == "a" ]
+    then
+        $bat2 $currentFile
+    elif [ "$key" == "h" ]
+    then
+        echo -e "$header"
+    # enter key
+    elif [ "$key" == "" ]
+    then
+        echo -e "> $coloredCom"
+        $com
+    elif [ "$key" == "" ]
+    then
+        clear
+    elif [ "$key" == "r" ]
+    then
+        clear
+        echo "Recompile"
+        cd $projetPath
+        mvn clean test-compile
+        cd $soutenancePath
+        echo
+        echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
+    elif [ "$key" == "d" ]
+    then
+        com="decac $options $currentFile"
+        coloredCom="\033[1;96mdecac \033[0;92m$options \033[0;33m$currentFile\033[0m"
+        echo -e $coloredCom
+    elif [ "$key" == "o" ]
+    then
+        echo -n -e "\033[1;91mEnter options : \033[0m"
+        read options
+        echo -e "\033[1;96mOptions set to \033[0;92m$options\033[0m"
+        if [ "$options" == "-b --small" ] || [ "$options" == "-b --big" ] || [ "$options" == "-b" ]; 
+        then
+            com="decac $options"
+            coloredCom="\033[1;96mdecac \033[0;92m$options\033[0m"
+        else 
+            com="decac $options $currentFile"
+            coloredCom="\033[1;96mdecac \033[0;92m$options \033[0;33m$currentFile\033[0m"
+        fi
+        echo -e $coloredCom
+    # arrow right index++
+    elif [ $key = "[C" ]
+    then
+        index=$((index+1))
+        if [ "$index" -lt 10 ]
+        then
+            currentFile=$(ls 0$index*.deca 2>/dev/null)
+        else
+            currentFile=$(ls $index*.deca 2>/dev/null)
+        fi
+        if [ "$currentFile" == "" ]
+        then
+            # echo -e "\033[1;91mEnd of files\033[0m"
+            index=$((index-1))
+            if [ "$index" -lt 10 ]
+            then
+                currentFile=$(ls 0$index*.deca 2>/dev/null)
+            else
+                currentFile=$(ls $index*.deca 2>/dev/null)
+            fi
+        else
+            echo
+            echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
+        fi
+    # arrow left index--
+    elif [ $key = "[D" ]
+    then
+        index=$((index-1))
+        if [ "$index" -lt 10 ]
+        then
+            currentFile=$(ls 0$index*.deca 2>/dev/null)
+        else
+            currentFile=$(ls $index*.deca 2>/dev/null)
+        fi
+        if [ "$currentFile" == "" ]
+        then
+            index=$((index+1))
+            if [ "$index" -lt 10 ]
+            then
+                currentFile=$(ls 0$index*.deca 2>/dev/null)
+            else
+                currentFile=$(ls $index*.deca 2>/dev/null)
+            fi
+        else
+            echo
+            echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
+        fi
+    elif [ "$key" == "t" ]
+    then
+        com="mvn clean verify"
+        coloredCom="\033[1;96mmvn \033[0;33mclean verify\033[0m"
+        clear
+        echo -e $coloredCom
+        cd $projetPath
+        $com
+        cd $soutenancePath
+    elif [ "$key" == "i" ]
+    then
+        imaFile=""
+        if [ "$index" -lt 10 ]
+        then
+            imaFile=$(ls 0$index*.ass 2>/dev/null)
+        else
+            imaFile=$(ls $index*.ass 2>/dev/null)
+        fi
+        coloredCom="\033[1;96mima \033[0;33m$imaFile\033[0m"
+        com="ima $imaFile"
+        echo
+        echo -e $coloredCom
+    elif [ "$key" == "p" ]; then
+        echo -e "\033[1;96m1\033[0;33m : stepB\033[0m"
+        echo -e "\033[1;96m2\033[0;33m : stepC\033[0m"
+        istep=0
+        # boucle tant que istep != 1 && istep != 2 :
+        while [ $istep != "1" ] && [ $istep != "2" ]; do
+            echo -e -n "\033[1;91mChoose a step between \033[34m1 \033[91mand \033[34m2\033[0m : "
+            read istep
+        done
+        if [ "$istep" == "1" ]; then
+            step="stepB"
+        elif [ "$istep" == "2" ]; then
+            step="stepC"
+        fi
+        soutenancePath=$projetPath/soutenance/demo/$step
+        cd $soutenancePath
+        index=1
+        clear
+        if [ "$index" -lt 10 ]
+        then
+            currentFile=$(ls 0$index*.deca 2>/dev/null)
+        else
+            currentFile=$(ls $index*.deca 2>/dev/null)
+        fi
+        echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
+
+
+    else
+        echo -n ""
+    fi
+    read -rsn1 key # get 1 character
+    if [[ $key == $escape_char ]]; then
+        read -rsn2 key # read 2 more chars
+    fi
+done
+
+exit 0

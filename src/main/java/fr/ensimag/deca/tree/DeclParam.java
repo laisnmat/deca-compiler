@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -42,12 +44,13 @@ public class DeclParam extends AbstractDeclParam {
 
     @Override
     protected void verifyDeclParamInit(DecacCompiler compiler,
-            EnvironmentExp localEnv)
+            EnvironmentExp localEnv, int index)
             throws ContextualError {
         // (3.13)
         // decl_param ↓env_types ↑{name → (param, type)}
         // type ↓env_types ↑type
         ParamDefinition paramDef = new ParamDefinition(type.getType(), getLocation());
+        paramDef.setOperand(new RegisterOffset(-index, Register.LB));
         try {
             localEnv.declare(paramName.getName(), paramDef);
         } catch (EnvironmentExp.DoubleDefException e) {

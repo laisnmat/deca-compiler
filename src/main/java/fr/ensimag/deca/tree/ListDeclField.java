@@ -21,9 +21,12 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
 
     protected void verifyListDeclField(DecacCompiler compiler, ClassDefinition currentClass)
             throws ContextualError {
+        int i = currentClass.getSuperClass().getNumberOfFields();
         for (AbstractDeclField declField : getList()) {
-            declField.verifyDeclField(compiler, currentClass);
+            i++;
+            declField.verifyDeclField(compiler, currentClass, i);
         }
+        currentClass.setNumberOfFields(i);
     }
 
     protected void verifyListDeclFieldInit(DecacCompiler compiler, ClassDefinition currentClass)

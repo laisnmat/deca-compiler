@@ -1,0 +1,34 @@
+class Bonjour {
+    protected int count;
+    float decount;
+
+    int getCount() {
+        return count;
+    }
+
+    float getDecount() {
+        return decount;
+    }
+
+    void func() {
+        count = 10;
+        decount = 5.22;
+    }    
+
+    void init(int count, float decount) {
+        this.count = count;
+        this.decount = decount;
+    }
+}
+
+class PasBonjour extends Bonjour {
+    int count = 4;
+}
+
+{
+    Bonjour bj = new Bonjour();
+    Bonjour bj2 = new PasBonjour();
+    bj.init(2,4);
+    bj2.init(3,65);
+    println("should display 2 : ", bj.getCount());
+}

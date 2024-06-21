@@ -1,0 +1,7 @@
+{
+  int x = 5;
+  int y = 0;
+  println(x / y);
+}
+
+// options to use : run once first to show error then with -n 

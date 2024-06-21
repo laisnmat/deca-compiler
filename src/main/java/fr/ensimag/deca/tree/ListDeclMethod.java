@@ -37,10 +37,9 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
-    protected int codeGenListDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) {
+    protected void codeGenListDeclMethod(DecacCompiler compiler, ClassDefinition currentClass) {
         for (AbstractDeclMethod declMethod : getList()) {
             declMethod.codeGenDeclMethod(compiler, currentClass);
         }
-        return 0;
     }
 }

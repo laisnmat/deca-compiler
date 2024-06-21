@@ -1,0 +1,37 @@
+class Point2D {
+    int x;
+    int y;
+
+    void diag(int a){
+        this.x = this.x+a;
+        this.y = this.y+a;
+    }
+}
+
+class Point3D extends Point2D {
+    int z;
+
+    void diag(int a){
+        this.x = this.x+a;
+        this.y = this.y+a;
+        this.z = this.z+a;
+    }
+}
+
+{
+    Point2D p1,p2;
+    Point3D p3;
+
+    p1 = new Point2D();
+    p1.x = 5;
+    p1.y = 2;
+    p1.diag(10);
+    println("x = ", p1.x, " y = ", p1.y);
+
+    p3 = new Point3D();
+    p3.z = p1.y;
+    p3.y = 10;
+    p3.x = 3;
+    p3.diag(3);
+    println("x = ", p3.x, " y = ", p3.y, " z = ", p3.z);
+}

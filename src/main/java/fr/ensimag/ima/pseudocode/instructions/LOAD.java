@@ -2,6 +2,7 @@ package fr.ensimag.ima.pseudocode.instructions;
 
 import fr.ensimag.deca.tree.FloatLiteral;
 import fr.ensimag.deca.tree.IntLiteral;
+import fr.ensimag.deca.tree.NullLiteral;
 import fr.ensimag.ima.pseudocode.BinaryInstructionDValToReg;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -33,5 +34,4 @@ public class LOAD extends BinaryInstructionDValToReg {
     public LOAD(FloatLiteral f, GPRegister r) {
         this(f.getValue(), r);
     }
-
 }
