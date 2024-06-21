@@ -37,7 +37,7 @@ header="Command :
     q : quit"
 
 
-decac -b # --big
+decac -b --big
 echo
 echo -e "\033[1;91mCurrent file: \033[0;35m$currentFile\033[0m"
 escape_char=$(printf "\u1b")
