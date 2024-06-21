@@ -1,0 +1,35 @@
+class Planet{
+  int diameter;
+  int inhabitants;
+  boolean isOurHome = false;
+}
+
+{
+  Planet p = new Planet();
+  int home;
+
+  println("What is your planets diameter (in km) ?");
+  p.diameter = readInt();
+
+  println("How many creatures live on your planet ?");
+  p.inhabitants = readInt();
+
+  println("Is your planet our home ? (1 for yes, 0 for no)");
+  home = readInt();
+  if (home == 1) {
+    p.isOurHome = true;
+  }
+  else {
+    p.isOurHome = false;
+  }
+
+  println("Here is the information we have for your planet : ");
+  println("Diameter : ", p.diameter);
+  println("Number of inhabitants : ", p.inhabitants);
+  if (p.isOurHome) {
+    println("Your planet is our home");
+  }
+  else {
+    println("Your planet isn't our home");
+  }
+}

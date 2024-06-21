@@ -94,6 +94,9 @@ public class Assign extends AbstractBinaryExpr {
                     new STORE(Register.R0,
                             ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()),
                     "assignment");
+        } else if (this.getLeftOperand() instanceof Selection) {
+            Selection selec = (Selection) this.getLeftOperand();
+            selec.codeGenAssign(compiler, Register.R1);
         } else {
             throw new DecacInternalError("Unexpected case in Assign.codeGenExp: please report this bug.");
         }

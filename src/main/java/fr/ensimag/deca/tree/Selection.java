@@ -3,8 +3,11 @@ package fr.ensimag.deca.tree;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.log4j.Logger;
@@ -91,5 +94,15 @@ public class Selection extends AbstractLValue {
         int index = ((Identifier) this.field).getFieldDefinition().getIndex();
         RegisterOffset offset = new RegisterOffset(index, Register.R0);
         compiler.addInstruction(new STORE(register, offset));
+    }
+
+    @Override
+    public void codeGenCondition(DecacCompiler compiler, boolean jumpOnTrue, Label label) {
+        select.codeGenExp(compiler, Register.R0);
+        int index = ((Identifier) this.field).getFieldDefinition().getIndex();
+        RegisterOffset offset = new RegisterOffset(index, Register.R0);
+        compiler.addInstruction(new LOAD(offset, Register.R0));
+        compiler.addInstruction(new CMP(jumpOnTrue ? 1 : 0, Register.R0));
+        compiler.addInstruction(new BEQ(label));
     }
 }
