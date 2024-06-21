@@ -1,0 +1,9 @@
+class A {
+  void f(int x) {
+    if (x % 2 == 0)  { println(x); }
+    else { f(x-1); }
+  }
+}
+{
+  new A().f(21);
+}

@@ -1,0 +1,17 @@
+// codegen/valid => vérifier aussi "decac -p"
+{
+  float f = -(1 + 2 + 3) - (-(1.0 + 2.0 + 3.0));
+  "Commentaire inoffensif dans le code (on peut par exemple le garder dans le code assembleur)";
+  println("Voilà un guillemet \" qui doit être affiché sans être précédé d'un \\");
+  println("Ci-dessus et ci-contre, on doit bien voir un seul \\");
+  if ((true == true) == ! (true == false)) {
+    println("OK 1");
+  } else {
+    println("KO 1");
+  }
+  if (f == 0) {
+    println("OK 2");
+  } else {
+    println("KO float ", f);
+  }
+}

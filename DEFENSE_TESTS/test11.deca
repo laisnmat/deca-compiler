@@ -1,0 +1,9 @@
+{
+  boolean b = true;
+  b = - b;
+  if (b) {
+    println("true");
+  } else {
+    println("false");
+  }
+}

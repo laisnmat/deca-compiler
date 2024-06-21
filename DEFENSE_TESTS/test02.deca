@@ -1,0 +1,10 @@
+// Ok
+{
+  float f = -2.0e10;
+  int x = (int)(f)+1;
+  if (x == -2147483647) {
+    println("OK");
+  } else {
+    println("KO ", x);
+  }  
+}

@@ -1,0 +1,5 @@
+// context/invalid
+{
+  int x=x, u=x;
+  println(u);
+}

@@ -1,0 +1,15 @@
+// codegen/valid
+// les programmes Deca ne sont pas censés faire d'erreur d'overflow sur les opérations arithmétiques **entières** (cf. [Semantique] p. 94), en dehors de la division et du modulo par 0.
+// suggestion: insérer vos vérifs défensives à l'exécution de non-débordement des entiers ssi option "decac -c" 
+{
+  int i=0, x=1;
+  while (x > 0) {
+    x = x * 2;
+    i = i + 1;
+  }
+  if (i == 31 && x+1 == -2147483647) {
+    println("OK");
+  } else {
+    println("KO ", i, ",", x);
+  }
+}

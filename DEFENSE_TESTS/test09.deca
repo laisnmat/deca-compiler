@@ -1,0 +1,6 @@
+// Problème sur votre message d'erreur !
+{
+  if (equals(null)) {
+    println("This is null!");
+  }
+}

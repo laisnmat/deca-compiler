@@ -1,0 +1,48 @@
+class A {
+  int a = 42;
+  void m1() {
+    println("KO 1");
+  }
+  int f(int x, int y){ return x+y; }
+}
+
+class B extends A {
+  float a = 66.6;
+  void m2() {
+    println("KO 1(B)");
+  }
+}
+
+{
+  A a = new A();
+  boolean ok = a instanceof B || a instanceof B;
+  B b;
+  if (ok) {
+    b = (B)(a);
+    b.m2();
+  } else {
+    println("OK 1");
+  }
+  if (a.f((a.a=a.a-40),(a.a=15)) == 17) {
+    println("OK 2");
+  } else {
+    println("KO 2");
+  }
+  if (a.a == 15) {
+    println("OK 3");
+  } else {
+    println("KO 3");
+  }
+  a = new B();
+  b = (B)(a);
+  if (b.a == 66.6) {
+    println("OK 4");
+  } else {
+    println("KO 4");
+  }
+  if (a.a == 42) {
+    println("OK 5");
+  } else {
+    println("KO 5");
+  }
+}

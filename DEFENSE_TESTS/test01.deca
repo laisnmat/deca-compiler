@@ -1,0 +1,7 @@
+// fichier syntax/invalid (cf. [Lexicographie] p. 46)
+{
+  float f = 0.0000000000000000000000000000000000000000000000000000000000000000000000001;
+  if (f == 0.0) {
+    println("ANOMALIE !");
+  }
+}
