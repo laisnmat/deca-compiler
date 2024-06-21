@@ -95,6 +95,7 @@ public class MethodCall extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+
         Type t = classCall.verifyExpr(compiler, localEnv, currentClass);
         if (!t.isClass()) {
             throw new ContextualError("Incompatible Types: Try to call a function of a non class variable",

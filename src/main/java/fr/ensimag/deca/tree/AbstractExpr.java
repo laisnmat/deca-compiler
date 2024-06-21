@@ -66,14 +66,14 @@ public abstract class AbstractExpr extends AbstractInst {
      * of [SyntaxeContextuelle] in pass 3
      *
      * @param compiler
-     *            (contains the "env_types" attribute)
+     *                     (contains the "env_types" attribute)
      * @param localEnv
-     *            Environment in which the expression should be checked
-     *            (corresponds to the "env_exp" attribute)
+     *                     Environment in which the expression should be checked
+     *                     (corresponds to the "env_exp" attribute)
      * @param currentClass
-     *            Definition of the class containing the expression
-     *            (corresponds to the "class" attribute)
-     *            is null in the main bloc.
+     *                     Definition of the class containing the expression
+     *                     (corresponds to the "class" attribute)
+     *                     is null in the main bloc.
      * @return the Type of the expression
      *         (corresponds to the "type" attribute)
      */
@@ -87,13 +87,13 @@ public abstract class AbstractExpr extends AbstractInst {
      * implements non-terminal "rvalue" of [SyntaxeContextuelle] in pass 3
      *
      * @param compiler
-     *            contains the "env_types" attribute
+     *                     contains the "env_types" attribute
      * @param localEnv
-     *            corresponds to the "env_exp" attribute
+     *                     corresponds to the "env_exp" attribute
      * @param currentClass
-     *            corresponds to the "class" attribute
+     *                     corresponds to the "class" attribute
      * @param expectedType
-     *            corresponds to the "type1" attribute
+     *                     corresponds to the "type1" attribute
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
@@ -171,11 +171,11 @@ public abstract class AbstractExpr extends AbstractInst {
      * boolean.
      *
      * @param localEnv
-     *            Environment in which the condition should be checked.
+     *                     Environment in which the condition should be checked.
      * @param currentClass
-     *            Definition of the class containing the expression, or
-     *            null in
-     *            the main program.
+     *                     Definition of the class containing the expression, or
+     *                     null in
+     *                     the main program.
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
@@ -196,7 +196,7 @@ public abstract class AbstractExpr extends AbstractInst {
      * 
      * @param compiler
      * @param register
-     *            The register where the result is stored.
+     *                 The register where the result is stored.
      */
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         throw new UnsupportedOperationException("not yet implemented");
@@ -221,7 +221,7 @@ public abstract class AbstractExpr extends AbstractInst {
      *
      * @param compiler
      * @param printHex
-     *            whether to print the value as hexadecimal
+     *                 whether to print the value as hexadecimal
      */
     protected void codeGenPrint(DecacCompiler compiler, boolean printHex) {
         this.codeGenExp(compiler, Register.getR(2));

@@ -6,6 +6,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
 import fr.ensimag.ima.pseudocode.instructions.INT;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
@@ -57,6 +58,10 @@ public class Cast extends AbstractExpr {
     public void codeGenExp(DecacCompiler compiler, GPRegister register) {
         if (this.type.getType().isInt()) {
             compiler.addInstruction(new INT(this.expr.getDVal(), register));
+            if (!compiler.getCompilerOptions().getNoCheck()) {
+                compiler.errorManager.addArithmeticOverflowError();
+                compiler.addInstruction(new BOV(compiler.labelManager.getArithmeticOverflowError()));
+            }
         } else {
             new LOAD(this.expr.getDVal(), register);
         }

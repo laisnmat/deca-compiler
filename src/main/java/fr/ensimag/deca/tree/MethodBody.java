@@ -37,9 +37,6 @@ public class MethodBody extends AbstractMethodBody {
         // list_inst ↓env_types ↓env_exp_r/env_exp_sup ↓class ↓return
         boolean returnStatement = insts.verifyListInst(compiler, localEnv, currentClass, returnType);
 
-        if (!compiler.getCompilerOptions().getNoCheck())
-            if (!returnType.isVoid() && !returnStatement)
-                throw new ContextualError("ReturnError: Missing return statement in non-void method", getLocation());
     }
 
     @Override
